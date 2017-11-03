@@ -1,0 +1,66 @@
+﻿@model DattatecPanel.Models.GS_TRAMA
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>GS_TRAMA</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Ruta)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Ruta)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Observacion)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Observacion)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Fecha_registro)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Fecha_registro)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Usuario)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Usuario)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.GS_ASEGURADORA_PERIODO.Estado)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.GS_ASEGURADORA_PERIODO.Estado)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.GS_TIPO_TRAMA.Nombre)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.GS_TIPO_TRAMA.Nombre)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.IDTrama }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

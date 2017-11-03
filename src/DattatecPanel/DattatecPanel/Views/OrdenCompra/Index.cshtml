@@ -1,0 +1,136 @@
+﻿@model IEnumerable<DattatecPanel.Models.OrdenCompra>
+
+@{
+    ViewBag.Title = "Listado de Órdenes de Compra";
+}
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script>
+    $(function () {
+        $("#btnBuscar").click(function () {
+            var fini = $("#fechainicio")[0].value;
+            var ffin = $("#fechafin")[0].value;
+
+            if (fini != "" && ffin == "") {
+                alert("Ingresar Fecha de Fin.");
+                return;
+            }
+
+            if (fini == "" && ffin != "") {
+                alert("Ingresar Fecha de Inicio.");
+                return;
+            }
+        });
+    });
+</script>
+<h2>Listado de Órdenes de Compra</h2>
+
+@using (@Html.BeginForm("Index", "OrdenCompra", FormMethod.Post))
+{
+    <fieldset>
+        <legend>Filtros de búsqueda</legend>
+        <div class="row">
+            <div class="col-md-2">
+                Número OC:
+            </div>
+            <div class="col-md-3">
+                @Html.TextBox("numerooc", null, htmlAttributes: new { @class = "form-control" })
+            </div>
+            <div class="col-md-2">
+                Número RQ:
+            </div>
+            <div class="col-md-3">
+                @Html.TextBox("numerorq", null, htmlAttributes: new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2">
+                Proveedor:
+            </div>
+            <div class="col-md-3">
+                @Html.DropDownList("Proveedores", null, htmlAttributes: new { @class = "form-control" })
+            </div>
+            <div class="col-md-2">
+                Area:
+            </div>
+            <div class="col-md-3">
+                @Html.DropDownList("Areas", null, htmlAttributes: new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2">
+                Fecha Inicio:
+            </div>
+            <div class="col-md-3">
+                @Html.TextBox("fechainicio", null, htmlAttributes: new { @class = "datepicker form-control", @type = "date" })
+            </div>
+            <div class="col-md-2">
+                Fecha Fin:
+            </div>
+            <div class="col-md-3">
+                @Html.TextBox("fechafin", DateTime.Now.ToString("dd/MM/yyyy"), htmlAttributes: new { @class = "datepicker form-control", @type = "date" })
+            </div>
+            <div class="col-md-2">
+                <input type="submit" value="Buscar" class="btn btn-primary" id="btnBuscar" style="width:150px"/>
+            </div>
+        </div>
+    </fieldset>
+}
+<br />
+<div class="btn-group">
+    @Html.ActionLink("Registrar", "BuscarAprobadas", "Cotizacion", null, htmlAttributes: new { @class = "btn btn-primary", @style="width:150px" })
+</div>
+<br />
+<br />
+<table class="table">
+    <tr>
+        <th>
+            Número OC
+        </th>
+        <th>
+            Número RQ
+        </th>
+        <th>
+            Proveedor
+        </th>
+        <th>
+            Fecha
+        </th>
+        <th>
+            Área
+        </th>
+        <th>
+            Solicitante
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+            {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.TransaccionCompra.Numero)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Cotizacion.RequerimientoCompra.TransaccionCompra.Numero)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Cotizacion.Proveedor.RazonSocial)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TransaccionCompra.Fecha)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Cotizacion.RequerimientoCompra.Solicitante.Area.Descripcion)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Cotizacion.RequerimientoCompra.Solicitante.NombreCompleto)
+            </td>
+            <td>
+                @Html.ActionLink("Modificar", "Edit", new { id = item.OrdenCompraID }) |
+                @Html.ActionLink("Anular", "Delete", new { id = item.OrdenCompraID }) |
+                @Html.ActionLink("Imprimir", "Details", new { id = item.OrdenCompraID })
+            </td>
+        </tr>
+    }
+
+</table>

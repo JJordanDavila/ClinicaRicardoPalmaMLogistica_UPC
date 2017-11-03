@@ -1,0 +1,54 @@
+﻿@model IEnumerable<DattatecPanel.Models.RequerimientoCompra>
+
+@{
+    ViewBag.Title = "Requerimientos Pendientes";
+}
+
+<h2>Requerimientos Pendientes</h2>
+
+<p>Seleccione un requerimiento:</p>
+
+<table class="table">
+    <tr>
+        <th>
+            Número RQ
+        </th>
+        <th>
+            Fecha
+        </th>
+        <th>
+            Área
+        </th>
+        <th>
+            Solicitante
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.TransaccionCompra.Numero)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TransaccionCompra.Fecha)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Solicitante.Area.Descripcion)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Solicitante.NombreCompleto)
+            </td>
+            <td>
+                @Html.ActionLink("Seleccionar", "Create", "Licitacion", new { idRQ = item.RequerimientoCompraID }, null)
+            </td>
+        </tr>
+    }
+
+</table>
+
+<div>
+    @Html.ActionLink("Regresar", "Index", "Licitacion")
+</div>
+

@@ -1,0 +1,197 @@
+﻿@model PagedList.IPagedList<DattatecPanel.Models.Licitacion>
+
+@using PagedList.Mvc;
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<html>
+<head>
+
+    <title>Listado de Licitaciones</title>
+
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="~/Content/bootstrap.css" rel="stylesheet" type="text/css">
+    <link href="~/Content/grid-0.4.3.min.css" rel="stylesheet" type="text/css">
+
+    <script src="~/Scripts/jquery-2.1.4.min.js" type="text/javascript"></script>
+    <script src="~/Scripts/bootstrap.min.js" type="text/javascript"></script>
+    <script src="~/Scripts/grid-0.4.3.min.js" type="text/javascript"></script>
+
+    <script src="~/Scripts/jquery-1.10.2.js"></script>
+    <script>
+        $(function () {
+            $("#btnBuscar").click(function () {
+                var fini = $("#fechainicio")[0].value;
+                var ffin = $("#fechafin")[0].value;
+
+                if (fini != "" && ffin == "") {
+                    alert("Ingresar Fecha de Fin.");
+                    return;
+                }
+
+                if (fini == "" && ffin != "") {
+                    alert("Ingresar Fecha de Inicio.");
+                    return;
+                }
+            });
+        });
+    </script>
+
+</head>
+<body>
+    <h2>Listado de Licitaciones</h2>
+    <br /><br />
+    <div>
+
+        @using (Html.BeginForm("Index", "Licitacion", FormMethod.Get))
+        {
+
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="input-group">
+
+                        @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "form-control", type = "number", placeholder = "Ingrese Numero Licitacion..." })
+                        <span class="input-group-btn">
+                            <input type="submit" value="Buscar" class="btn btn-default" />
+                        </span>
+                    </div>
+
+                    <div class="input-group">
+                        <div>
+                            Fecha Inicio:
+                        </div>
+                        <div>
+                            @Html.TextBox("fechainicio", null, htmlAttributes: new { @class = "datepicker form-control", @type = "date" })
+                        </div>
+                        <div>
+                            Fecha Fin:
+                        </div>
+                        <div>
+                            @Html.TextBox("fechafin", DateTime.Now.ToString("dd/MM/yyyy"), htmlAttributes: new { @class = "datepicker form-control", @type = "date" })
+                        </div>
+                        <div class="col-md-2">
+                            <input type="submit" value="Buscar" class="btn btn-default" id="btnBuscar" />
+                        </div>
+                    </div>
+
+                </div>
+                <div style="text-align:right">
+                    <div class="btn-group">
+                        @Html.ActionLink("Registrar", "Create", null, new { @class = "btn btn-success" })
+                    </div>
+                </div>
+            </div>
+        }
+
+        <br />
+        <table class="table table-bordered ">
+            <tr style="background-color: #f9f4f4">
+                <th width="15%">
+                    Numero Licitación
+                </th>
+                <th width="10%">
+                    Req Compra
+                </th>
+                <th width="15%">
+                    Fecha Registro
+                </th>
+                <th width="15%">
+                    Fecha Convocatoria
+                </th>
+                <th width="15%">
+                    Fec Recepcion Expediente
+                </th>
+                <th width="15%">
+                    Fec Adjudicacion
+                </th>
+
+            </tr>
+
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Numero)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.RequerimientoCompraID)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Fecha)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FechaConvocatoria)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FecRecepcionExpediente)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FecAdjudicacion)
+                        </td>
+
+                        <td>
+                            <p>
+                                @Html.ActionLink("Modificar", "Edit", new { id = item.LicitacionID })
+
+                                @if (item.FecAdjudicacion.Equals(null))
+                                {
+                                    @Html.Raw("Postor");
+                                }
+                                else
+                                {
+                                    if (item.Estado.Equals("AJ"))
+                                    {
+                                        @Html.Raw("Postor");
+                                    }
+                                    else
+                                    {
+                                        @Html.ActionLink("Postor", "Licitacion_Postor", new { id = item.LicitacionID, modo = "Agregar" })
+                                    }
+                                }
+
+
+                                @if (item.FecAdjudicacion.Equals(null))
+                                {
+                                    @Html.Raw("Adjudicar");
+                                }
+                                else
+                                {
+                                    if (item.Estado.Equals("AJ"))
+                                    {
+                                        @Html.Raw("Adjudicar");
+                                    }
+                                    else
+                                    {
+
+                                        @Html.ActionLink("Adjudicar", "Licitacion_Postor", new { id = item.LicitacionID, modo = "Adjudicar" })
+                                    }
+                                }
+
+                                @Html.ActionLink("Imprimir", "ObtenerReporte_Licitacion", new { id = "PDF", idlic = item.LicitacionID })
+
+                                @if (item.Estado.Equals("AJ"))
+                                {
+                                    @Html.Raw("Anular");
+                                }
+                                else
+                                {
+                                    @Html.ActionLink("Anular", "Delete", new { id = item.LicitacionID })
+                                }
+                            </p>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <br />
+        Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+        @Html.PagedListPager(Model, page => Url.Action("Index",
+    new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+    </div>
+
+</body>
+</html>

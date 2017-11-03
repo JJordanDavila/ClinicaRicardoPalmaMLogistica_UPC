@@ -1,0 +1,134 @@
+﻿@model IEnumerable<DattatecPanel.Models.Cotizacion>
+
+@{
+    ViewBag.Title = "Cotizaciones Aprobadas";
+}
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script>
+    $(function () {
+        $("#btnBuscarC").click(function () {
+            var fini = $("#fechainicioc")[0].value;
+            var ffin = $("#fechafinc")[0].value;
+
+            if (fini != "" && ffin == "") {
+                alert("Ingresar Fecha de Fin.");
+                return;
+            }
+
+            if (fini == "" && ffin != "") {
+                alert("Ingresar Fecha de Inicio.");
+                return;
+            }
+        });
+    });
+</script>
+<h2>Cotizaciones Aprobadas</h2>
+
+@using (@Html.BeginForm("BuscarAprobadas", "Cotizacion", FormMethod.Post))
+{
+    <fieldset>
+        <legend>Filtros de búsqueda</legend>
+        <div class="row">
+            <div class="col-md-2">
+                Número CO:
+            </div>
+            <div class="col-md-3">
+                @Html.TextBox("numeroocc", null, htmlAttributes: new { @class = "form-control" })
+            </div>
+            <div class="col-md-2">
+                Número RQ:
+            </div>
+            <div class="col-md-3">
+                @Html.TextBox("numerorqc", null, htmlAttributes: new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2">
+                Proveedor:
+            </div>
+            <div class="col-md-3">
+                @Html.DropDownList("ProveedoresC", null, htmlAttributes: new { @class = "form-control" })
+            </div>
+            <div class="col-md-2">
+                Area:
+            </div>
+            <div class="col-md-3">
+                @Html.DropDownList("AreasC", null, htmlAttributes: new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2">
+                Fecha Inicio:
+            </div>
+            <div class="col-md-3">
+                @Html.TextBox("fechainicioc", null, htmlAttributes: new { @class = "datepicker form-control", @type = "date" })
+            </div>
+            <div class="col-md-2">
+                Fecha Fin:
+            </div>
+            <div class="col-md-3">
+                @Html.TextBox("fechafinc", DateTime.Now.ToString("dd/MM/yyyy"), htmlAttributes: new { @class = "datepicker form-control", @type = "date" })
+            </div>
+            <div class="col-md-2">
+                <input type="submit" value="Buscar" class="btn btn-primary" id="btnBuscarC" />
+            </div>
+        </div>
+    </fieldset>
+}
+<br />
+<p style="font-size:medium">Seleccione una cotización:</p>
+
+<table class="table">
+    <tr>
+        <th>
+            Número CO
+        </th>
+        <th>
+            Número RQ
+        </th>
+        <th>
+            Proveedor
+        </th>
+        <th>
+            Fecha
+        </th>
+        <th>
+            Área
+        </th>
+        <th>
+            Solicitante
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.TransaccionCompra.Numero)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.RequerimientoCompra.TransaccionCompra.Numero)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Proveedor.RazonSocial)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TransaccionCompra.Fecha)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.RequerimientoCompra.Solicitante.Area.Descripcion)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.RequerimientoCompra.Solicitante.NombreCompleto)
+        </td>
+        <td>
+            @Html.ActionLink("Seleccionar", "Create", "OrdenCompra", new { idCO = item.CotizacionID }, null)
+        </td>
+    </tr>
+}
+
+</table>
+
+<div>
+    @Html.ActionLink("Regresar","Index","OrdenCompra")
+</div>

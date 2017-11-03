@@ -1,0 +1,70 @@
+﻿@model DattatecPanel.Models.Convocatoria
+@{
+    ViewBag.Title = "Nuevo";
+}
+@if (Model == null)
+{
+    <h2>Nuevo</h2>
+}
+else
+{
+    <h2>Actualizar</h2>
+}
+
+<form id="frmNuevoConvocatoria">
+    @Html.HiddenFor(model => model.Convocatoriaid, new { htmlAttributes = new { @class = "form-control" } })
+    <div class="form-group">
+        @Html.LabelFor(model => model.Numero, new { @class = "col-sm-4 control-label" })
+        <div class="col-sm-7">
+            @Html.EditorFor(model => model.Numero, new { htmlAttributes = new { @class = "form-control", @readonly="readonly" } })
+            @Html.ValidationMessageFor(model => model.Numero, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.FechaInicio, new { @class = "col-sm-4 control-label" })
+        <div class="col-sm-7">
+            @Html.EditorFor(model => model.FechaInicio, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.FechaInicio, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.FechaFin, new { @class = "col-sm-4 control-label" })
+        <div class="col-sm-7">
+            @Html.EditorFor(model => model.FechaFin, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.FechaFin, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group colFormularioHorizontal">
+        @Html.LabelFor(model => model.RubroID, new { @class = "col-sm-4 control-label obligatorio" })
+        <div class="col-sm-7">
+            @Html.DropDownListFor(model => model.RubroID, new SelectList(ViewBag.Rubros, "RubroID", "Descripcion"), new { @data_width = "100%", @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.RubroID, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group colFormularioHorizontal">
+        @Html.LabelFor(model => model.EmpleadoID, new { @class = "col-sm-4 control-label obligatorio" })
+        <div class="col-sm-7">
+            @Html.DropDownListFor(model => model.EmpleadoID, new SelectList(ViewBag.Solicitantes, "EmpleadoID", "NombreCompleto"), new { @data_width = "100%", @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.EmpleadoID, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Requisito, new { @class = "col-sm-4 control-label" })
+        <div class="col-sm-7">
+            @Html.EditorFor(model => model.Requisito, new { htmlAttributes = new { @class = "form-control", @type = "file" } })
+            @Html.ValidationMessageFor(model => model.Requisito, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="modal-footer" style="margin-top: 20px;">
+        <a href="@Url.Action("Index", "Convocatoria")" class="btn btn-primary" style="color: white;"><span class="glyphicon glyphicon-ok-sign" id="btnCancelar"></span> Cancelar</a>
+        <button type="button" class="btn btn-primary" id="btnGuardar">Guardar</button>
+    </div>
+</form>
+@section scripts{
+    
+    <script>
+        $("#Numero").val('@ViewBag.NuevoNumeroConvocatoria');
+    </script>
+    <script src="~/Scripts/Convocatoria.js"></script>
+    }

@@ -1,0 +1,114 @@
+﻿@model DattatecPanel.Models.OrdenCompra
+
+@{
+    ViewBag.Title = "Registro";
+}
+
+<script>
+    $(function () {
+        var x = "@ViewBag.MessageAdvCreateOC";
+        if (x == "True") {
+            $("#divMensajeAdvertencia").show();
+            $("#lblMensaje").text("@ViewBag.MessageAdvertenciaOC");
+        } else {
+            $("#divMensajeAdvertencia").hide();
+        }
+
+        $("#btnGuardarOC").on("click", function () {
+            $("#divMensajeAdvertencia").hide();
+            $("#lblMensaje").text("");
+        });
+    });
+</script>
+
+<h2>Registro</h2>
+
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>Orden de Compra</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.CotizacionID)
+        <div class="form-group">
+            @Html.LabelFor(model => model.AlmacenID, "AlmacenID", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-3">
+                @Html.DropDownList("AlmacenID", null, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.AlmacenID, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.FechaEntrega, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-3">
+                @Html.EditorFor(model => model.FechaEntrega, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.FechaEntrega, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Observacion, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-6">
+                @Html.EditorFor(model => model.Observacion, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Observacion, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group" id="divMensajeAdvertencia">
+            <label class="control-label col-md-2"></label>
+            <div class="col-md-6">
+                <label id="lblMensaje" class="text-danger"></label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Guardar" class="btn btn-primary" id="btnGuardarOC"/>
+            </div>
+        </div>
+
+        <table class="table">
+            <tr>
+                <th>Item</th>
+                <th>Producto</th>
+                <th style="text-align: right;">Cantidad</th>
+                <th style="text-align: right;">P. Venta</th>
+                <th style="text-align: right;">Total</th>
+            </tr>
+
+            @foreach (var item in Model.lstDetalle)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DetalleTransaccionCompraID)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Articulo.Descripcion)
+                    </td>
+                    <td style="text-align: right;">
+                        @Html.DisplayFor(modelItem => item.Cantidad)
+                    </td>
+                    <td style="text-align: right;">
+                        @Html.DisplayFor(modelItem => item.Precio)
+                    </td>
+                    <td style="text-align: right;">
+                        @Html.DisplayFor(modelItem => item.Total)
+                    </td>
+                </tr>
+            }
+
+        </table>
+    </div>
+
+
+}
+
+<div>
+    @Html.ActionLink("Regresar", "BuscarAprobadas", "Cotizacion")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

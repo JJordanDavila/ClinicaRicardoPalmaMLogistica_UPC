@@ -1,0 +1,45 @@
+﻿@model IEnumerable<DattatecPanel.Models.RequerimientoCompra>
+
+@{
+    ViewBag.Title = "Listado de Requerimientos de Compra";
+}
+
+<h2>Listado de Requerimientos de Compra</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Encargado.DNI)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Solicitante.DNI)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FechaEstimada)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Encargado.DNI)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Solicitante.DNI)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FechaEstimada)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.RequerimientoCompraID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.RequerimientoCompraID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.RequerimientoCompraID })
+        </td>
+    </tr>
+}
+
+</table>

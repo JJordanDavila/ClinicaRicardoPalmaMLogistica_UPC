@@ -1,0 +1,64 @@
+﻿@model IEnumerable<DattatecPanel.Models.Proveedor>
+
+@{
+    ViewBag.Title = "Proveedores";
+}
+
+<h2>Listado de Proveedores</h2>
+
+@using (Html.BeginForm("Registrar_LicitacionProveedor", "Licitacion", FormMethod.Post, new { id = "frm-proveedor" }))
+{
+
+    <table class="table">
+
+
+        <tr>
+            <th></th>
+            <th></th>
+            <th>
+                @Html.DisplayNameFor(model => model.RUC)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RazonSocial)
+            </th>
+            <th style="text-align: right;">
+                @Html.DisplayNameFor(model => model.Rubro.Descripcion)
+            </th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <label><input type="checkbox" name="proveedores" value="@item.ProveedorID" /></label>
+                </td>
+                <td>
+                    <label><input type="hidden" name="licitaciones_id" value="@ViewBag.Licitacion_ID" /></label>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RUC)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RazonSocial)
+                </td>
+                <td style="text-align: right;">
+                    @Html.DisplayFor(modelItem => item.Rubro.Descripcion)
+                </td>
+                @*<td>
+                        @Html.ActionLink("Edit", "Edit", new { id = item.ProveedorID }) |
+                        @Html.ActionLink("Details", "Details", new { id = item.ProveedorID }) |
+                        @Html.ActionLink("Delete", "Delete", new { id = item.ProveedorID })
+                    </td>*@
+            </tr>
+        }
+
+    </table>
+
+    <br /><br /><br />
+    <div class="btn-group col-md-10" style="text-align:center">
+        @Html.ActionLink("Regresar", "Licitacion_Postor", new { id = ViewBag.Licitacion_ID }, htmlAttributes: new { @class = "btn btn-default" })
+        <input type="submit" value="Aceptar" class="btn btn-primary" id="btnGuardarProveedor" />
+        @*@Html.ActionLink("Aceptar", "Registrar_LicitacionProveedor", new { id = ViewBag.Licitacion_ID }, htmlAttributes: new { @class = "btn btn-success" })*@
+
+    </div>
+}

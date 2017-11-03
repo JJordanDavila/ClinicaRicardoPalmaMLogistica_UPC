@@ -1,0 +1,66 @@
+﻿@model DattatecPanel.Models.Cotizacion
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Cotizacion</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.FormaPago.Nombre)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FormaPago.Nombre)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Proveedor.NombreComercial)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Proveedor.NombreComercial)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.RequerimientoCompra.RequerimientoCompraID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.RequerimientoCompra.RequerimientoCompraID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PlazoEntrega)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PlazoEntrega)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TiempoValidez)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TiempoValidez)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.NroReferencia)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NroReferencia)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.CotizacionID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

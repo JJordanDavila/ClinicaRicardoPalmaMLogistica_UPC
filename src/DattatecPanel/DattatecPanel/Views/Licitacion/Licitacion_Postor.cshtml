@@ -1,0 +1,212 @@
+﻿@model DattatecPanel.Models.Licitacion
+
+@{
+    ViewBag.Title = "Licitacion_Postor";
+}
+
+@if (ViewBag.Modo == "Adjudicar")
+{
+    <h2>Adjudicar Postor</h2>
+
+    using (Html.BeginForm("Adjudicar_Proveedor", "Licitacion", FormMethod.Post, new { id = "frm-proveedor" }))
+    {
+        <div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.Numero, new { @class = "col-sm-6 control-label" })
+                <div class="col-sm-10">
+                    @Html.TextBoxFor(model => model.Numero, new { @class = "form-control text-box single-line", disabled = "disabled", @readonly = "readonly" })
+                    @Html.HiddenFor(model => model.Numero)
+                </div>
+            </div>
+            <br /><br /><br />
+            <div class="form-group">
+                @Html.LabelFor(model => model.RequerimientoCompra.TransaccionCompra.Numero, new { @class = "col-sm-6 control-label" })
+                <div class="col-sm-10">
+                    @Html.TextBoxFor(model => model.RequerimientoCompra.TransaccionCompra.Numero, new { @class = "form-control text-box single-line", disabled = "disabled", @readonly = "readonly" })
+                    @Html.HiddenFor(model => model.RequerimientoCompra.TransaccionCompra.Numero)
+                </div>
+            </div>
+            <br /><br /><br />
+            <div class="form-group">
+                @Html.LabelFor(model => model.Fecha, new { @class = "col-sm-6 control-label" })
+                <div class="col-sm-10">
+                    @Html.TextBoxFor(model => model.Fecha, new { @class = "form-control text-box single-line", disabled = "disabled", @readonly = "readonly" })
+                    @Html.HiddenFor(model => model.Fecha)
+                </div>
+            </div>
+            <br /><br /><br />
+            <div class="form-group">
+                @Html.LabelFor(model => model.FechaConvocatoria, new { @class = "control-label col-sm-6" })
+                <div class="col-sm-10">
+                    @Html.TextBoxFor(model => model.FechaConvocatoria, new { @class = "form-control text-box single-line", disabled = "disabled", @readonly = "readonly" })
+                    @Html.ValidationMessageFor(model => model.FechaConvocatoria)
+                    @Html.HiddenFor(model => model.FechaConvocatoria)
+                </div>
+            </div>
+            <br /><br /><br />
+            <div class="form-group">
+                @Html.LabelFor(model => model.FecRecepcionExpediente, new { @class = "control-label col-sm-6" })
+                <div class="col-sm-10">
+                    @Html.TextBoxFor(model => model.FecRecepcionExpediente, new { @class = "form-control text-box single-line", disabled = "disabled", @readonly = "readonly" })
+                    @Html.ValidationMessageFor(model => model.FecRecepcionExpediente)
+                    @Html.HiddenFor(model => model.FecRecepcionExpediente)
+                </div>
+            </div>
+            <br /><br /><br />
+            <div class="form-group">
+                @Html.LabelFor(model => model.FecAdjudicacion, new { @class = "control-label col-sm-6" })
+                <div class="col-sm-10">
+                    @Html.TextBoxFor(model => model.FecAdjudicacion, new { @class = "form-control text-box single-line", disabled = "disabled", @readonly = "readonly" })
+                    @Html.ValidationMessageFor(model => model.FecAdjudicacion)
+                    @Html.HiddenFor(model => model.FecAdjudicacion)
+                </div>
+            </div>
+
+            <br /><br /><br />
+            <table class="table">
+                <tr>
+                    <th></th>
+                    <th>RUC</th>
+                    <th>Razon Social</th>
+                    <th style="text-align: right;">Descripcion</th>
+                </tr>
+
+                @foreach (var item in Model.registroProveedorParticipante_detalle)
+                {
+                    <tr>
+                        <td>
+                            <label><input type="radio" name="proveedor_id" value="@item.ProveedorID" id="name_proveedor" /></label>
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Proveedor.RUC)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Proveedor.RazonSocial)
+                        </td>
+                        <td style="text-align: right;">
+                            @Html.DisplayFor(modelItem => item.Proveedor.Rubro.Descripcion)
+                        </td>
+                        <td>
+                            <label><input type="hidden" name="Licitacion_id" value="@ViewBag.Licitacion_ID" /></label>
+                        </td>
+                    </tr>
+                }
+            </table>
+            <br /><br /><br />
+            <div class="btn-group col-md-10" style="text-align:center">
+                @Html.ActionLink("Regresar", "Index", "", htmlAttributes: new { @class = "btn btn-default" })
+                <input type="submit" value="Adjudicar" class="btn btn-success" id="btnGuardarProveedor" />
+            </div>
+        </div>
+    }
+
+}
+else
+{
+    <h2>Registrar Postores</h2>
+    using (Html.BeginForm("Eliminar_Proveedor_Licitacion", "Licitacion", FormMethod.Post, new { id = "frm-proveedor" }))
+    {
+        <div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.Numero, new { @class = "col-sm-6 control-label" })
+                <div class="col-sm-10">
+                    @Html.TextBoxFor(model => model.Numero, new { @class = "form-control text-box single-line", disabled = "disabled", @readonly = "readonly" })
+                    @Html.HiddenFor(model => model.Numero)
+                </div>
+            </div>
+            <br /><br /><br />
+            <div class="form-group">
+                @Html.LabelFor(model => model.RequerimientoCompra.TransaccionCompra.Numero, new { @class = "col-sm-6 control-label" })
+                <div class="col-sm-10">
+                    @Html.TextBoxFor(model => model.RequerimientoCompra.TransaccionCompra.Numero, new { @class = "form-control text-box single-line", disabled = "disabled", @readonly = "readonly" })
+                    @Html.HiddenFor(model => model.RequerimientoCompra.TransaccionCompra.Numero)
+                </div>
+            </div>
+            <br /><br /><br />
+            <div class="form-group">
+                @Html.LabelFor(model => model.Fecha, new { @class = "col-sm-6 control-label" })
+                <div class="col-sm-10">
+                    @Html.TextBoxFor(model => model.Fecha, new { @class = "form-control text-box single-line", disabled = "disabled", @readonly = "readonly" })
+                    @Html.HiddenFor(model => model.Fecha)
+                </div>
+            </div>
+            <br /><br /><br />
+            <div class="form-group">
+                @Html.LabelFor(model => model.FechaConvocatoria, new { @class = "control-label col-sm-6" })
+                <div class="col-sm-10">
+                    @Html.TextBoxFor(model => model.FechaConvocatoria, new { @class = "form-control text-box single-line", disabled = "disabled", @readonly = "readonly" })
+                    @Html.ValidationMessageFor(model => model.FechaConvocatoria)
+                    @Html.HiddenFor(model => model.FechaConvocatoria)
+                </div>
+            </div>
+            <br /><br /><br />
+            <div class="form-group">
+                @Html.LabelFor(model => model.FecRecepcionExpediente, new { @class = "control-label col-sm-6" })
+                <div class="col-sm-10">
+                    @Html.TextBoxFor(model => model.FecRecepcionExpediente, new { @class = "form-control text-box single-line", disabled = "disabled", @readonly = "readonly" })
+                    @Html.ValidationMessageFor(model => model.FecRecepcionExpediente)
+                    @Html.HiddenFor(model => model.FecRecepcionExpediente)
+                </div>
+            </div>
+            <br /><br /><br />
+            <div class="form-group">
+                @Html.LabelFor(model => model.FecAdjudicacion, new { @class = "control-label col-sm-6" })
+                <div class="col-sm-10">
+                    @Html.TextBoxFor(model => model.FecAdjudicacion, new { @class = "form-control text-box single-line", disabled = "disabled", @readonly = "readonly" })
+                    @Html.ValidationMessageFor(model => model.FecAdjudicacion)
+                    @Html.HiddenFor(model => model.FecAdjudicacion)
+                </div>
+            </div>
+            <br /><br /><br />
+            <div class="btn-group col-md-10" style="text-align:center">
+                @Html.ActionLink("Regresar", "Index", "", htmlAttributes: new { @class = "btn btn-default" })
+
+                @if (Model.Estado.Equals("AJ"))
+                {
+                    @Html.ActionLink("Agregar", "Proveedores", new { id = Model.LicitacionID }, htmlAttributes: new { @class = "btn btn-success", disabled = "disabled", @readonly = "readonly" })
+                }
+                else
+                {
+                    @Html.ActionLink("Agregar", "Proveedores", new { id = Model.LicitacionID }, htmlAttributes: new { @class = "btn btn-success" })
+                }
+
+                @Html.ActionLink("Enviar", "Notificacion_Registro_Postor", new { licitacion_id = Model.LicitacionID, requerimiento_id = Model.RequerimientoCompraID }, htmlAttributes: new { @class = "btn btn-success" })
+
+            </div>
+            <br /><br /><br />
+
+
+            <table class="table">
+                <tr>
+                    <th>RUC</th>
+                    <th>Razon Social</th>
+                    <th style="text-align: right;">Descripcion</th>
+                </tr>
+
+                @foreach (var item in Model.registroProveedorParticipante_detalle)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Proveedor.RUC)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Proveedor.RazonSocial)
+                        </td>
+                        <td style="text-align: right;">
+                            @Html.DisplayFor(modelItem => item.Proveedor.Rubro.Descripcion)
+                        </td>
+                        <td>
+                            <label><input type="hidden" name="proveedor_id" value="@item.ProveedorID" /></label>
+                        </td>
+                        <td>
+                            <label><input type="hidden" name="Licitacion_id" value="@ViewBag.Licitacion_ID" /></label>
+
+                        <td>
+                            <input type="submit" value="Eliminar" id="btnEliminarPostor" />
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
+    }
+}

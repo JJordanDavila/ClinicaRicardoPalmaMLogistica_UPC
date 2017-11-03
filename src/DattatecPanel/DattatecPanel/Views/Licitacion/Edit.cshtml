@@ -1,0 +1,393 @@
+﻿@model DattatecPanel.Models.Licitacion
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<script>
+    $(function () {
+        var x = "@ViewBag.MessageAdvEditLC";
+        if (x == "True") {
+            $("#divMensajeAdvertenciaEdit").show();
+            $("#lblMensajeEdit").text("@ViewBag.MessageAdvertenciaLC");
+        } else {
+            $("#divMensajeAdvertenciaEdit").hide();
+        }
+
+        $("#btn_modificar").on("click", function () {
+            $("#divMensajeAdvertenciaEdit").hide();
+            $("#lblMensajeEdit").text("");
+        });
+    });
+</script>
+
+<br />
+
+@*@using (Html.BeginForm())
+    {*@
+
+@using (Html.BeginForm("Edit", "Licitacion", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-7">
+                <div class="panel panel-success">
+                    <div class="panel-heading"><h5>Modificación de Licitación</h5></div>
+                    <div class="panel-body">
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        @Html.HiddenFor(model => model.LicitacionID)
+                        @Html.HiddenFor(model => model.RequerimientoCompraID)
+                        @Html.HiddenFor(model => model.Estado)
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Numero, new { @class = "col-sm-6 control-label" })
+                            <div class="col-sm-10">
+                                @Html.TextBoxFor(model => model.Numero, new { @class = "form-control text-box single-line", disabled = "disabled", @readonly = "readonly" })
+                                @Html.HiddenFor(model => model.Numero)
+                            </div>
+                        </div>
+                        <br /><br /><br />
+                        <div class="form-group">
+                            <label class="ccol-sm-6 control-label">Número de Requerimiento de Compra</label>
+                            <div class="col-sm-10">
+                                @Html.TextBoxFor(model => model.RequerimientoCompra.TransaccionCompra.Numero, new { @class = "form-control text-box single-line", disabled = "disabled", @readonly = "readonly" })
+                                @Html.HiddenFor(model => model.RequerimientoCompra.TransaccionCompra.Numero)
+                            </div>
+                        </div>
+                        <br /><br /><br />
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Fecha, new { @class = "col-sm-6 control-label" })
+                            <div class="col-sm-10">
+                                @Html.TextBoxFor(model => model.Fecha, new { @class = "form-control text-box single-line", disabled = "disabled", @readonly = "readonly" })
+                                @Html.HiddenFor(model => model.Fecha)
+                            </div>
+                        </div>
+                        <br /><br /><br />
+                        @if (String.IsNullOrEmpty(Model.FileNameTDR1))
+                        {
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.FileTDR1, new { @class = "col-sm-6 control-label" })
+                                <div class="col-sm-10">
+                                    @Html.TextBoxFor(model => model.FileTDR1, new { type = "file" })
+                                    @Html.ValidationMessageFor(model => model.FileTDR1, "", new { @class = "validate" })
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.TerminoRefInicial, new { @class = "control-label col-sm-6" })
+                                <div class="col-sm-10">
+                                    @Html.ActionLink(" ", "FileDownload_TDR1", new { id = Model.LicitacionID }, new { @style = "background :url('" + Url.Content("~/images/page_white_acrobat.png") + "') no-repeat center right; display:block; height: 27px; width: 25px" })
+                                    @Html.HiddenFor(model => model.FileTDR1)
+                                    @Html.HiddenFor(model => model.TerminoRefInicial)
+                                    @Html.HiddenFor(model => model.FileNameTDR1)
+                                    @Html.HiddenFor(model => model.ContentTypeTDR1)
+                                </div>
+                            </div>
+                        }
+                        <br /><br /><br />
+                        @if (String.IsNullOrEmpty(Model.FileNameTDR2))
+                        {
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.FileTDR2, new { @class = "col-sm-6 control-label" })
+                                <div class="col-sm-10">
+                                    @Html.TextBoxFor(model => model.FileTDR2, new { type = "file" })
+                                    @Html.ValidationMessageFor(model => model.FileTDR2, "", new { @class = "validate" })
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.TerminoRefFinal, new { @class = "control-label col-sm-6" })
+                                <div class="col-sm-10">
+                                    @Html.ActionLink(" ", "FileDownload_TDR2", new { id = Model.LicitacionID }, new { @style = "background :url('" + Url.Content("~/images/page_white_acrobat.png") + "') no-repeat center right; display:block; height: 27px; width: 25px" })
+                                    @Html.HiddenFor(model => model.FileTDR2)
+                                    @Html.HiddenFor(model => model.TerminoRefFinal)
+                                    @Html.HiddenFor(model => model.FileNameTDR2)
+                                    @Html.HiddenFor(model => model.ContentTypeTDR2)
+                                </div>
+                            </div>
+                        }
+                        <br /><br /><br />
+
+                        @if (!Model.FechaConvocatoria.Equals(null))
+                        {
+                            if (Model.FechaConvocatoria < Convert.ToDateTime(System.DateTime.Now.ToShortDateString()))
+                            {
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.FechaConvocatoria, new { @class = "control-label col-sm-6" })
+                                    <div class="col-sm-10">
+                                        @Html.TextBoxFor(model => model.FechaConvocatoria, new { @class = "form-control text-box single-line", disabled = "disabled", @readonly = "readonly" })
+                                        @Html.ValidationMessageFor(model => model.FechaConvocatoria)
+                                        @Html.HiddenFor(model => model.FechaConvocatoria)
+                                    </div>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.FechaConvocatoria, new { @class = "control-label col-sm-6" })
+                                    <div class="col-sm-10">
+                                        @Html.EditorFor(model => model.FechaConvocatoria)
+                                        @Html.ValidationMessageFor(model => model.FechaConvocatoria)
+                                    </div>
+                                </div>
+                            }
+                        }
+                        else
+                        {
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.FechaConvocatoria, htmlAttributes: new { @class = "control-label col-sm-6" })
+                                <div class="col-sm-10">
+                                    @Html.EditorFor(model => model.FechaConvocatoria, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.FechaConvocatoria, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        }
+
+                        <br /><br /><br />
+
+                        @if (!Model.FecRecepcionConsultas.Equals(null))
+                        {
+                            if (Model.FecRecepcionConsultas < Convert.ToDateTime(System.DateTime.Now.ToShortDateString()))
+                            {
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.FecRecepcionConsultas, new { @class = "control-label col-sm-6" })
+                                    <div class="col-sm-10">
+                                        @Html.TextBoxFor(model => model.FecRecepcionConsultas, new { @class = "form-control text-box single-line", disabled = "disabled", @readonly = "readonly" })
+                                        @Html.ValidationMessageFor(model => model.FecRecepcionConsultas)
+                                        @Html.HiddenFor(model => model.FecRecepcionConsultas)
+                                    </div>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.FecRecepcionConsultas, new { @class = "control-label col-sm-6" })
+                                    <div class="col-sm-10">
+                                        @Html.EditorFor(model => model.FecRecepcionConsultas)
+                                        @Html.ValidationMessageFor(model => model.FecRecepcionConsultas)
+                                    </div>
+                                </div>
+                            }
+                        }
+                        else
+                        {
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.FecRecepcionConsultas, new { @class = "control-label col-sm-6" })
+                                <div class="col-sm-10">
+                                    @Html.EditorFor(model => model.FecRecepcionConsultas)
+                                    @Html.ValidationMessageFor(model => model.FecRecepcionConsultas)
+                                </div>
+                            </div>
+                        }
+                        <br /><br /><br />
+                        @if (!Model.FecAbsolucionConsultas.Equals(null))
+                        {
+                            if (Model.FecAbsolucionConsultas < Convert.ToDateTime(System.DateTime.Now.ToShortDateString()))
+                            {
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.FecAbsolucionConsultas, new { @class = "control-label col-sm-6" })
+                                    <div class="col-sm-10">
+                                        @Html.TextBoxFor(model => model.FecAbsolucionConsultas, new { @class = "form-control text-box single-line", disabled = "disabled", @readonly = "readonly" })
+                                        @Html.ValidationMessageFor(model => model.FecAbsolucionConsultas)
+                                        @Html.HiddenFor(model => model.FecAbsolucionConsultas)
+                                    </div>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.FecAbsolucionConsultas, new { @class = "control-label col-sm-6" })
+                                    <div class="col-sm-10">
+                                        @Html.EditorFor(model => model.FecAbsolucionConsultas)
+                                        @Html.ValidationMessageFor(model => model.FecAbsolucionConsultas)
+                                    </div>
+                                </div>
+                            }
+                        }
+                        else
+                        {
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.FecAbsolucionConsultas, new { @class = "control-label col-sm-6" })
+                                <div class="col-sm-10">
+                                    @Html.EditorFor(model => model.FecAbsolucionConsultas)
+                                    @Html.ValidationMessageFor(model => model.FecAbsolucionConsultas)
+                                </div>
+                            </div>
+                        }
+                        <br /><br /><br />
+                        @if (!Model.FecRecepcionExpediente.Equals(null))
+                        {
+                            if (Model.FecRecepcionExpediente < Convert.ToDateTime(System.DateTime.Now.ToShortDateString()))
+                            {
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.FecRecepcionExpediente, new { @class = "control-label col-sm-6" })
+                                    <div class="col-sm-10">
+                                        @Html.TextBoxFor(model => model.FecRecepcionExpediente, new { @class = "form-control text-box single-line", disabled = "disabled", @readonly = "readonly" })
+                                        @Html.ValidationMessageFor(model => model.FecRecepcionExpediente)
+                                        @Html.HiddenFor(model => model.FecRecepcionExpediente)
+                                    </div>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.FecRecepcionExpediente, new { @class = "control-label col-sm-6" })
+                                    <div class="col-sm-10">
+                                        @Html.EditorFor(model => model.FecRecepcionExpediente)
+                                        @Html.ValidationMessageFor(model => model.FecRecepcionExpediente)
+                                    </div>
+                                </div>
+                            }
+                        }
+                        else
+                        {
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.FecRecepcionExpediente, new { @class = "control-label col-sm-6" })
+                                <div class="col-sm-10">
+                                    @Html.EditorFor(model => model.FecRecepcionExpediente)
+                                    @Html.ValidationMessageFor(model => model.FecRecepcionExpediente)
+                                </div>
+                            </div>
+                        }
+                        <br /><br /><br />
+                        @if (!Model.FecEvaluacionIni.Equals(null))
+                        {
+                            if (Model.FecEvaluacionIni < Convert.ToDateTime(System.DateTime.Now.ToShortDateString()))
+                            {
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.FecEvaluacionIni, new { @class = "control-label col-sm-6" })
+                                    <div class="col-sm-10">
+                                        @Html.TextBoxFor(model => model.FecEvaluacionIni, new { @class = "form-control text-box single-line", disabled = "disabled", @readonly = "readonly" })
+                                        @Html.ValidationMessageFor(model => model.FecEvaluacionIni)
+                                        @Html.HiddenFor(model => model.FecEvaluacionIni)
+                                    </div>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.FecEvaluacionIni, new { @class = "control-label col-sm-6" })
+                                    <div class="col-sm-10">
+                                        @Html.EditorFor(model => model.FecEvaluacionIni)
+                                        @Html.ValidationMessageFor(model => model.FecEvaluacionIni)
+                                    </div>
+                                </div>
+                            }
+                        }
+                        else
+                        {
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.FecEvaluacionIni, new { @class = "control-label col-sm-6" })
+                                <div class="col-sm-10">
+                                    @Html.EditorFor(model => model.FecEvaluacionIni)
+                                    @Html.ValidationMessageFor(model => model.FecEvaluacionIni)
+                                </div>
+                            </div>
+                        }
+                        <br /><br /><br />
+                        @if (!Model.FecEvaluacionFin.Equals(null))
+                        {
+                            if (Model.FecEvaluacionFin < Convert.ToDateTime(System.DateTime.Now.ToShortDateString()))
+                            {
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.FecEvaluacionFin, new { @class = "control-label col-sm-6" })
+                                    <div class="col-sm-10">
+                                        @Html.TextBoxFor(model => model.FecEvaluacionFin, new { @class = "form-control text-box single-line", disabled = "disabled", @readonly = "readonly" })
+                                        @Html.ValidationMessageFor(model => model.FecEvaluacionFin)
+                                        @Html.HiddenFor(model => model.FecEvaluacionFin)
+                                    </div>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.FecEvaluacionFin, new { @class = "control-label col-sm-6" })
+                                    <div class="col-sm-10">
+                                        @Html.EditorFor(model => model.FecEvaluacionFin)
+                                        @Html.ValidationMessageFor(model => model.FecEvaluacionFin)
+                                    </div>
+                                </div>
+                            }
+                        }
+                        else
+                        {
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.FecEvaluacionFin, new { @class = "control-label col-sm-6" })
+                                <div class="col-sm-10">
+                                    @Html.EditorFor(model => model.FecEvaluacionFin)
+                                    @Html.ValidationMessageFor(model => model.FecEvaluacionFin)
+                                </div>
+                            </div>
+                        }
+                        <br /><br /><br />
+                        @if (!Model.FecAdjudicacion.Equals(null))
+                        {
+                            if (Model.FecAdjudicacion < Convert.ToDateTime(System.DateTime.Now.ToShortDateString()))
+                            {
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.FecAdjudicacion, new { @class = "control-label col-sm-6" })
+                                    <div class="col-sm-10">
+                                        @Html.TextBoxFor(model => model.FecAdjudicacion, new { @class = "form-control text-box single-line", disabled = "disabled", @readonly = "readonly" })
+                                        @Html.ValidationMessageFor(model => model.FecAdjudicacion)
+                                        @Html.HiddenFor(model => model.FecAdjudicacion)
+                                    </div>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.FecAdjudicacion, new { @class = "control-label col-sm-6" })
+                                    <div class="col-sm-10">
+                                        @Html.EditorFor(model => model.FecAdjudicacion)
+                                        @Html.ValidationMessageFor(model => model.FecAdjudicacion)
+                                    </div>
+                                </div>
+                            }
+                        }
+                        else
+                        {
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.FecAdjudicacion, new { @class = "control-label col-sm-6" })
+                                <div class="col-sm-10">
+                                    @Html.EditorFor(model => model.FecAdjudicacion)
+                                    @Html.ValidationMessageFor(model => model.FecAdjudicacion)
+                                </div>
+                            </div>
+                        }
+                        <br /><br /><br />
+                        <div class="form-group" id="divMensajeAdvertenciaEdit">
+                            <label class="control-label col-sm-6"></label>
+                            <div class="col-sm-10">
+                                <label id="lblMensajeEdit" class="text-danger"></label>
+                            </div>
+                        </div>
+                        <br /><br /><br />
+                        <div class="btn-group col-md-10" style="text-align:center">
+                            @Html.ActionLink("Regresar", "Index", null, new { @class = "btn btn-default" })
+
+                            @if (Model.Estado.Equals("AJ"))
+                            {
+
+                                <input type="submit" value="Guardar" class="btn btn-success readonly" id="btn_modificar" disabled />
+                            }
+                            else
+                            {
+                                <input type="submit" value="Guardar" class="btn btn-success" id="btn_modificar" />
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

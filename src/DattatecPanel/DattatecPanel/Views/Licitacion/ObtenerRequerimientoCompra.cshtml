@@ -1,0 +1,63 @@
+﻿@model IEnumerable<DattatecPanel.Models.RequerimientoCompra>
+
+@{
+    ViewBag.Title = "ObtenerRequerimientoCompra";
+    Layout = null;
+}
+
+<h4 style="text-align:center">Listado de requerimiento de Compras Pendientes</h4>
+<link href="~/Content/bootstrap.css" rel="stylesheet" />
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $("#tbReqCompra tbody tr").dblclick(function () {
+            var RequerimientoCompra = {};
+            var n
+
+            n = RequerimientoCompra.RequerimientoCompraID = $(this).children().eq('0').text();
+            console.info(n);
+
+            window.opener.ObtenerRequerimientoCompra(RequerimientoCompra);
+            window.close();
+        });
+    });
+</script>
+
+<table id="tbReqCompra" border="1" class="table table-bordered table-responsive table-condensed">
+    <tr style="background-color: #f9f4f4">
+        <th>
+            Número RQ
+        </th>
+        <th>
+            Fecha
+        </th>
+        <th>
+            Área
+        </th>
+        <th>
+            Solicitante
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.RequerimientoCompraID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TransaccionCompra.Fecha)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Solicitante.Area.Descripcion)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Solicitante.NombreCompleto)
+            </td>
+        </tr>
+    }
+
+</table>

@@ -1,0 +1,1214 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="DB_CLINICAModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="EMPLEADO">
+          <Key>
+            <PropertyRef Name="IDEmpleado" />
+          </Key>
+          <Property Name="IDEmpleado" Type="int" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="50" />
+          <Property Name="Ap_paterno" Type="varchar" MaxLength="50" />
+          <Property Name="Ap_materno" Type="varchar" MaxLength="50" />
+          <Property Name="Fecha_nacimiento" Type="datetime" />
+          <Property Name="Fecha_registro" Type="datetime" />
+        </EntityType>
+        <EntityType Name="GS_ASEGURADORA">
+          <Key>
+            <PropertyRef Name="IDAseguradora" />
+          </Key>
+          <Property Name="IDAseguradora" Type="int" Nullable="false" />
+          <Property Name="Ruc" Type="varchar" MaxLength="11" />
+          <Property Name="Razon_social" Type="varchar" MaxLength="50" />
+          <Property Name="Direccion" Type="varchar" MaxLength="100" />
+          <Property Name="Contacto" Type="varchar" MaxLength="50" />
+          <Property Name="Telefono" Type="varchar" MaxLength="25" />
+          <Property Name="Correo" Type="varchar" MaxLength="25" />
+          <Property Name="Fecha_registro" Type="datetime" />
+          <Property Name="Estado" Type="char" MaxLength="1" />
+        </EntityType>
+        <EntityType Name="GS_ASEGURADORA_PERIODO">
+          <Key>
+            <PropertyRef Name="IDAseguradora" />
+            <PropertyRef Name="IDPeriodo" />
+          </Key>
+          <Property Name="IDAseguradora" Type="int" Nullable="false" />
+          <Property Name="IDPeriodo" Type="int" Nullable="false" />
+          <Property Name="Estado" Type="char" MaxLength="1" />
+          <Property Name="Fecha_registro" Type="datetime" />
+        </EntityType>
+        <EntityType Name="GS_ATENCION">
+          <Key>
+            <PropertyRef Name="IDAtencion" />
+          </Key>
+          <Property Name="IDAtencion" Type="int" Nullable="false" />
+          <Property Name="IDPaciente" Type="int" Nullable="false" />
+          <Property Name="IDMedico" Type="int" Nullable="false" />
+          <Property Name="Tipo" Type="char" MaxLength="1" />
+          <Property Name="Fecha" Type="datetime" />
+          <Property Name="Observacion" Type="varchar" MaxLength="250" />
+          <Property Name="Fecha_registro" Type="datetime" />
+          <Property Name="IDAseguradora" Type="int" />
+        </EntityType>
+        <EntityType Name="GS_DETALLE_ATENCION">
+          <Key>
+            <PropertyRef Name="IDAtencion" />
+            <PropertyRef Name="Linea" />
+          </Key>
+          <Property Name="IDAtencion" Type="int" Nullable="false" />
+          <Property Name="Linea" Type="int" Nullable="false" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="GS_Especialidad">
+          <Key>
+            <PropertyRef Name="IDEspecialidad" />
+          </Key>
+          <Property Name="IDEspecialidad" Type="int" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="GS_MEDICO">
+          <Key>
+            <PropertyRef Name="IDMedico" />
+          </Key>
+          <Property Name="IDMedico" Type="int" Nullable="false" />
+          <Property Name="IDEspecialidad" Type="int" Nullable="false" />
+          <Property Name="NroCMP" Type="varchar" MaxLength="20" />
+          <Property Name="IDEmpleado" Type="int" />
+        </EntityType>
+        <EntityType Name="GS_ORDEN_MEDICA">
+          <Key>
+            <PropertyRef Name="IDOrdenMedica" />
+          </Key>
+          <Property Name="IDOrdenMedica" Type="int" Nullable="false" />
+          <Property Name="IDAtencion" Type="int" Nullable="false" />
+          <Property Name="Estado" Type="char" MaxLength="1" />
+          <Property Name="Fecha_registro" Type="datetime" />
+        </EntityType>
+        <EntityType Name="GS_ORDEN_PROCEDIMIENTO">
+          <Key>
+            <PropertyRef Name="IDProcedimiento" />
+            <PropertyRef Name="IDOrdenMedica" />
+          </Key>
+          <Property Name="IDProcedimiento" Type="int" Nullable="false" />
+          <Property Name="IDOrdenMedica" Type="int" Nullable="false" />
+          <Property Name="Fecha_registro" Type="datetime" />
+        </EntityType>
+        <EntityType Name="GS_PACIENTE">
+          <Key>
+            <PropertyRef Name="IDPaciente" />
+          </Key>
+          <Property Name="IDPaciente" Type="int" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="100" />
+          <Property Name="DNI" Type="varchar" MaxLength="8" />
+        </EntityType>
+        <EntityType Name="GS_PERIODO">
+          <Key>
+            <PropertyRef Name="IDPeriodo" />
+          </Key>
+          <Property Name="IDPeriodo" Type="int" Nullable="false" />
+          <Property Name="Fecha_inicio" Type="datetime" />
+          <Property Name="Fecha_final" Type="datetime" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="50" />
+          <Property Name="Fecha_registro" Type="datetime" />
+        </EntityType>
+        <EntityType Name="GS_PROCEDIMIENTO">
+          <Key>
+            <PropertyRef Name="IDProcedimiento" />
+          </Key>
+          <Property Name="IDProcedimiento" Type="int" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="100" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="500" />
+          <Property Name="Tipo" Type="char" MaxLength="1" />
+          <Property Name="Fecha_registro" Type="datetime" />
+        </EntityType>
+        <EntityType Name="GS_SRS">
+          <Key>
+            <PropertyRef Name="IDSRS" />
+          </Key>
+          <Property Name="IDSRS" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IDAseguradora" Type="int" Nullable="false" />
+          <Property Name="IDOrdenMedica" Type="int" Nullable="false" />
+          <Property Name="Fecha_registro" Type="datetime" />
+          <Property Name="Observacion" Type="varchar" MaxLength="300" />
+          <Property Name="Estado" Type="char" MaxLength="1" />
+          <Property Name="Fecha_aprobacion" Type="datetime" />
+        </EntityType>
+        <EntityType Name="GS_SRS_PROCEDIMIENTO">
+          <Key>
+            <PropertyRef Name="IDProcedimiento" />
+            <PropertyRef Name="IDSRS" />
+          </Key>
+          <Property Name="IDProcedimiento" Type="int" Nullable="false" />
+          <Property Name="IDSRS" Type="int" Nullable="false" />
+          <Property Name="Estado" Type="char" MaxLength="1" />
+          <Property Name="Ruta" Type="varchar" MaxLength="100" />
+          <Property Name="Codigo_requerimiento" Type="varchar" MaxLength="25" />
+        </EntityType>
+        <EntityType Name="GS_TIPO_TRAMA">
+          <Key>
+            <PropertyRef Name="IDTipo" />
+          </Key>
+          <Property Name="IDTipo" Type="int" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="50" />
+          <Property Name="Fecha_registro" Type="datetime" />
+        </EntityType>
+        <EntityType Name="GS_TRAMA">
+          <Key>
+            <PropertyRef Name="IDTrama" />
+          </Key>
+          <Property Name="IDTrama" Type="int" Nullable="false" />
+          <Property Name="IDTipo" Type="int" Nullable="false" />
+          <Property Name="IDAseguradora" Type="int" Nullable="false" />
+          <Property Name="IDPeriodo" Type="int" Nullable="false" />
+          <Property Name="Ruta" Type="varchar" MaxLength="100" />
+          <Property Name="Observacion" Type="varchar" MaxLength="150" />
+          <Property Name="Fecha_registro" Type="datetime" />
+          <Property Name="Usuario" Type="varchar" MaxLength="25" />
+        </EntityType>
+        <Association Name="FK_Detalle_atencion">
+          <End Role="GS_ATENCION" Type="Self.GS_ATENCION" Multiplicity="1" />
+          <End Role="GS_DETALLE_ATENCION" Type="Self.GS_DETALLE_ATENCION" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GS_ATENCION">
+              <PropertyRef Name="IDAtencion" />
+            </Principal>
+            <Dependent Role="GS_DETALLE_ATENCION">
+              <PropertyRef Name="IDAtencion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_IDAseguradora">
+          <End Role="GS_ASEGURADORA" Type="Self.GS_ASEGURADORA" Multiplicity="1" />
+          <End Role="GS_SRS" Type="Self.GS_SRS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GS_ASEGURADORA">
+              <PropertyRef Name="IDAseguradora" />
+            </Principal>
+            <Dependent Role="GS_SRS">
+              <PropertyRef Name="IDAseguradora" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_IDAseguradora_GS">
+          <End Role="GS_ASEGURADORA" Type="Self.GS_ASEGURADORA" Multiplicity="1" />
+          <End Role="GS_ASEGURADORA_PERIODO" Type="Self.GS_ASEGURADORA_PERIODO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GS_ASEGURADORA">
+              <PropertyRef Name="IDAseguradora" />
+            </Principal>
+            <Dependent Role="GS_ASEGURADORA_PERIODO">
+              <PropertyRef Name="IDAseguradora" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_IDAseguradora_GSA">
+          <End Role="GS_ASEGURADORA" Type="Self.GS_ASEGURADORA" Multiplicity="0..1" />
+          <End Role="GS_ATENCION" Type="Self.GS_ATENCION" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GS_ASEGURADORA">
+              <PropertyRef Name="IDAseguradora" />
+            </Principal>
+            <Dependent Role="GS_ATENCION">
+              <PropertyRef Name="IDAseguradora" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_IDAseguradora_IDPeriodo">
+          <End Role="GS_ASEGURADORA_PERIODO" Type="Self.GS_ASEGURADORA_PERIODO" Multiplicity="1" />
+          <End Role="GS_TRAMA" Type="Self.GS_TRAMA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GS_ASEGURADORA_PERIODO">
+              <PropertyRef Name="IDAseguradora" />
+              <PropertyRef Name="IDPeriodo" />
+            </Principal>
+            <Dependent Role="GS_TRAMA">
+              <PropertyRef Name="IDAseguradora" />
+              <PropertyRef Name="IDPeriodo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_IDAtencion">
+          <End Role="GS_ATENCION" Type="Self.GS_ATENCION" Multiplicity="1" />
+          <End Role="GS_ORDEN_MEDICA" Type="Self.GS_ORDEN_MEDICA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GS_ATENCION">
+              <PropertyRef Name="IDAtencion" />
+            </Principal>
+            <Dependent Role="GS_ORDEN_MEDICA">
+              <PropertyRef Name="IDAtencion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_IDMedico_GSA">
+          <End Role="GS_MEDICO" Type="Self.GS_MEDICO" Multiplicity="1" />
+          <End Role="GS_ATENCION" Type="Self.GS_ATENCION" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GS_MEDICO">
+              <PropertyRef Name="IDMedico" />
+            </Principal>
+            <Dependent Role="GS_ATENCION">
+              <PropertyRef Name="IDMedico" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_IDOrden_Medica">
+          <End Role="GS_ORDEN_MEDICA" Type="Self.GS_ORDEN_MEDICA" Multiplicity="1" />
+          <End Role="GS_ORDEN_PROCEDIMIENTO" Type="Self.GS_ORDEN_PROCEDIMIENTO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GS_ORDEN_MEDICA">
+              <PropertyRef Name="IDOrdenMedica" />
+            </Principal>
+            <Dependent Role="GS_ORDEN_PROCEDIMIENTO">
+              <PropertyRef Name="IDOrdenMedica" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_IDOrdenMedica">
+          <End Role="GS_ORDEN_MEDICA" Type="Self.GS_ORDEN_MEDICA" Multiplicity="1" />
+          <End Role="GS_SRS" Type="Self.GS_SRS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GS_ORDEN_MEDICA">
+              <PropertyRef Name="IDOrdenMedica" />
+            </Principal>
+            <Dependent Role="GS_SRS">
+              <PropertyRef Name="IDOrdenMedica" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_IDPaciente_GSA">
+          <End Role="GS_PACIENTE" Type="Self.GS_PACIENTE" Multiplicity="1" />
+          <End Role="GS_ATENCION" Type="Self.GS_ATENCION" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GS_PACIENTE">
+              <PropertyRef Name="IDPaciente" />
+            </Principal>
+            <Dependent Role="GS_ATENCION">
+              <PropertyRef Name="IDPaciente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_IDPeriodo_GS">
+          <End Role="GS_PERIODO" Type="Self.GS_PERIODO" Multiplicity="1" />
+          <End Role="GS_ASEGURADORA_PERIODO" Type="Self.GS_ASEGURADORA_PERIODO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GS_PERIODO">
+              <PropertyRef Name="IDPeriodo" />
+            </Principal>
+            <Dependent Role="GS_ASEGURADORA_PERIODO">
+              <PropertyRef Name="IDPeriodo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_IDProcedimiento">
+          <End Role="GS_PROCEDIMIENTO" Type="Self.GS_PROCEDIMIENTO" Multiplicity="1" />
+          <End Role="GS_ORDEN_PROCEDIMIENTO" Type="Self.GS_ORDEN_PROCEDIMIENTO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GS_PROCEDIMIENTO">
+              <PropertyRef Name="IDProcedimiento" />
+            </Principal>
+            <Dependent Role="GS_ORDEN_PROCEDIMIENTO">
+              <PropertyRef Name="IDProcedimiento" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_IDProcedimientov1">
+          <End Role="GS_PROCEDIMIENTO" Type="Self.GS_PROCEDIMIENTO" Multiplicity="1" />
+          <End Role="GS_SRS_PROCEDIMIENTO" Type="Self.GS_SRS_PROCEDIMIENTO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GS_PROCEDIMIENTO">
+              <PropertyRef Name="IDProcedimiento" />
+            </Principal>
+            <Dependent Role="GS_SRS_PROCEDIMIENTO">
+              <PropertyRef Name="IDProcedimiento" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_IDSRS">
+          <End Role="GS_SRS" Type="Self.GS_SRS" Multiplicity="1" />
+          <End Role="GS_SRS_PROCEDIMIENTO" Type="Self.GS_SRS_PROCEDIMIENTO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GS_SRS">
+              <PropertyRef Name="IDSRS" />
+            </Principal>
+            <Dependent Role="GS_SRS_PROCEDIMIENTO">
+              <PropertyRef Name="IDSRS" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_IDTipo">
+          <End Role="GS_TIPO_TRAMA" Type="Self.GS_TIPO_TRAMA" Multiplicity="1" />
+          <End Role="GS_TRAMA" Type="Self.GS_TRAMA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GS_TIPO_TRAMA">
+              <PropertyRef Name="IDTipo" />
+            </Principal>
+            <Dependent Role="GS_TRAMA">
+              <PropertyRef Name="IDTipo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="GS_MEDICO_EMPLEADO_FK">
+          <End Role="EMPLEADO" Type="Self.EMPLEADO" Multiplicity="0..1" />
+          <End Role="GS_MEDICO" Type="Self.GS_MEDICO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EMPLEADO">
+              <PropertyRef Name="IDEmpleado" />
+            </Principal>
+            <Dependent Role="GS_MEDICO">
+              <PropertyRef Name="IDEmpleado" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="GS_MEDICO_GS_Especialidad_FK">
+          <End Role="GS_Especialidad" Type="Self.GS_Especialidad" Multiplicity="1" />
+          <End Role="GS_MEDICO" Type="Self.GS_MEDICO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GS_Especialidad">
+              <PropertyRef Name="IDEspecialidad" />
+            </Principal>
+            <Dependent Role="GS_MEDICO">
+              <PropertyRef Name="IDEspecialidad" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="listPeriodosByAseguradaId" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IdAseguradora" Type="int" Mode="In" />
+        </Function>
+        <Function Name="SP_GENERAR_PDF_ASEGURADORA" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Id_SRS" Type="int" Mode="In" />
+        </Function>
+        <Function Name="SP_GENERAR_SRS" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IDOrdenMedica" Type="int" Mode="In" />
+          <Parameter Name="IDAseguradora" Type="int" Mode="In" />
+        </Function>
+        <Function Name="SP_GENERAR_TRAMAS_PDF" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IdPeriodo" Type="int" Mode="In" />
+          <Parameter Name="IdAseguradora" Type="int" Mode="In" />
+          <Parameter Name="Observacion" Type="varchar" Mode="In" />
+          <Parameter Name="Usuario" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="sql2pdf" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="filename" Type="varchar" Mode="In" />
+        </Function>
+        <EntityContainer Name="DB_CLINICAModelStoreContainer">
+          <EntitySet Name="EMPLEADO" EntityType="Self.EMPLEADO" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="GS_ASEGURADORA" EntityType="Self.GS_ASEGURADORA" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="GS_ASEGURADORA_PERIODO" EntityType="Self.GS_ASEGURADORA_PERIODO" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="GS_ATENCION" EntityType="Self.GS_ATENCION" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="GS_DETALLE_ATENCION" EntityType="Self.GS_DETALLE_ATENCION" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="GS_Especialidad" EntityType="Self.GS_Especialidad" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="GS_MEDICO" EntityType="Self.GS_MEDICO" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="GS_ORDEN_MEDICA" EntityType="Self.GS_ORDEN_MEDICA" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="GS_ORDEN_PROCEDIMIENTO" EntityType="Self.GS_ORDEN_PROCEDIMIENTO" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="GS_PACIENTE" EntityType="Self.GS_PACIENTE" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="GS_PERIODO" EntityType="Self.GS_PERIODO" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="GS_PROCEDIMIENTO" EntityType="Self.GS_PROCEDIMIENTO" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="GS_SRS" EntityType="Self.GS_SRS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="GS_SRS_PROCEDIMIENTO" EntityType="Self.GS_SRS_PROCEDIMIENTO" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="GS_TIPO_TRAMA" EntityType="Self.GS_TIPO_TRAMA" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="GS_TRAMA" EntityType="Self.GS_TRAMA" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Detalle_atencion" Association="Self.FK_Detalle_atencion">
+            <End Role="GS_ATENCION" EntitySet="GS_ATENCION" />
+            <End Role="GS_DETALLE_ATENCION" EntitySet="GS_DETALLE_ATENCION" />
+          </AssociationSet>
+          <AssociationSet Name="FK_IDAseguradora" Association="Self.FK_IDAseguradora">
+            <End Role="GS_ASEGURADORA" EntitySet="GS_ASEGURADORA" />
+            <End Role="GS_SRS" EntitySet="GS_SRS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_IDAseguradora_GS" Association="Self.FK_IDAseguradora_GS">
+            <End Role="GS_ASEGURADORA" EntitySet="GS_ASEGURADORA" />
+            <End Role="GS_ASEGURADORA_PERIODO" EntitySet="GS_ASEGURADORA_PERIODO" />
+          </AssociationSet>
+          <AssociationSet Name="FK_IDAseguradora_GSA" Association="Self.FK_IDAseguradora_GSA">
+            <End Role="GS_ASEGURADORA" EntitySet="GS_ASEGURADORA" />
+            <End Role="GS_ATENCION" EntitySet="GS_ATENCION" />
+          </AssociationSet>
+          <AssociationSet Name="FK_IDAseguradora_IDPeriodo" Association="Self.FK_IDAseguradora_IDPeriodo">
+            <End Role="GS_ASEGURADORA_PERIODO" EntitySet="GS_ASEGURADORA_PERIODO" />
+            <End Role="GS_TRAMA" EntitySet="GS_TRAMA" />
+          </AssociationSet>
+          <AssociationSet Name="FK_IDAtencion" Association="Self.FK_IDAtencion">
+            <End Role="GS_ATENCION" EntitySet="GS_ATENCION" />
+            <End Role="GS_ORDEN_MEDICA" EntitySet="GS_ORDEN_MEDICA" />
+          </AssociationSet>
+          <AssociationSet Name="FK_IDMedico_GSA" Association="Self.FK_IDMedico_GSA">
+            <End Role="GS_MEDICO" EntitySet="GS_MEDICO" />
+            <End Role="GS_ATENCION" EntitySet="GS_ATENCION" />
+          </AssociationSet>
+          <AssociationSet Name="FK_IDOrden_Medica" Association="Self.FK_IDOrden_Medica">
+            <End Role="GS_ORDEN_MEDICA" EntitySet="GS_ORDEN_MEDICA" />
+            <End Role="GS_ORDEN_PROCEDIMIENTO" EntitySet="GS_ORDEN_PROCEDIMIENTO" />
+          </AssociationSet>
+          <AssociationSet Name="FK_IDOrdenMedica" Association="Self.FK_IDOrdenMedica">
+            <End Role="GS_ORDEN_MEDICA" EntitySet="GS_ORDEN_MEDICA" />
+            <End Role="GS_SRS" EntitySet="GS_SRS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_IDPaciente_GSA" Association="Self.FK_IDPaciente_GSA">
+            <End Role="GS_PACIENTE" EntitySet="GS_PACIENTE" />
+            <End Role="GS_ATENCION" EntitySet="GS_ATENCION" />
+          </AssociationSet>
+          <AssociationSet Name="FK_IDPeriodo_GS" Association="Self.FK_IDPeriodo_GS">
+            <End Role="GS_PERIODO" EntitySet="GS_PERIODO" />
+            <End Role="GS_ASEGURADORA_PERIODO" EntitySet="GS_ASEGURADORA_PERIODO" />
+          </AssociationSet>
+          <AssociationSet Name="FK_IDProcedimiento" Association="Self.FK_IDProcedimiento">
+            <End Role="GS_PROCEDIMIENTO" EntitySet="GS_PROCEDIMIENTO" />
+            <End Role="GS_ORDEN_PROCEDIMIENTO" EntitySet="GS_ORDEN_PROCEDIMIENTO" />
+          </AssociationSet>
+          <AssociationSet Name="FK_IDProcedimientov1" Association="Self.FK_IDProcedimientov1">
+            <End Role="GS_PROCEDIMIENTO" EntitySet="GS_PROCEDIMIENTO" />
+            <End Role="GS_SRS_PROCEDIMIENTO" EntitySet="GS_SRS_PROCEDIMIENTO" />
+          </AssociationSet>
+          <AssociationSet Name="FK_IDSRS" Association="Self.FK_IDSRS">
+            <End Role="GS_SRS" EntitySet="GS_SRS" />
+            <End Role="GS_SRS_PROCEDIMIENTO" EntitySet="GS_SRS_PROCEDIMIENTO" />
+          </AssociationSet>
+          <AssociationSet Name="FK_IDTipo" Association="Self.FK_IDTipo">
+            <End Role="GS_TIPO_TRAMA" EntitySet="GS_TIPO_TRAMA" />
+            <End Role="GS_TRAMA" EntitySet="GS_TRAMA" />
+          </AssociationSet>
+          <AssociationSet Name="GS_MEDICO_EMPLEADO_FK" Association="Self.GS_MEDICO_EMPLEADO_FK">
+            <End Role="EMPLEADO" EntitySet="EMPLEADO" />
+            <End Role="GS_MEDICO" EntitySet="GS_MEDICO" />
+          </AssociationSet>
+          <AssociationSet Name="GS_MEDICO_GS_Especialidad_FK" Association="Self.GS_MEDICO_GS_Especialidad_FK">
+            <End Role="GS_Especialidad" EntitySet="GS_Especialidad" />
+            <End Role="GS_MEDICO" EntitySet="GS_MEDICO" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="DB_CLINICAModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="EMPLEADO">
+          <Key>
+            <PropertyRef Name="IDEmpleado" />
+          </Key>
+          <Property Name="IDEmpleado" Type="Int32" Nullable="false" />
+          <Property Name="NombreEmp" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Ap_paterno" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Ap_materno" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Fecha_nacimiento" Type="DateTime" Precision="3" />
+          <Property Name="Fecha_registro" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="GS_MEDICO" Relationship="Self.GS_MEDICO_EMPLEADO_FK" FromRole="EMPLEADO" ToRole="GS_MEDICO" />
+        </EntityType>
+        <EntityType Name="GS_ASEGURADORA">
+          <Key>
+            <PropertyRef Name="IDAseguradora" />
+          </Key>
+          <Property Name="IDAseguradora" Type="Int32" Nullable="false" />
+          <Property Name="Ruc" Type="String" MaxLength="11" FixedLength="false" Unicode="false" />
+          <Property Name="Razon_social" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Direccion" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Contacto" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Telefono" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="Correo" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="Fecha_registro" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="GS_SRS" Relationship="Self.FK_IDAseguradora" FromRole="GS_ASEGURADORA" ToRole="GS_SRS" />
+          <NavigationProperty Name="GS_ASEGURADORA_PERIODO" Relationship="Self.FK_IDAseguradora_GS" FromRole="GS_ASEGURADORA" ToRole="GS_ASEGURADORA_PERIODO" />
+          <NavigationProperty Name="GS_ATENCION" Relationship="Self.FK_IDAseguradora_GSA" FromRole="GS_ASEGURADORA" ToRole="GS_ATENCION" />
+          <Property Name="Estado" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+        </EntityType>
+        <EntityType Name="GS_ASEGURADORA_PERIODO">
+          <Key>
+            <PropertyRef Name="IDAseguradora" />
+            <PropertyRef Name="IDPeriodo" />
+          </Key>
+          <Property Name="IDAseguradora" Type="Int32" Nullable="false" />
+          <Property Name="IDPeriodo" Type="Int32" Nullable="false" />
+          <Property Name="Estado" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="Fecha_registro" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="GS_ASEGURADORA" Relationship="Self.FK_IDAseguradora_GS" FromRole="GS_ASEGURADORA_PERIODO" ToRole="GS_ASEGURADORA" />
+          <NavigationProperty Name="GS_TRAMA" Relationship="Self.FK_IDAseguradora_IDPeriodo" FromRole="GS_ASEGURADORA_PERIODO" ToRole="GS_TRAMA" />
+          <NavigationProperty Name="GS_PERIODO" Relationship="Self.FK_IDPeriodo_GS" FromRole="GS_ASEGURADORA_PERIODO" ToRole="GS_PERIODO" />
+        </EntityType>
+        <EntityType Name="GS_ATENCION">
+          <Key>
+            <PropertyRef Name="IDAtencion" />
+          </Key>
+          <Property Name="IDAtencion" Type="Int32" Nullable="false" />
+          <Property Name="IDPaciente" Type="Int32" Nullable="false" />
+          <Property Name="IDMedico" Type="Int32" Nullable="false" />
+          <Property Name="Tipo" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="Fecha" Type="DateTime" Precision="3" />
+          <Property Name="Observacion" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="Fecha_registro" Type="DateTime" Precision="3" />
+          <Property Name="IDAseguradora" Type="Int32" />
+          <NavigationProperty Name="GS_ASEGURADORA" Relationship="Self.FK_IDAseguradora_GSA" FromRole="GS_ATENCION" ToRole="GS_ASEGURADORA" />
+          <NavigationProperty Name="GS_DETALLE_ATENCION" Relationship="Self.FK_Detalle_atencion" FromRole="GS_ATENCION" ToRole="GS_DETALLE_ATENCION" />
+          <NavigationProperty Name="GS_ORDEN_MEDICA" Relationship="Self.FK_IDAtencion" FromRole="GS_ATENCION" ToRole="GS_ORDEN_MEDICA" />
+          <NavigationProperty Name="GS_MEDICO" Relationship="Self.FK_IDMedico_GSA" FromRole="GS_ATENCION" ToRole="GS_MEDICO" />
+          <NavigationProperty Name="GS_PACIENTE" Relationship="Self.FK_IDPaciente_GSA" FromRole="GS_ATENCION" ToRole="GS_PACIENTE" />
+        </EntityType>
+        <EntityType Name="GS_DETALLE_ATENCION">
+          <Key>
+            <PropertyRef Name="IDAtencion" />
+            <PropertyRef Name="Linea" />
+          </Key>
+          <Property Name="IDAtencion" Type="Int32" Nullable="false" />
+          <Property Name="Linea" Type="Int32" Nullable="false" />
+          <Property Name="Descripcion" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="GS_ATENCION" Relationship="Self.FK_Detalle_atencion" FromRole="GS_DETALLE_ATENCION" ToRole="GS_ATENCION" />
+        </EntityType>
+        <EntityType Name="GS_Especialidad">
+          <Key>
+            <PropertyRef Name="IDEspecialidad" />
+          </Key>
+          <Property Name="IDEspecialidad" Type="Int32" Nullable="false" />
+          <Property Name="NombreEsp" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="GS_MEDICO" Relationship="Self.GS_MEDICO_GS_Especialidad_FK" FromRole="GS_Especialidad" ToRole="GS_MEDICO" />
+        </EntityType>
+        <EntityType Name="GS_MEDICO">
+          <Key>
+            <PropertyRef Name="IDMedico" />
+          </Key>
+          <Property Name="IDMedico" Type="Int32" Nullable="false" />
+          <Property Name="IDEspecialidad" Type="Int32" Nullable="false" />
+          <Property Name="NroCMP" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="IDEmpleado" Type="Int32" />
+          <NavigationProperty Name="EMPLEADO" Relationship="Self.GS_MEDICO_EMPLEADO_FK" FromRole="GS_MEDICO" ToRole="EMPLEADO" />
+          <NavigationProperty Name="GS_ATENCION" Relationship="Self.FK_IDMedico_GSA" FromRole="GS_MEDICO" ToRole="GS_ATENCION" />
+          <NavigationProperty Name="GS_Especialidad" Relationship="Self.GS_MEDICO_GS_Especialidad_FK" FromRole="GS_MEDICO" ToRole="GS_Especialidad" />
+        </EntityType>
+        <EntityType Name="GS_ORDEN_MEDICA">
+          <Key>
+            <PropertyRef Name="IDOrdenMedica" />
+          </Key>
+          <Property Name="IDOrdenMedica" Type="Int32" Nullable="false" />
+          <Property Name="IDAtencion" Type="Int32" Nullable="false" />
+          <Property Name="Estado" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="Fecha_registro" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="GS_ATENCION" Relationship="Self.FK_IDAtencion" FromRole="GS_ORDEN_MEDICA" ToRole="GS_ATENCION" />
+          <NavigationProperty Name="GS_ORDEN_PROCEDIMIENTO" Relationship="Self.FK_IDOrden_Medica" FromRole="GS_ORDEN_MEDICA" ToRole="GS_ORDEN_PROCEDIMIENTO" />
+          <NavigationProperty Name="GS_SRS" Relationship="Self.FK_IDOrdenMedica" FromRole="GS_ORDEN_MEDICA" ToRole="GS_SRS" />
+        </EntityType>
+        <EntityType Name="GS_ORDEN_PROCEDIMIENTO">
+          <Key>
+            <PropertyRef Name="IDProcedimiento" />
+            <PropertyRef Name="IDOrdenMedica" />
+          </Key>
+          <Property Name="IDProcedimiento" Type="Int32" Nullable="false" />
+          <Property Name="IDOrdenMedica" Type="Int32" Nullable="false" />
+          <Property Name="Fecha_registro" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="GS_ORDEN_MEDICA" Relationship="Self.FK_IDOrden_Medica" FromRole="GS_ORDEN_PROCEDIMIENTO" ToRole="GS_ORDEN_MEDICA" />
+          <NavigationProperty Name="GS_PROCEDIMIENTO" Relationship="Self.FK_IDProcedimiento" FromRole="GS_ORDEN_PROCEDIMIENTO" ToRole="GS_PROCEDIMIENTO" />
+        </EntityType>
+        <EntityType Name="GS_PACIENTE">
+          <Key>
+            <PropertyRef Name="IDPaciente" />
+          </Key>
+          <Property Name="IDPaciente" Type="Int32" Nullable="false" />
+          <Property Name="Nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="DNI" Type="String" MaxLength="8" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="GS_ATENCION" Relationship="Self.FK_IDPaciente_GSA" FromRole="GS_PACIENTE" ToRole="GS_ATENCION" />
+        </EntityType>
+        <EntityType Name="GS_PERIODO">
+          <Key>
+            <PropertyRef Name="IDPeriodo" />
+          </Key>
+          <Property Name="IDPeriodo" Type="Int32" Nullable="false" />
+          <Property Name="Fecha_inicio" Type="DateTime" Precision="3" />
+          <Property Name="Fecha_final" Type="DateTime" Precision="3" />
+          <Property Name="Descripcion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Fecha_registro" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="GS_ASEGURADORA_PERIODO" Relationship="Self.FK_IDPeriodo_GS" FromRole="GS_PERIODO" ToRole="GS_ASEGURADORA_PERIODO" />
+        </EntityType>
+        <EntityType Name="GS_PROCEDIMIENTO">
+          <Key>
+            <PropertyRef Name="IDProcedimiento" />
+          </Key>
+          <Property Name="IDProcedimiento" Type="Int32" Nullable="false" />
+          <Property Name="Nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Descripcion" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="Tipo" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="Fecha_registro" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="GS_ORDEN_PROCEDIMIENTO" Relationship="Self.FK_IDProcedimiento" FromRole="GS_PROCEDIMIENTO" ToRole="GS_ORDEN_PROCEDIMIENTO" />
+          <NavigationProperty Name="GS_SRS_PROCEDIMIENTO" Relationship="Self.FK_IDProcedimientov1" FromRole="GS_PROCEDIMIENTO" ToRole="GS_SRS_PROCEDIMIENTO" />
+        </EntityType>
+        <EntityType Name="GS_SRS">
+          <Key>
+            <PropertyRef Name="IDSRS" />
+          </Key>
+          <Property Name="IDSRS" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IDAseguradora" Type="Int32" Nullable="false" />
+          <Property Name="IDOrdenMedica" Type="Int32" Nullable="false" />
+          <Property Name="Fecha_registro" Type="DateTime" Precision="3" />
+          <Property Name="Observacion" Type="String" MaxLength="300" FixedLength="false" Unicode="false" />
+          <Property Name="Estado" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="Fecha_aprobacion" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="GS_ASEGURADORA" Relationship="Self.FK_IDAseguradora" FromRole="GS_SRS" ToRole="GS_ASEGURADORA" />
+          <NavigationProperty Name="GS_ORDEN_MEDICA" Relationship="Self.FK_IDOrdenMedica" FromRole="GS_SRS" ToRole="GS_ORDEN_MEDICA" />
+          <NavigationProperty Name="GS_SRS_PROCEDIMIENTO" Relationship="Self.FK_IDSRS" FromRole="GS_SRS" ToRole="GS_SRS_PROCEDIMIENTO" />
+        </EntityType>
+        <EntityType Name="GS_SRS_PROCEDIMIENTO">
+          <Key>
+            <PropertyRef Name="IDProcedimiento" />
+            <PropertyRef Name="IDSRS" />
+          </Key>
+          <Property Name="IDProcedimiento" Type="Int32" Nullable="false" />
+          <Property Name="IDSRS" Type="Int32" Nullable="false" />
+          <Property Name="Estado" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="Ruta" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Codigo_requerimiento" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="GS_PROCEDIMIENTO" Relationship="Self.FK_IDProcedimientov1" FromRole="GS_SRS_PROCEDIMIENTO" ToRole="GS_PROCEDIMIENTO" />
+          <NavigationProperty Name="GS_SRS" Relationship="Self.FK_IDSRS" FromRole="GS_SRS_PROCEDIMIENTO" ToRole="GS_SRS" />
+        </EntityType>
+        <EntityType Name="GS_TIPO_TRAMA">
+          <Key>
+            <PropertyRef Name="IDTipo" />
+          </Key>
+          <Property Name="IDTipo" Type="Int32" Nullable="false" />
+          <Property Name="Nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Fecha_registro" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="GS_TRAMA" Relationship="Self.FK_IDTipo" FromRole="GS_TIPO_TRAMA" ToRole="GS_TRAMA" />
+        </EntityType>
+        <EntityType Name="GS_TRAMA">
+          <Key>
+            <PropertyRef Name="IDTrama" />
+          </Key>
+          <Property Name="IDTrama" Type="Int32" Nullable="false" />
+          <Property Name="IDTipo" Type="Int32" Nullable="false" />
+          <Property Name="IDAseguradora" Type="Int32" Nullable="false" />
+          <Property Name="IDPeriodo" Type="Int32" Nullable="false" />
+          <Property Name="Ruta" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Observacion" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="Fecha_registro" Type="DateTime" Precision="3" />
+          <Property Name="Usuario" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="GS_ASEGURADORA_PERIODO" Relationship="Self.FK_IDAseguradora_IDPeriodo" FromRole="GS_TRAMA" ToRole="GS_ASEGURADORA_PERIODO" />
+          <NavigationProperty Name="GS_TIPO_TRAMA" Relationship="Self.FK_IDTipo" FromRole="GS_TRAMA" ToRole="GS_TIPO_TRAMA" />
+        </EntityType>
+        <Association Name="GS_MEDICO_EMPLEADO_FK">
+          <End Role="EMPLEADO" Type="Self.EMPLEADO" Multiplicity="0..1" />
+          <End Role="GS_MEDICO" Type="Self.GS_MEDICO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EMPLEADO">
+              <PropertyRef Name="IDEmpleado" />
+            </Principal>
+            <Dependent Role="GS_MEDICO">
+              <PropertyRef Name="IDEmpleado" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_IDAseguradora">
+          <End Role="GS_ASEGURADORA" Type="Self.GS_ASEGURADORA" Multiplicity="1" />
+          <End Role="GS_SRS" Type="Self.GS_SRS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GS_ASEGURADORA">
+              <PropertyRef Name="IDAseguradora" />
+            </Principal>
+            <Dependent Role="GS_SRS">
+              <PropertyRef Name="IDAseguradora" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_IDAseguradora_GS">
+          <End Role="GS_ASEGURADORA" Type="Self.GS_ASEGURADORA" Multiplicity="1" />
+          <End Role="GS_ASEGURADORA_PERIODO" Type="Self.GS_ASEGURADORA_PERIODO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GS_ASEGURADORA">
+              <PropertyRef Name="IDAseguradora" />
+            </Principal>
+            <Dependent Role="GS_ASEGURADORA_PERIODO">
+              <PropertyRef Name="IDAseguradora" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_IDAseguradora_GSA">
+          <End Role="GS_ASEGURADORA" Type="Self.GS_ASEGURADORA" Multiplicity="0..1" />
+          <End Role="GS_ATENCION" Type="Self.GS_ATENCION" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GS_ASEGURADORA">
+              <PropertyRef Name="IDAseguradora" />
+            </Principal>
+            <Dependent Role="GS_ATENCION">
+              <PropertyRef Name="IDAseguradora" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_IDAseguradora_IDPeriodo">
+          <End Role="GS_ASEGURADORA_PERIODO" Type="Self.GS_ASEGURADORA_PERIODO" Multiplicity="1" />
+          <End Role="GS_TRAMA" Type="Self.GS_TRAMA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GS_ASEGURADORA_PERIODO">
+              <PropertyRef Name="IDAseguradora" />
+              <PropertyRef Name="IDPeriodo" />
+            </Principal>
+            <Dependent Role="GS_TRAMA">
+              <PropertyRef Name="IDAseguradora" />
+              <PropertyRef Name="IDPeriodo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_IDPeriodo_GS">
+          <End Role="GS_PERIODO" Type="Self.GS_PERIODO" Multiplicity="1" />
+          <End Role="GS_ASEGURADORA_PERIODO" Type="Self.GS_ASEGURADORA_PERIODO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GS_PERIODO">
+              <PropertyRef Name="IDPeriodo" />
+            </Principal>
+            <Dependent Role="GS_ASEGURADORA_PERIODO">
+              <PropertyRef Name="IDPeriodo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Detalle_atencion">
+          <End Role="GS_ATENCION" Type="Self.GS_ATENCION" Multiplicity="1" />
+          <End Role="GS_DETALLE_ATENCION" Type="Self.GS_DETALLE_ATENCION" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GS_ATENCION">
+              <PropertyRef Name="IDAtencion" />
+            </Principal>
+            <Dependent Role="GS_DETALLE_ATENCION">
+              <PropertyRef Name="IDAtencion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_IDAtencion">
+          <End Role="GS_ATENCION" Type="Self.GS_ATENCION" Multiplicity="1" />
+          <End Role="GS_ORDEN_MEDICA" Type="Self.GS_ORDEN_MEDICA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GS_ATENCION">
+              <PropertyRef Name="IDAtencion" />
+            </Principal>
+            <Dependent Role="GS_ORDEN_MEDICA">
+              <PropertyRef Name="IDAtencion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_IDMedico_GSA">
+          <End Role="GS_MEDICO" Type="Self.GS_MEDICO" Multiplicity="1" />
+          <End Role="GS_ATENCION" Type="Self.GS_ATENCION" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GS_MEDICO">
+              <PropertyRef Name="IDMedico" />
+            </Principal>
+            <Dependent Role="GS_ATENCION">
+              <PropertyRef Name="IDMedico" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_IDPaciente_GSA">
+          <End Role="GS_PACIENTE" Type="Self.GS_PACIENTE" Multiplicity="1" />
+          <End Role="GS_ATENCION" Type="Self.GS_ATENCION" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GS_PACIENTE">
+              <PropertyRef Name="IDPaciente" />
+            </Principal>
+            <Dependent Role="GS_ATENCION">
+              <PropertyRef Name="IDPaciente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="GS_MEDICO_GS_Especialidad_FK">
+          <End Role="GS_Especialidad" Type="Self.GS_Especialidad" Multiplicity="1" />
+          <End Role="GS_MEDICO" Type="Self.GS_MEDICO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GS_Especialidad">
+              <PropertyRef Name="IDEspecialidad" />
+            </Principal>
+            <Dependent Role="GS_MEDICO">
+              <PropertyRef Name="IDEspecialidad" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_IDOrden_Medica">
+          <End Role="GS_ORDEN_MEDICA" Type="Self.GS_ORDEN_MEDICA" Multiplicity="1" />
+          <End Role="GS_ORDEN_PROCEDIMIENTO" Type="Self.GS_ORDEN_PROCEDIMIENTO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GS_ORDEN_MEDICA">
+              <PropertyRef Name="IDOrdenMedica" />
+            </Principal>
+            <Dependent Role="GS_ORDEN_PROCEDIMIENTO">
+              <PropertyRef Name="IDOrdenMedica" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_IDOrdenMedica">
+          <End Role="GS_ORDEN_MEDICA" Type="Self.GS_ORDEN_MEDICA" Multiplicity="1" />
+          <End Role="GS_SRS" Type="Self.GS_SRS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GS_ORDEN_MEDICA">
+              <PropertyRef Name="IDOrdenMedica" />
+            </Principal>
+            <Dependent Role="GS_SRS">
+              <PropertyRef Name="IDOrdenMedica" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_IDProcedimiento">
+          <End Role="GS_PROCEDIMIENTO" Type="Self.GS_PROCEDIMIENTO" Multiplicity="1" />
+          <End Role="GS_ORDEN_PROCEDIMIENTO" Type="Self.GS_ORDEN_PROCEDIMIENTO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GS_PROCEDIMIENTO">
+              <PropertyRef Name="IDProcedimiento" />
+            </Principal>
+            <Dependent Role="GS_ORDEN_PROCEDIMIENTO">
+              <PropertyRef Name="IDProcedimiento" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_IDProcedimientov1">
+          <End Role="GS_PROCEDIMIENTO" Type="Self.GS_PROCEDIMIENTO" Multiplicity="1" />
+          <End Role="GS_SRS_PROCEDIMIENTO" Type="Self.GS_SRS_PROCEDIMIENTO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GS_PROCEDIMIENTO">
+              <PropertyRef Name="IDProcedimiento" />
+            </Principal>
+            <Dependent Role="GS_SRS_PROCEDIMIENTO">
+              <PropertyRef Name="IDProcedimiento" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_IDSRS">
+          <End Role="GS_SRS" Type="Self.GS_SRS" Multiplicity="1" />
+          <End Role="GS_SRS_PROCEDIMIENTO" Type="Self.GS_SRS_PROCEDIMIENTO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GS_SRS">
+              <PropertyRef Name="IDSRS" />
+            </Principal>
+            <Dependent Role="GS_SRS_PROCEDIMIENTO">
+              <PropertyRef Name="IDSRS" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_IDTipo">
+          <End Role="GS_TIPO_TRAMA" Type="Self.GS_TIPO_TRAMA" Multiplicity="1" />
+          <End Role="GS_TRAMA" Type="Self.GS_TRAMA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GS_TIPO_TRAMA">
+              <PropertyRef Name="IDTipo" />
+            </Principal>
+            <Dependent Role="GS_TRAMA">
+              <PropertyRef Name="IDTipo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DB_CLINICAEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="EMPLEADOes" EntityType="Self.EMPLEADO" />
+          <EntitySet Name="GS_ASEGURADORA" EntityType="Self.GS_ASEGURADORA" />
+          <EntitySet Name="GS_ASEGURADORA_PERIODO" EntityType="Self.GS_ASEGURADORA_PERIODO" />
+          <EntitySet Name="GS_ATENCION" EntityType="Self.GS_ATENCION" />
+          <EntitySet Name="GS_DETALLE_ATENCION" EntityType="Self.GS_DETALLE_ATENCION" />
+          <EntitySet Name="GS_Especialidad" EntityType="Self.GS_Especialidad" />
+          <EntitySet Name="GS_MEDICO" EntityType="Self.GS_MEDICO" />
+          <EntitySet Name="GS_ORDEN_MEDICA" EntityType="Self.GS_ORDEN_MEDICA" />
+          <EntitySet Name="GS_ORDEN_PROCEDIMIENTO" EntityType="Self.GS_ORDEN_PROCEDIMIENTO" />
+          <EntitySet Name="GS_PACIENTE" EntityType="Self.GS_PACIENTE" />
+          <EntitySet Name="GS_PERIODO" EntityType="Self.GS_PERIODO" />
+          <EntitySet Name="GS_PROCEDIMIENTO" EntityType="Self.GS_PROCEDIMIENTO" />
+          <EntitySet Name="GS_SRS" EntityType="Self.GS_SRS" />
+          <EntitySet Name="GS_SRS_PROCEDIMIENTO" EntityType="Self.GS_SRS_PROCEDIMIENTO" />
+          <EntitySet Name="GS_TIPO_TRAMA" EntityType="Self.GS_TIPO_TRAMA" />
+          <EntitySet Name="GS_TRAMA" EntityType="Self.GS_TRAMA" />
+          <AssociationSet Name="GS_MEDICO_EMPLEADO_FK" Association="Self.GS_MEDICO_EMPLEADO_FK">
+            <End Role="EMPLEADO" EntitySet="EMPLEADOes" />
+            <End Role="GS_MEDICO" EntitySet="GS_MEDICO" />
+          </AssociationSet>
+          <AssociationSet Name="FK_IDAseguradora" Association="Self.FK_IDAseguradora">
+            <End Role="GS_ASEGURADORA" EntitySet="GS_ASEGURADORA" />
+            <End Role="GS_SRS" EntitySet="GS_SRS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_IDAseguradora_GS" Association="Self.FK_IDAseguradora_GS">
+            <End Role="GS_ASEGURADORA" EntitySet="GS_ASEGURADORA" />
+            <End Role="GS_ASEGURADORA_PERIODO" EntitySet="GS_ASEGURADORA_PERIODO" />
+          </AssociationSet>
+          <AssociationSet Name="FK_IDAseguradora_GSA" Association="Self.FK_IDAseguradora_GSA">
+            <End Role="GS_ASEGURADORA" EntitySet="GS_ASEGURADORA" />
+            <End Role="GS_ATENCION" EntitySet="GS_ATENCION" />
+          </AssociationSet>
+          <AssociationSet Name="FK_IDAseguradora_IDPeriodo" Association="Self.FK_IDAseguradora_IDPeriodo">
+            <End Role="GS_ASEGURADORA_PERIODO" EntitySet="GS_ASEGURADORA_PERIODO" />
+            <End Role="GS_TRAMA" EntitySet="GS_TRAMA" />
+          </AssociationSet>
+          <AssociationSet Name="FK_IDPeriodo_GS" Association="Self.FK_IDPeriodo_GS">
+            <End Role="GS_PERIODO" EntitySet="GS_PERIODO" />
+            <End Role="GS_ASEGURADORA_PERIODO" EntitySet="GS_ASEGURADORA_PERIODO" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Detalle_atencion" Association="Self.FK_Detalle_atencion">
+            <End Role="GS_ATENCION" EntitySet="GS_ATENCION" />
+            <End Role="GS_DETALLE_ATENCION" EntitySet="GS_DETALLE_ATENCION" />
+          </AssociationSet>
+          <AssociationSet Name="FK_IDAtencion" Association="Self.FK_IDAtencion">
+            <End Role="GS_ATENCION" EntitySet="GS_ATENCION" />
+            <End Role="GS_ORDEN_MEDICA" EntitySet="GS_ORDEN_MEDICA" />
+          </AssociationSet>
+          <AssociationSet Name="FK_IDMedico_GSA" Association="Self.FK_IDMedico_GSA">
+            <End Role="GS_MEDICO" EntitySet="GS_MEDICO" />
+            <End Role="GS_ATENCION" EntitySet="GS_ATENCION" />
+          </AssociationSet>
+          <AssociationSet Name="FK_IDPaciente_GSA" Association="Self.FK_IDPaciente_GSA">
+            <End Role="GS_PACIENTE" EntitySet="GS_PACIENTE" />
+            <End Role="GS_ATENCION" EntitySet="GS_ATENCION" />
+          </AssociationSet>
+          <AssociationSet Name="GS_MEDICO_GS_Especialidad_FK" Association="Self.GS_MEDICO_GS_Especialidad_FK">
+            <End Role="GS_Especialidad" EntitySet="GS_Especialidad" />
+            <End Role="GS_MEDICO" EntitySet="GS_MEDICO" />
+          </AssociationSet>
+          <AssociationSet Name="FK_IDOrden_Medica" Association="Self.FK_IDOrden_Medica">
+            <End Role="GS_ORDEN_MEDICA" EntitySet="GS_ORDEN_MEDICA" />
+            <End Role="GS_ORDEN_PROCEDIMIENTO" EntitySet="GS_ORDEN_PROCEDIMIENTO" />
+          </AssociationSet>
+          <AssociationSet Name="FK_IDOrdenMedica" Association="Self.FK_IDOrdenMedica">
+            <End Role="GS_ORDEN_MEDICA" EntitySet="GS_ORDEN_MEDICA" />
+            <End Role="GS_SRS" EntitySet="GS_SRS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_IDProcedimiento" Association="Self.FK_IDProcedimiento">
+            <End Role="GS_PROCEDIMIENTO" EntitySet="GS_PROCEDIMIENTO" />
+            <End Role="GS_ORDEN_PROCEDIMIENTO" EntitySet="GS_ORDEN_PROCEDIMIENTO" />
+          </AssociationSet>
+          <AssociationSet Name="FK_IDProcedimientov1" Association="Self.FK_IDProcedimientov1">
+            <End Role="GS_PROCEDIMIENTO" EntitySet="GS_PROCEDIMIENTO" />
+            <End Role="GS_SRS_PROCEDIMIENTO" EntitySet="GS_SRS_PROCEDIMIENTO" />
+          </AssociationSet>
+          <AssociationSet Name="FK_IDSRS" Association="Self.FK_IDSRS">
+            <End Role="GS_SRS" EntitySet="GS_SRS" />
+            <End Role="GS_SRS_PROCEDIMIENTO" EntitySet="GS_SRS_PROCEDIMIENTO" />
+          </AssociationSet>
+          <AssociationSet Name="FK_IDTipo" Association="Self.FK_IDTipo">
+            <End Role="GS_TIPO_TRAMA" EntitySet="GS_TIPO_TRAMA" />
+            <End Role="GS_TRAMA" EntitySet="GS_TRAMA" />
+          </AssociationSet>
+          <FunctionImport Name="SP_GENERAR_SRS" ReturnType="Collection(Int32)">
+            <Parameter Name="IDOrdenMedica" Mode="In" Type="Int32" />
+            <Parameter Name="IDAseguradora" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="SP_GENERAR_TRAMAS_PDF" ReturnType="Collection(String)">
+            <Parameter Name="IdPeriodo" Mode="In" Type="Int32" />
+            <Parameter Name="IdAseguradora" Mode="In" Type="Int32" />
+            <Parameter Name="Observacion" Mode="In" Type="String" />
+            <Parameter Name="Usuario" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sql2pdf">
+          <Parameter Name="filename" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="SP_GENERAR_PDF_ASEGURADORA" ReturnType="Collection(String)">
+          <Parameter Name="Id_SRS" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="listPeriodosByAseguradaId" ReturnType="Collection(DB_CLINICAModel.listPeriodosByAseguradaId_Result)">
+            <Parameter Name="IdAseguradora" Mode="In" Type="Int32" />
+          </FunctionImport>
+        </EntityContainer>
+        <ComplexType Name="listPeriodosByAseguradaId_Result">
+          <Property Type="Int32" Name="IDPeriodo" Nullable="false" />
+          <Property Type="String" Name="Descripcion" Nullable="true" MaxLength="50" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="DB_CLINICAModelStoreContainer" CdmEntityContainer="DB_CLINICAEntities">
+          <EntitySetMapping Name="EMPLEADOes">
+            <EntityTypeMapping TypeName="DB_CLINICAModel.EMPLEADO">
+              <MappingFragment StoreEntitySet="EMPLEADO">
+                <ScalarProperty Name="IDEmpleado" ColumnName="IDEmpleado" />
+                <ScalarProperty Name="NombreEmp" ColumnName="Nombre" />
+                <ScalarProperty Name="Ap_paterno" ColumnName="Ap_paterno" />
+                <ScalarProperty Name="Ap_materno" ColumnName="Ap_materno" />
+                <ScalarProperty Name="Fecha_nacimiento" ColumnName="Fecha_nacimiento" />
+                <ScalarProperty Name="Fecha_registro" ColumnName="Fecha_registro" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="GS_ASEGURADORA">
+            <EntityTypeMapping TypeName="DB_CLINICAModel.GS_ASEGURADORA">
+              <MappingFragment StoreEntitySet="GS_ASEGURADORA">
+                <ScalarProperty Name="Estado" ColumnName="Estado" />
+                <ScalarProperty Name="IDAseguradora" ColumnName="IDAseguradora" />
+                <ScalarProperty Name="Ruc" ColumnName="Ruc" />
+                <ScalarProperty Name="Razon_social" ColumnName="Razon_social" />
+                <ScalarProperty Name="Direccion" ColumnName="Direccion" />
+                <ScalarProperty Name="Contacto" ColumnName="Contacto" />
+                <ScalarProperty Name="Telefono" ColumnName="Telefono" />
+                <ScalarProperty Name="Correo" ColumnName="Correo" />
+                <ScalarProperty Name="Fecha_registro" ColumnName="Fecha_registro" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="GS_ASEGURADORA_PERIODO">
+            <EntityTypeMapping TypeName="DB_CLINICAModel.GS_ASEGURADORA_PERIODO">
+              <MappingFragment StoreEntitySet="GS_ASEGURADORA_PERIODO">
+                <ScalarProperty Name="IDAseguradora" ColumnName="IDAseguradora" />
+                <ScalarProperty Name="IDPeriodo" ColumnName="IDPeriodo" />
+                <ScalarProperty Name="Estado" ColumnName="Estado" />
+                <ScalarProperty Name="Fecha_registro" ColumnName="Fecha_registro" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="GS_ATENCION">
+            <EntityTypeMapping TypeName="DB_CLINICAModel.GS_ATENCION">
+              <MappingFragment StoreEntitySet="GS_ATENCION">
+                <ScalarProperty Name="IDAtencion" ColumnName="IDAtencion" />
+                <ScalarProperty Name="IDPaciente" ColumnName="IDPaciente" />
+                <ScalarProperty Name="IDMedico" ColumnName="IDMedico" />
+                <ScalarProperty Name="Tipo" ColumnName="Tipo" />
+                <ScalarProperty Name="Fecha" ColumnName="Fecha" />
+                <ScalarProperty Name="Observacion" ColumnName="Observacion" />
+                <ScalarProperty Name="Fecha_registro" ColumnName="Fecha_registro" />
+                <ScalarProperty Name="IDAseguradora" ColumnName="IDAseguradora" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="GS_DETALLE_ATENCION">
+            <EntityTypeMapping TypeName="DB_CLINICAModel.GS_DETALLE_ATENCION">
+              <MappingFragment StoreEntitySet="GS_DETALLE_ATENCION">
+                <ScalarProperty Name="IDAtencion" ColumnName="IDAtencion" />
+                <ScalarProperty Name="Linea" ColumnName="Linea" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="GS_Especialidad">
+            <EntityTypeMapping TypeName="DB_CLINICAModel.GS_Especialidad">
+              <MappingFragment StoreEntitySet="GS_Especialidad">
+                <ScalarProperty Name="IDEspecialidad" ColumnName="IDEspecialidad" />
+                <ScalarProperty Name="NombreEsp" ColumnName="Nombre" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="GS_MEDICO">
+            <EntityTypeMapping TypeName="DB_CLINICAModel.GS_MEDICO">
+              <MappingFragment StoreEntitySet="GS_MEDICO">
+                <ScalarProperty Name="IDMedico" ColumnName="IDMedico" />
+                <ScalarProperty Name="IDEspecialidad" ColumnName="IDEspecialidad" />
+                <ScalarProperty Name="NroCMP" ColumnName="NroCMP" />
+                <ScalarProperty Name="IDEmpleado" ColumnName="IDEmpleado" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="GS_ORDEN_MEDICA">
+            <EntityTypeMapping TypeName="DB_CLINICAModel.GS_ORDEN_MEDICA">
+              <MappingFragment StoreEntitySet="GS_ORDEN_MEDICA">
+                <ScalarProperty Name="IDOrdenMedica" ColumnName="IDOrdenMedica" />
+                <ScalarProperty Name="IDAtencion" ColumnName="IDAtencion" />
+                <ScalarProperty Name="Estado" ColumnName="Estado" />
+                <ScalarProperty Name="Fecha_registro" ColumnName="Fecha_registro" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="GS_ORDEN_PROCEDIMIENTO">
+            <EntityTypeMapping TypeName="DB_CLINICAModel.GS_ORDEN_PROCEDIMIENTO">
+              <MappingFragment StoreEntitySet="GS_ORDEN_PROCEDIMIENTO">
+                <ScalarProperty Name="IDProcedimiento" ColumnName="IDProcedimiento" />
+                <ScalarProperty Name="IDOrdenMedica" ColumnName="IDOrdenMedica" />
+                <ScalarProperty Name="Fecha_registro" ColumnName="Fecha_registro" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="GS_PACIENTE">
+            <EntityTypeMapping TypeName="DB_CLINICAModel.GS_PACIENTE">
+              <MappingFragment StoreEntitySet="GS_PACIENTE">
+                <ScalarProperty Name="IDPaciente" ColumnName="IDPaciente" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="DNI" ColumnName="DNI" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="GS_PERIODO">
+            <EntityTypeMapping TypeName="DB_CLINICAModel.GS_PERIODO">
+              <MappingFragment StoreEntitySet="GS_PERIODO">
+                <ScalarProperty Name="IDPeriodo" ColumnName="IDPeriodo" />
+                <ScalarProperty Name="Fecha_inicio" ColumnName="Fecha_inicio" />
+                <ScalarProperty Name="Fecha_final" ColumnName="Fecha_final" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="Fecha_registro" ColumnName="Fecha_registro" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="GS_PROCEDIMIENTO">
+            <EntityTypeMapping TypeName="DB_CLINICAModel.GS_PROCEDIMIENTO">
+              <MappingFragment StoreEntitySet="GS_PROCEDIMIENTO">
+                <ScalarProperty Name="IDProcedimiento" ColumnName="IDProcedimiento" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="Tipo" ColumnName="Tipo" />
+                <ScalarProperty Name="Fecha_registro" ColumnName="Fecha_registro" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="GS_SRS">
+            <EntityTypeMapping TypeName="DB_CLINICAModel.GS_SRS">
+              <MappingFragment StoreEntitySet="GS_SRS">
+                <ScalarProperty Name="IDSRS" ColumnName="IDSRS" />
+                <ScalarProperty Name="IDAseguradora" ColumnName="IDAseguradora" />
+                <ScalarProperty Name="IDOrdenMedica" ColumnName="IDOrdenMedica" />
+                <ScalarProperty Name="Fecha_registro" ColumnName="Fecha_registro" />
+                <ScalarProperty Name="Observacion" ColumnName="Observacion" />
+                <ScalarProperty Name="Estado" ColumnName="Estado" />
+                <ScalarProperty Name="Fecha_aprobacion" ColumnName="Fecha_aprobacion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="GS_SRS_PROCEDIMIENTO">
+            <EntityTypeMapping TypeName="DB_CLINICAModel.GS_SRS_PROCEDIMIENTO">
+              <MappingFragment StoreEntitySet="GS_SRS_PROCEDIMIENTO">
+                <ScalarProperty Name="IDProcedimiento" ColumnName="IDProcedimiento" />
+                <ScalarProperty Name="IDSRS" ColumnName="IDSRS" />
+                <ScalarProperty Name="Estado" ColumnName="Estado" />
+                <ScalarProperty Name="Ruta" ColumnName="Ruta" />
+                <ScalarProperty Name="Codigo_requerimiento" ColumnName="Codigo_requerimiento" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="GS_TIPO_TRAMA">
+            <EntityTypeMapping TypeName="DB_CLINICAModel.GS_TIPO_TRAMA">
+              <MappingFragment StoreEntitySet="GS_TIPO_TRAMA">
+                <ScalarProperty Name="IDTipo" ColumnName="IDTipo" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Fecha_registro" ColumnName="Fecha_registro" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="GS_TRAMA">
+            <EntityTypeMapping TypeName="DB_CLINICAModel.GS_TRAMA">
+              <MappingFragment StoreEntitySet="GS_TRAMA">
+                <ScalarProperty Name="IDTrama" ColumnName="IDTrama" />
+                <ScalarProperty Name="IDTipo" ColumnName="IDTipo" />
+                <ScalarProperty Name="IDAseguradora" ColumnName="IDAseguradora" />
+                <ScalarProperty Name="IDPeriodo" ColumnName="IDPeriodo" />
+                <ScalarProperty Name="Ruta" ColumnName="Ruta" />
+                <ScalarProperty Name="Observacion" ColumnName="Observacion" />
+                <ScalarProperty Name="Fecha_registro" ColumnName="Fecha_registro" />
+                <ScalarProperty Name="Usuario" ColumnName="Usuario" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="SP_GENERAR_SRS" FunctionName="DB_CLINICAModel.Store.SP_GENERAR_SRS" />
+          <FunctionImportMapping FunctionImportName="SP_GENERAR_TRAMAS_PDF" FunctionName="DB_CLINICAModel.Store.SP_GENERAR_TRAMAS_PDF" />
+          <FunctionImportMapping FunctionImportName="sql2pdf" FunctionName="DB_CLINICAModel.Store.sql2pdf" />
+          <FunctionImportMapping FunctionImportName="SP_GENERAR_PDF_ASEGURADORA" FunctionName="DB_CLINICAModel.Store.SP_GENERAR_PDF_ASEGURADORA" />
+          <FunctionImportMapping FunctionImportName="listPeriodosByAseguradaId" FunctionName="DB_CLINICAModel.Store.listPeriodosByAseguradaId">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="DB_CLINICAModel.listPeriodosByAseguradaId_Result">
+                <ScalarProperty Name="IDPeriodo" ColumnName="IDPeriodo" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="547ad9e5fb364fc49ce88cfdab655f63" Name="Diagram1">
+        <EntityTypeShape EntityType="DB_CLINICAModel.EMPLEADO" Width="1.5" PointX="1.5" PointY="14" IsExpanded="true" />
+        <EntityTypeShape EntityType="DB_CLINICAModel.GS_ASEGURADORA" Width="1.5" PointX="0.75" PointY="6" IsExpanded="true" />
+        <EntityTypeShape EntityType="DB_CLINICAModel.GS_ASEGURADORA_PERIODO" Width="1.5" PointX="3" PointY="6.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="DB_CLINICAModel.GS_ATENCION" Width="1.5" PointX="6" PointY="5.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="DB_CLINICAModel.GS_DETALLE_ATENCION" Width="1.5" PointX="8.25" PointY="5.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="DB_CLINICAModel.GS_Especialidad" Width="1.5" PointX="1.5" PointY="17.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="DB_CLINICAModel.GS_MEDICO" Width="1.5" PointX="3.75" PointY="15.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="DB_CLINICAModel.GS_ORDEN_MEDICA" Width="1.5" PointX="8.25" PointY="7.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="DB_CLINICAModel.GS_ORDEN_PROCEDIMIENTO" Width="1.5" PointX="10.5" PointY="7.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="DB_CLINICAModel.GS_PACIENTE" Width="1.5" PointX="3.75" PointY="18.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="DB_CLINICAModel.GS_PERIODO" Width="1.5" PointX="0.75" PointY="2.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="DB_CLINICAModel.GS_PROCEDIMIENTO" Width="1.5" PointX="3" PointY="10.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="DB_CLINICAModel.GS_SRS" Width="1.5" PointX="3" PointY="2.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="DB_CLINICAModel.GS_SRS_PROCEDIMIENTO" Width="1.5" PointX="5.25" PointY="2.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="DB_CLINICAModel.GS_TIPO_TRAMA" Width="1.5" PointX="3" PointY="21.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DB_CLINICAModel.GS_TRAMA" Width="1.5" PointX="5.25" PointY="10.125" IsExpanded="true" />
+        <AssociationConnector Association="DB_CLINICAModel.GS_MEDICO_EMPLEADO_FK" ManuallyRouted="false" />
+        <AssociationConnector Association="DB_CLINICAModel.FK_IDAseguradora" ManuallyRouted="false" />
+        <AssociationConnector Association="DB_CLINICAModel.FK_IDAseguradora_GS" ManuallyRouted="false" />
+        <AssociationConnector Association="DB_CLINICAModel.FK_IDAseguradora_GSA" ManuallyRouted="false" />
+        <AssociationConnector Association="DB_CLINICAModel.FK_IDAseguradora_IDPeriodo" ManuallyRouted="false" />
+        <AssociationConnector Association="DB_CLINICAModel.FK_IDPeriodo_GS" ManuallyRouted="false" />
+        <AssociationConnector Association="DB_CLINICAModel.FK_Detalle_atencion" ManuallyRouted="false" />
+        <AssociationConnector Association="DB_CLINICAModel.FK_IDAtencion" ManuallyRouted="false" />
+        <AssociationConnector Association="DB_CLINICAModel.FK_IDMedico_GSA" ManuallyRouted="false" />
+        <AssociationConnector Association="DB_CLINICAModel.FK_IDPaciente_GSA" ManuallyRouted="false" />
+        <AssociationConnector Association="DB_CLINICAModel.GS_MEDICO_GS_Especialidad_FK" ManuallyRouted="false" />
+        <AssociationConnector Association="DB_CLINICAModel.FK_IDOrden_Medica" ManuallyRouted="false" />
+        <AssociationConnector Association="DB_CLINICAModel.FK_IDOrdenMedica" ManuallyRouted="false" />
+        <AssociationConnector Association="DB_CLINICAModel.FK_IDProcedimiento" ManuallyRouted="false" />
+        <AssociationConnector Association="DB_CLINICAModel.FK_IDProcedimientov1" ManuallyRouted="false" />
+        <AssociationConnector Association="DB_CLINICAModel.FK_IDSRS" ManuallyRouted="false" />
+        <AssociationConnector Association="DB_CLINICAModel.FK_IDTipo" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

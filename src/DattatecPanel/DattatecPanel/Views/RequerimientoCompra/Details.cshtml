@@ -1,0 +1,42 @@
+﻿@model DattatecPanel.Models.RequerimientoCompra
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>RequerimientoCompra</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Encargado.DNI)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Encargado.DNI)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Solicitante.DNI)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Solicitante.DNI)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FechaEstimada)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FechaEstimada)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.RequerimientoCompraID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

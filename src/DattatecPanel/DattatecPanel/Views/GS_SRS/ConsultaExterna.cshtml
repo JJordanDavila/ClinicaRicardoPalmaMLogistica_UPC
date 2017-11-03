@@ -1,0 +1,63 @@
+﻿@model IEnumerable<DattatecPanel.Models.GS_SRS>
+
+@{
+    ViewBag.Title = "ConsultaExterna";
+}
+
+<h2>ConsultaExterna</h2>
+
+<div class="row">
+
+
+    @using (Html.BeginForm("ConsultaExterna", "GS_SRS", FormMethod.Post))
+    {
+        
+            <div class="col-md-6">
+                Nro. Solicitud: <input id="nro_solicitud" name="nro_solicitud" type="text" class="form-control">
+                <!--Nro.Solicitud: @Html.TextBox("nro_solicitud") -->
+            </div>
+
+            <div class="col-md-3">
+                Nro. DNI: <input id="nro_dni" name="nro_dni" type="text" class="form-control">
+                <!--Nro.DNI: @Html.TextBox("nro_dni")-->
+            </div>
+
+            <div class="col-md-3 text-center">
+                <input type="submit" value="Consultar" class="btn btn-danger" />
+            </div>
+    }
+</div>
+<hr />
+<table class="table table-responsive">
+    <tr>
+        <th>NRO.SOLICITUD</th>
+        <th>DNI</th>
+        <th>PACIENTE</th>
+        <th>F.EMISION</th>
+        <th>F.ULTIMA APROBACION</th>
+        <th>ESTADO</th>
+        <th>OBSERVACION</th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.IDSRS)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.GS_ORDEN_MEDICA.GS_ATENCION.GS_PACIENTE.IDPaciente)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.GS_ORDEN_MEDICA.GS_ATENCION.GS_PACIENTE.Nombre)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Fecha_registro)
+            </td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+    }
+
+</table>

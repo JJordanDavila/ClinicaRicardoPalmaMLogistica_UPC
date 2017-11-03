@@ -1,0 +1,66 @@
+﻿@model DattatecPanel.Models.GS_SRS
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>GS_SRS</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Fecha_registro)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Fecha_registro)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Observacion)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Observacion)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Estado)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Estado)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Fecha_aprobacion)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Fecha_aprobacion)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.GS_ASEGURADORA.Ruc)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.GS_ASEGURADORA.Ruc)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.GS_ORDEN_MEDICA.Estado)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.GS_ORDEN_MEDICA.Estado)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.IDSRS }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

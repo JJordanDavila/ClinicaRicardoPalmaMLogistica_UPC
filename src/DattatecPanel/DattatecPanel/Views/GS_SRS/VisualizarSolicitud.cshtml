@@ -1,0 +1,171 @@
+﻿@model DattatecPanel.Models.GS_SRS
+@{
+    ViewBag.Title = "VisualizarSolicitud";
+}
+
+<h2>Vista Previa Solicitud de Requerimiento</h2>
+<h4>Envío de notificación a Aseguradora Socia</h4>
+<hr />
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.IDSRS)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.IDOrdenMedica, "Código Orden Médica:", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.IDOrdenMedica, new { htmlAttributes = new { @class = "form-control", disabled = "disabled" } })
+                @Html.ValidationMessageFor(model => model.IDOrdenMedica, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.GS_ORDEN_MEDICA.Fecha_registro, "Fecha de Emisión:", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.GS_ORDEN_MEDICA.Fecha_registro, new { htmlAttributes = new { @class = "form-control", disabled = "disabled" } })
+                @Html.ValidationMessageFor(model => model.GS_ORDEN_MEDICA.Fecha_registro, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.GS_ORDEN_MEDICA.GS_ATENCION.GS_MEDICO.GS_Especialidad.NombreEsp,"Especialidad", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.GS_ORDEN_MEDICA.GS_ATENCION.GS_MEDICO.GS_Especialidad.NombreEsp, new { htmlAttributes = new { @class = "form-control", disabled = "disabled" } })
+                @Html.ValidationMessageFor(model => model.GS_ORDEN_MEDICA.GS_ATENCION.GS_MEDICO.GS_Especialidad.NombreEsp, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.GS_ORDEN_MEDICA.GS_ATENCION.GS_MEDICO.EMPLEADO.NombreEmp, "Médico Responsable:", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.GS_ORDEN_MEDICA.GS_ATENCION.GS_MEDICO.EMPLEADO.NombreEmp, new { htmlAttributes = new { @class = "form-control", disabled = "disabled" } })
+                @Html.ValidationMessageFor(model => model.GS_ORDEN_MEDICA.GS_ATENCION.GS_MEDICO.EMPLEADO.NombreEmp, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.GS_ORDEN_MEDICA.GS_ATENCION.GS_PACIENTE.DNI, "DNI Paciente:", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.GS_ORDEN_MEDICA.GS_ATENCION.GS_PACIENTE.DNI, new { htmlAttributes = new { @class = "form-control", disabled = "disabled" } })
+                @Html.ValidationMessageFor(model => model.GS_ORDEN_MEDICA.GS_ATENCION.GS_PACIENTE.DNI, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.GS_ORDEN_MEDICA.GS_ATENCION.GS_PACIENTE.Nombre, "Paciente:", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.GS_ORDEN_MEDICA.GS_ATENCION.GS_PACIENTE.Nombre, new { htmlAttributes = new { @class = "form-control", disabled = "disabled" } })
+                @Html.ValidationMessageFor(model => model.GS_ORDEN_MEDICA.GS_ATENCION.GS_PACIENTE.Nombre, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <hr />
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.GS_ASEGURADORA.Razon_social, "Aseguradora:", htmlAttributes: new { @class = "control-label col-md-2"})
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.GS_ASEGURADORA.Razon_social, new { htmlAttributes = new { @class = "form-control", disabled = "disabled" } })
+                @Html.ValidationMessageFor(model => model.GS_ASEGURADORA.Razon_social, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.IDSRS, "Código de Solicitud:", htmlAttributes: new { @class = "control-label col-md-2"})
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.IDSRS, new { htmlAttributes = new { @class = "form-control", disabled = "disabled" } })
+                @Html.ValidationMessageFor(model => model.IDSRS, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Fecha_registro, "Fecha de Solicitud:", htmlAttributes: new { @class = "control-label col-md-2"})
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Fecha_registro, new { htmlAttributes = new { @class = "form-control", disabled = "disabled" } })
+                @Html.ValidationMessageFor(model => model.Fecha_registro, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <td>Código</td>
+                    <td>Nombre</td>
+                    <td>Tipo Requerimiento</td>
+                    <td>Estado</td>
+                </tr>
+            </thead>
+            <tbody id="tblDetSolicitud"></tbody>
+        </table>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.GS_ASEGURADORA.Contacto, "Para:", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.GS_ASEGURADORA.Contacto, new { htmlAttributes = new { @class = "form-control", disabled = "disabled" } })
+                @Html.ValidationMessageFor(model => model.GS_ASEGURADORA.Contacto, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.GS_ASEGURADORA.Correo, "Correo:", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.GS_ASEGURADORA.Correo, new { htmlAttributes = new { @class = "form-control", disabled = "disabled" } })
+                @Html.ValidationMessageFor(model => model.GS_ASEGURADORA.Correo, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        
+        <center>
+            <button type="button" data-toggle="modal" data-target="#myModal2" class="btn btn-info">VER PDF</button>
+            @Html.ActionLink("Enviar Correo", "EnviarCorreo", new { idsrs = Model.IDSRS, correo = Model.GS_ASEGURADORA.Correo },
+                            new { @class = "btn btn-danger" }) 
+            @Html.ActionLink("Salir", "Index",
+                             new { controller = "GS_SRS" },
+                             new { @class = "btn btn-primary" })
+        </center>
+    </div>
+}
+
+<div class="modal fade" id="myModal2" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Vista Previa - PDF</h4>
+            </div>
+            <div class="modal-body">
+                <embed src="http://clinica.eastus.cloudapp.azure.com/pdf/@(Model.IDSRS).pdf" width="570" height="375">
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(function (e) {
+        ListarDetalle(@Model.IDSRS);
+    });
+
+    function ListarDetalle(paramx) {
+        $.ajax({
+            url: '/GS_SRS/DetSolicitud/' + paramx,
+            contentType: "application/json",
+            dataType: "json",
+            success: function (det) {
+                $("#tblDetSolicitud").html("");
+                for (var i = 0; i < det.length; i++) {
+                    $("#tblDetSolicitud").append("<tr><td>" + det[i].IDProcedimiento + "</td>" +
+                                                     "<td>" + det[i].Nombre + "</td>" +
+                                                     "<td>" + (det[i].Ruta == "E" ? "Especial" : "Normal") + "</td>" +
+                                                     "<td>" + (det[i].Estado == "P" ? "Pendiente" : "") + "</td></tr>");
+                }
+                $('#divBtn').html("<a href='/GS_SRS/VisualizarSolicitud/" + paramx + "' >Solicitud conformidad</a>");
+                console.log(det);
+            },
+            error: function () {
+                alert("error");
+            },
+        });
+    };
+</script>

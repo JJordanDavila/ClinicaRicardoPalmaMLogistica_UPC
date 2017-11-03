@@ -1,0 +1,148 @@
+﻿@model DattatecPanel.Models.GS_TRAMA
+
+<!--{
+    ViewBag.Title = "GenerarTrama";
+}
+-->
+
+
+    <!--Html.AntiForgeryToken()-->
+<form id="formTrama">
+    <div class="form-horizontal">
+        <h4>Generar Trama</h4>
+        <hr />
+
+        <div class="row">
+            <div class="col-md-6"><b>Responsable:</b> Juan Perez</div>
+            <div class="col-md-6"><b>Fecha:</b>  @DateTime.Now</div>
+        </div>
+        <hr>
+
+        <!--Html.ValidationSummary(true, "", new { class = "text-danger" }) -->
+        <div class="form-group">
+            <!--Html.LabelFor(model => model.IDTrama, htmlAttributes: new { class = "control-label col-md-2" })-->
+            <div class="col-md-10">
+                @Html.HiddenFor(model => model.IDTrama)
+                @Html.ValidationMessageFor(model => model.IDTrama, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.IDAseguradora, "Aseguradora:", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("IDAseguradora", null, "---Seleccionar---", htmlAttributes: new { @class = "form-control", required = (string)null })
+                @Html.ValidationMessageFor(model => model.IDAseguradora, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.IDPeriodo, "Periodo:", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <select class="form-control" id="IDPeriodo" required>
+                    <option>SELECCIONE UNA ASEGURADORA</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Observacion, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Observacion, new { htmlAttributes = new { @class = "form-control", required = (string)null } })
+                @Html.ValidationMessageFor(model => model.Observacion, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="row">
+                <div class="col-md-6" id="loaderGif" style="display: none"><center><img src="~/images/loader.gif" alt="Logo" class="img-responsive" width="90" /></center></div>
+                <div class="col-md-6 alert alert-success" id="messageOk" role="alert" style="display: none"></div>
+                <div class="col-md-6 alert alert-danger" id="messageBug" role="alert" style="display: none"></div>
+                <div class="col-md-6">
+                    <center><input type="button" value="Generar Trama" class="btn btn-danger" id="btnGenerarTrama" /></center>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<div>
+    @Html.ActionLink("Lista de Tramas generadas", "Index")
+</div>
+
+<script type="text/javascript">
+    $('#btnGenerarTrama').click(function (e) {
+
+        $('#formTrama').valid();
+
+        perSelected = $('#IDPeriodo').val();
+        aseSelected = $('#IDAseguradora').val();
+        obsValue = $('#Observacion').val();
+        usuarioValue = 'Pepe Perez';
+
+        if(perSelected =='' || aseSelected == '' || obsValue == ''){
+            
+        } else {
+            $('#messageOk').css('display', 'none');//Ocultando el div
+            $('#messageBug').css('display', 'none');//Ocultando el div
+            ajaxGenerarTrama(perSelected, aseSelected, usuarioValue, obsValue);
+        }
+    });
+
+    function ajaxGenerarTrama(periodo, aseguradora, usuario, observacion) {
+        $.ajax({
+            url: '/GS_TRAMA/generarTramaAjax/' + periodo + '/' + aseguradora + '/' + usuario + '/' + observacion,
+            contentType: "application/json",
+            dataType: "json",
+            success: function (data) {
+                $('#loaderGif').css('display', 'none');
+                $('#messageOk').css('display', 'block');//Mostrando el div
+                $('#messageOk').html('Las tramas de la aseguradora XXX del período XXX fueron generadas satisfactoriamente');
+                $('#IDAseguradora').val('');
+                $('#IDPeriodo').val('');
+                $('#Observacion').val('');
+            },
+            error: function (response, textStatus, jqXHR) {
+                console.log('hubo error');
+                $('#loaderGif').css('display', 'none');
+                $('#messageOk').css('display', 'block');//Mostrando el div
+                $('#messageOk').html('Las tramas de la aseguradora con codigo ['+aseguradora+'] del período ['+periodo+'] fueron generadas satisfactoriamente');
+                $('#IDAseguradora').val('');
+                $('#IDPeriodo').val('');
+                $('#Observacion').val('');
+            },
+            beforeSend: function (xhr) {
+                console.log(xhr);
+                $('#loaderGif').css('display', 'block');
+            }
+        });
+    }
+
+    $('#IDAseguradora').change(function () {
+        $('#IDPeriodo').html('');
+        valueAseguradora = this.value;
+        ajaxGetPeriodosByIdAseguradora(valueAseguradora);
+    });
+
+    function ajaxGetPeriodosByIdAseguradora(idAseguradora) {
+        $.ajax({
+            url: '/GS_TRAMA/listaDePeriodos/' + idAseguradora,
+            contentType: "application/json",
+            dataType: "json",
+            success: function (data) {
+                $('#IDPeriodo').append('<option value="">--Seleccionar--</option>')
+                $.each(data, function (index, value) {
+                    $('#IDPeriodo').append('<option value=' + value.IDPeriodo + '>' + value.Descripcion + '</option>')
+                });
+            },
+            error: function (response, textStatus, jqXHR) {
+                console.log('Bug al listar un periodo');
+            },
+            beforeSend: function (xhr) {
+                console.log('Generando papu');
+            }
+        });
+    }
+
+</script>
+
+
+<!--http://clinica.eastus.cloudapp.azure.com/pdf/-->

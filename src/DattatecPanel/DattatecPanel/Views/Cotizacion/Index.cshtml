@@ -1,0 +1,63 @@
+﻿@model IEnumerable<DattatecPanel.Models.Cotizacion>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.FormaPago.Nombre)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Proveedor.NombreComercial)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.RequerimientoCompra.RequerimientoCompraID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PlazoEntrega)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TiempoValidez)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.NroReferencia)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.FormaPago.Nombre)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Proveedor.NombreComercial)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.RequerimientoCompra.RequerimientoCompraID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PlazoEntrega)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TiempoValidez)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.NroReferencia)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.CotizacionID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.CotizacionID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.CotizacionID })
+        </td>
+    </tr>
+}
+
+</table>

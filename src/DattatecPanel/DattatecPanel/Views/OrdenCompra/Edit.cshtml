@@ -1,0 +1,143 @@
+﻿@model DattatecPanel.Models.OrdenCompra
+
+@{
+    ViewBag.Title = "Modificación";
+}
+
+<script>
+    $(function () {
+        var x = "@ViewBag.MessageAdvEditOC";
+        if (x == "True") {
+            $("#divMensajeAdvertenciaEdit").show();
+            $("#lblMensajeEdit").text("@ViewBag.MessageAdvertenciaOC");
+        } else {
+            $("#divMensajeAdvertenciaEdit").hide();
+        }
+
+        $("#btnGuardarEditOC").on("click", function () {
+            $("#divMensajeAdvertenciaEdit").hide();
+            $("#lblMensajeEdit").text("");
+        });
+    });
+</script>
+
+<h2>Modificación</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Orden de Compra</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.OrdenCompraID)
+        <div class="form-group">
+            @Html.LabelFor(model => model.TransaccionCompra.Numero, htmlAttributes: new { @class = "control-label col-md-2"})
+            <div class="col-md-3">
+                @Html.TextBoxFor(model => model.TransaccionCompra.Numero, new { @class="form-control text-box single-line", disabled = "disabled", @readonly = "readonly" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Cotizacion.Proveedor.RazonSocial, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-3">
+                @Html.TextBoxFor(model => model.Cotizacion.Proveedor.RazonSocial, new { @class = "form-control text-box single-line", disabled = "disabled", @readonly = "readonly" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.TransaccionCompra.Fecha, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-3">
+                @Html.TextBoxFor(model => model.TransaccionCompra.Fecha, new { @class = "form-control text-box single-line", disabled = "disabled", @readonly = "readonly" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Cotizacion.RequerimientoCompra.Solicitante.Area.Descripcion, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-3">
+                @Html.TextBoxFor(model => model.Cotizacion.RequerimientoCompra.Solicitante.Area.Descripcion, new { @class = "form-control text-box single-line", disabled = "disabled", @readonly = "readonly" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.Label("Solicitante", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-3">
+                @Html.TextBoxFor(model => model.Cotizacion.RequerimientoCompra.Solicitante.NombreCompleto, new { @class = "form-control text-box single-line", disabled = "disabled", @readonly = "readonly" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Almacen.Direccion, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-3">
+                @Html.TextBoxFor(model => model.Almacen.Direccion, new { @class = "form-control text-box single-line", disabled = "disabled", @readonly = "readonly" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.FechaEntrega, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-3">
+                @Html.EditorFor(model => model.FechaEntrega, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.FechaEntrega, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Observacion, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-7">
+                @Html.EditorFor(model => model.Observacion, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Observacion, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group" id="divMensajeAdvertenciaEdit">
+            <label class="control-label col-md-2"></label>
+            <div class="col-md-6">
+                <label id="lblMensajeEdit" class="text-danger"></label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Guardar" class="btn btn-primary" id="btnGuardarEditOC" />
+            </div>
+        </div>
+
+        <table class="table">
+            <tr>
+                <th>Item</th>
+                <th>Producto</th>
+                <th style="text-align: right;">Cantidad</th>
+                <th style="text-align: right;">P. Venta</th>
+                <th style="text-align: right;">Total</th>
+            </tr>
+
+            @foreach (var item in Model.lstDetalle)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DetalleTransaccionCompraID)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Articulo.Descripcion)
+                    </td>
+                    <td style="text-align: right;">
+                        @Html.DisplayFor(modelItem => item.Cantidad)
+                    </td>
+                    <td style="text-align: right;">
+                        @Html.DisplayFor(modelItem => item.Precio)
+                    </td>
+                    <td style="text-align: right;">
+                        @Html.DisplayFor(modelItem => item.Total)
+                    </td>
+                </tr>
+            }
+
+        </table>
+
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Regresar", "Index", "OrdenCompra")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

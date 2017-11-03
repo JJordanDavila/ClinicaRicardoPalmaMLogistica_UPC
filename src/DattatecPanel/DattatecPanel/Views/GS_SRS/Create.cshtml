@@ -1,0 +1,292 @@
+﻿@model  DattatecPanel.Models.GS_SRS
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>GENERAR SOLICITUD DE REQUERIMIENTO</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal" id="divmain">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="form-group">
+            <div class="row">
+                @Html.LabelFor(model => model.IDOrdenMedica, "Código Orden Médica: ", htmlAttributes: new { @class = "control-label col-md-2" })
+                @Html.TextBox("IDOrdenMedicaModal", null, new { @class="col-md-1", @readonly = "readonly" })
+                <div class="col-md-1"></div>
+                <button type="button" data-toggle="modal" data-target="#myModal" class="btn btn-info col-md-2">Obtener Orden Medica</button>
+                @Html.LabelFor(model => model.Fecha_registro, "Fecha Emisión: ", htmlAttributes: new { @class = "control-label col-md-3" })
+                @Html.TextBox("Fecha_registro", "", new { @class = "col-md-3", @readonly = "readonly" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="row">
+                @Html.LabelFor(model => model.IDSRS, "Especialidad: ", htmlAttributes: new { @class = "control-label col-md-2" })
+                @Html.TextBox("Especialidad", "", new { @class = "col-md-4", @readonly = "readonly" })
+                @Html.LabelFor(model => model.IDSRS, "Médico Responsable: ", htmlAttributes: new { @class = "control-label col-md-2" })
+                @Html.TextBox("MedicoResponsable", "", new { @class = "col-md-4", @readonly = "readonly" })
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                @Html.LabelFor(model => model.IDSRS, "DNI Paciente: ", htmlAttributes: new { @class = "control-label col-md-2" })
+                @Html.TextBox("DNIPaciente", "", new { @class ="col-md-4", @readonly = "readonly" })
+                @Html.LabelFor(model => model.IDSRS, "Paciente: ", htmlAttributes: new { @class = "control-label col-md-2" })
+                @Html.TextBox("Paciente", "", new { @class = "col-md-4", @readonly = "readonly" })
+            </div>
+        </div>
+        <hr />
+        
+        <div id="divBtn"></div>
+        
+        <table class="table table-hover">
+            <caption class="text-center">PROCEDIMIENTOS DE ORDEN MÉDICA</caption>
+            <thead>
+                <tr>
+                    <td>Código</td><td>Nombre</td>
+                </tr>
+            </thead>
+            <tbody id="tblDetOrdMedica"></tbody>
+        </table>
+
+        <hr />
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.IDAseguradora, "Aseguradora:", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("IDAseguradora", null, "---Seleccionar---", htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.IDAseguradora, "", new { @class = "text-danger" })
+            </div>            
+        </div>
+        <div class="form-group">
+            <center>
+                <button id="btnGenerarSolicitud" class="btn btn-danger">Generar Solicitud de Requerimiento</button>
+                <button id="btnCancelar" class="btn btn-primary">Cancelar</button>
+            </center>
+        </div>
+
+    </div>
+
+}
+<div>
+    <hr />
+    @Html.ActionLink("Lista de Solicitudes de Requerimientos", "Index")
+</div>
+
+
+<!--Modal de selección de Orden Médica-->
+<div class="modal fade" id="myModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Obtener Orden Médica</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <div class="row">
+                        @Html.LabelFor(model => model.IDOrdenMedica, "Código Orden Médica: ", htmlAttributes: new { @class = "control-label col-md-2" })
+                        @Html.TextBox("IDOrdenMedica", "")
+                        <button onclick="buscarOrden();" class="btn btn-green">Buscar Orden Medica</button>
+                        <button id="btnObtenerDatos" class="btn btn-info">Obtener Datos</button>
+                    </div>
+                </div>
+                <span id="spanMensaje" class="text-danger"></span>
+                <hr />
+                <div>
+                    <table class="table table-hover">
+                        <caption><center>Relación de Órdenes médicas</center></caption>
+                        <thead>
+                            <tr>
+                                <th>ORDEN MEDICA</th>
+                                <th>F.EMISION</th>
+                                <th>DNI PACIENTE</th>
+                                <th>PACIENTE</th>
+                                <th>ESPECIALIDAD</th>
+                                <th>MEDICO</th>
+                                <th>ESTADO</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody id="tblListOMed"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    //Load formulario
+    $(function (e) {
+        //loadOrden(null);
+    });
+
+    //buscar Orden Ajax
+    function buscarOrden() {
+        txtOM = $('#IDOrdenMedica').val();
+        console.log(txtOM);
+        loadOrden(txtOM);
+    }
+
+    //alert($('input:radio[name=edad]:checked').val());
+
+
+    //Ajax loadOrden
+    function loadOrden(param){
+        $.ajax({
+            url: '/GS_ORDEN_MEDICA/ShowAllOrden/'+ param,
+            contentType: "application/json",
+            dataType: "json",
+            success: function (data) {
+                $("#tblListOMed").html("");
+                if (data.length > 0) {
+                    $('#spanMensaje').html();
+                  
+                    for (var i = 0; i < data.length; i++) {
+                        var d = new Date(parseInt(data[i].Fecha_registro.substring(6)));
+                        var f = d.getDate() + '/' + (d.getMonth() + 1) + '/' + d.getFullYear();
+                        $("#tblListOMed").append("<tr><td id='om_" + i + "'>" + data[i].IDOrdenMedica + "</td><td id='fec_" + i + "'>"
+                                                     + f + "</td><td id='pac_" + i + "'>"
+                                                     + data[i].DNI + "</td><td id='pnom_" + i + "'>"
+                                                     + data[i].Nombre + "</td><td id='esp_" + i + "'>"
+                                                     + data[i].NombreEsp + "</td><td id='med_" + i + "'>"
+                                                     + data[i].NombreEmp + "</td><td id='est_" + i + "'>"
+                                                     + (data[i].Estado == "I" ? "Expirada" : "Vigente") + "</td><td>" + (data[i].Estado == "I" ? "" : "<input type='radio' name='radSolicitud' id='radio_" + i + "' value='" + i + "' />" ) + "</td></tr>");
+                    }
+                } else {
+                    $('#spanMensaje').html("Orden Médica no existe.");
+                }
+                
+            },
+            error: function () {
+                alert("error");
+            },
+        });
+    }
+
+    //click btnGenerarSolicitud
+    $('#btnObtenerDatos').click(function (e) {
+        indexFila = $('input:radio[name=radSolicitud]:checked').attr('value');
+        if (indexFila != undefined) {
+            $('#spanMensaje').html("");
+            omedica = $('#om_' + indexFila).text();
+            fecha = $('#fec_' + indexFila).text();
+            idpaciente = $('#pac_' + indexFila).text();
+            paciente = $('#pnom_' + indexFila).text();
+            especialidad = $('#esp_' + indexFila).text();
+            medico = $('#med_' + indexFila).text();
+            estado = $('#est_' + indexFila).text();
+
+            //OCULTANDO MODAL
+            $('#myModal').modal('hide');
+
+            //Agregando datos
+            $('#IDOrdenMedicaModal').val(omedica);
+            $('#Fecha_registro').val(fecha);
+            $('#DNIPaciente').val(idpaciente);
+            $('#Paciente').val(paciente);
+            $('#MedicoResponsable').val(medico);
+            $('#Especialidad').val(especialidad);
+
+            //saveSRS(omedica, aseg);
+            ListarDetOMedica(omedica);
+
+        } else {
+            $('#spanMensaje').html("*Debe seleccionar orden médica y aseguradora.");
+        }
+    });
+
+    $('#btnGenerarSolicitud').click(function (e) {
+        omedica = $('#IDOrdenMedicaModal').val();
+        aseg = $('#IDAseguradora').val();
+        if ((omedica != "") && aseg != '') {
+            saveSRS(omedica, aseg);
+        } else {
+            if (aseg == '') {
+                $('#IDAseguradora').valid();                
+            } else {
+                alert('Debe seleccionar una orden médica');
+            }
+        }
+    });
+
+    //REGISTRO LA SOLICITUD
+    function saveSRS(omedica,aseg){
+        $.ajax({
+            url: '/GS_SRS/SaveSRS/' + omedica + '/' + aseg,
+            contentType: "application/json",
+            dataType: "json",
+            success: function (response) {
+                console.log(response);
+                //DETALLE DE SOLICITUD VALIDANDO PROCEDIMIENTOS
+                if (response != null) {
+                    PdfSolicitud(response);
+                    window.location.href = "/GS_SRS/VisualizarSolicitud/" + response;
+                    //$('#IDSRS').val(response);
+                    //ListarDetalle(response);
+                }                
+            },
+        })
+
+    }
+
+
+    function PdfSolicitud(id) {
+        $.ajax({
+            url: '/GS_SRS/GenerarPdfSolicitud/' + id,
+            contentType: "application/json",
+            dataType: "json",
+            success: function (response) {
+                if (response != null) {
+                    
+                }
+            },
+        })
+
+    }
+
+    //MUESTRA EL DETALLE DE LA SOLICITUD GENERADA
+   
+
+    function ListarDetOMedica(paramx) {
+        $.ajax({
+            url: '/GS_ORDEN_MEDICA/DetOrdenMedica/' + paramx,
+            contentType: "application/json",
+            dataType: "json",
+            success: function (det) {
+                $("#tblDetOrdMedica").html("");
+                for (var i = 0; i < det.length; i++) {
+                    $("#tblDetOrdMedica").append("<tr><td>" + det[i].IDProcedimiento + "</td>" +
+                                                     "<td>" + det[i].Nombre + "</td></tr>");
+                }
+                //$('#divBtn').html("<a href='/GS_SRS/VisualizarSolicitud/" + paramx + "' >Solicitud conformidad</a>");
+                console.log(det);
+            },
+            error: function () {
+                alert("error");
+            },
+        });
+    };
+
+
+    //Click en btn btnCancelar
+    $('#btnCancelar').click(function () {
+        //Clean txt
+        $('#IDOrdenMedicaModal').val('');
+        $('#Fecha_registro').val('');
+        $('#Especialidad').val('');
+        $('#MedicoResponsable').val('');
+        $('#DNIPaciente').val('');
+        $('#Paciente').val('');
+
+        $('#tblDetOrdMedica').html('');
+        $('#tblListOMed').html('');
+    });
+</script>

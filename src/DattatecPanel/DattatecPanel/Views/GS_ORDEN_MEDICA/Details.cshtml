@@ -1,0 +1,42 @@
+﻿@model DattatecPanel.Models.GS_ORDEN_MEDICA
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>GS_ORDEN_MEDICA</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Estado)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Estado)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Fecha_registro)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Fecha_registro)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.GS_ATENCION.Tipo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.GS_ATENCION.Tipo)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.IDOrdenMedica }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

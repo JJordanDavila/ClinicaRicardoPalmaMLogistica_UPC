@@ -1,0 +1,164 @@
+﻿@model DattatecPanel.Models.Licitacion
+
+@{
+    ViewBag.Title = "Create";
+}
+
+
+<br />
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        //$("#textnombre").attr('disabled', 'disabled');
+
+        $("a[rel='pop-up']").click(function () {
+            var caracteristicas = "height=450,width=700,scrollTo,resizable=1,scrollbars=1,location=0";
+            nueva = window.open(this.href, 'Popup', caracteristicas);
+            return false;
+        });
+
+    })
+
+
+    function ObtenerRequerimientoCompra(RequerimientoCompra) {
+
+        var watchClose = setTimeout(function () {
+            document.getElementById("textnombre").value = RequerimientoCompra.RequerimientoCompraID.trim();
+            //Html.Hidden(Model.RequerimientoCompraID)
+        });
+    }
+
+    $(function () {
+        var x = "@ViewBag.MessageAdvCreateLC";
+        if (x == "True") {
+            $("#divMensajeAdvertencia").show();
+            $("#lblMensaje").text("@ViewBag.MessageAdvertenciaLC");
+        } else {
+            $("#divMensajeAdvertencia").hide();
+        }
+
+        $("#btn_licitacion").on("click", function () {
+            $("#divMensajeAdvertencia").hide();
+            $("#lblMensaje").text("");
+        });
+    });
+</script>
+
+
+@using (Html.BeginForm("Create", "Licitacion", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-7">
+                <div class="panel panel-success">
+                    <div class="panel-heading"><h5>Ingreso de Licitación</h5></div>
+                    <div class="panel-body">
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.RequerimientoCompraID, new { @class = "col-sm-6 control-label" })
+                            <div class="col-sm-10">
+                                @Html.TextBoxFor(model => model.RequerimientoCompraID, new { type = "number", id = "textnombre", name = "nombre", @readonly = "readonly" })
+                                <a href="../Licitacion/ObtenerRequerimientoCompra" rel="pop-up">
+                                    <input id="btBuscar" name="enlace_ObtenerRequerimientoCompra" type="button" value="Obtener Requerimiento Compra" />
+                                </a>
+                                @Html.ValidationMessageFor(model => model.RequerimientoCompraID, "", new { @class = "validate" })
+
+                            </div>
+                        </div>
+                        <br /><br /><br />
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.FileTDR1, new { @class = "col-sm-6 control-label" })
+                            <div class="col-sm-10">
+                                @Html.TextBoxFor(model => model.FileTDR1, new { type = "file" })
+                                @Html.ValidationMessageFor(model => model.FileTDR1, "", new { @class = "validate" })
+                            </div>
+                        </div>
+                        <br /><br /><br />
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.FechaConvocatoria, new { @class = "col-sm-6 control-label" })
+                            <div class="col-sm-10">
+                                @Html.EditorFor(model => model.FechaConvocatoria)
+                                @Html.ValidationMessageFor(model => model.FechaConvocatoria)
+                            </div>
+                        </div>
+                        <br /><br /><br />
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.FecRecepcionConsultas, new { @class = "col-sm-6 control-label" })
+                            <div class="col-sm-10">
+                                @Html.EditorFor(model => model.FecRecepcionConsultas)
+                                @Html.ValidationMessageFor(model => model.FecRecepcionConsultas)
+                            </div>
+                        </div>
+                        <br /><br /><br />
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.FecAbsolucionConsultas, new { @class = "control-label col-sm-6" })
+                            <div class="col-sm-10">
+                                @Html.EditorFor(model => model.FecAbsolucionConsultas)
+                                @Html.ValidationMessageFor(model => model.FecAbsolucionConsultas)
+                            </div>
+                        </div>
+                        <br /><br /><br />
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.FecRecepcionExpediente, new { @class = "control-label col-sm-6" })
+                            <div class="col-sm-10">
+                                @Html.EditorFor(model => model.FecRecepcionExpediente)
+                                @Html.ValidationMessageFor(model => model.FecRecepcionExpediente)
+                            </div>
+                        </div>
+                        <br /><br /><br />
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.FecEvaluacionIni, new { @class = "control-label col-sm-6" })
+                            <div class="col-sm-10">
+                                @Html.EditorFor(model => model.FecEvaluacionIni)
+                                @Html.ValidationMessageFor(model => model.FecEvaluacionIni)
+                            </div>
+                        </div>
+                        <br /><br /><br />
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.FecEvaluacionFin, new { @class = "control-label col-sm-6" })
+                            <div class="col-sm-10">
+                                @Html.EditorFor(model => model.FecEvaluacionFin)
+                                @Html.ValidationMessageFor(model => model.FecEvaluacionFin)
+                            </div>
+                        </div>
+                        <br /><br /><br />
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.FecAdjudicacion, new { @class = "control-label col-sm-6" })
+                            <div class="col-sm-10">
+                                @Html.EditorFor(model => model.FecAdjudicacion)
+                                @Html.ValidationMessageFor(model => model.FecAdjudicacion)
+                            </div>
+                        </div>
+                        <br /><br /><br />
+                        <div class="form-group" id="divMensajeAdvertencia">
+                            <label class="control-label col-sm-6"></label>
+                            <div class="col-sm-10">
+                                <label id="lblMensaje" class="text-danger"></label>
+                            </div>
+                        </div>
+                        <br /><br /><br />
+                        <div class="btn-group col-md-10" style="text-align:center">
+                            @Html.ActionLink("Regresar", "Index", null, new { @class = "btn btn-default" })
+
+                            <input type="submit" value="Guardar" class="btn btn-success" id="btn_licitacion" />
+
+                        </div>
+
+                    </div>
+                    <div class="panel-footer"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

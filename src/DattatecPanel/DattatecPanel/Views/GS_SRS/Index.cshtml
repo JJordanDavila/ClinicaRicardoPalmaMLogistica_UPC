@@ -1,0 +1,65 @@
+﻿@model IEnumerable<DattatecPanel.Models.GS_SRS>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Relación de Solicitudes de requerimientos de Seguros</h2>
+
+<p>
+    @Html.ActionLink("Generar nueva solicitud", "Create",
+            new { controller = "GS_SRS"},
+            new { @class = "btn btn-danger" })
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Fecha_registro)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Observacion)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Estado)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Fecha_aprobacion)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.GS_ASEGURADORA.Ruc)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.GS_ORDEN_MEDICA.Estado)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Fecha_registro)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Observacion)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Estado)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Fecha_aprobacion)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.GS_ASEGURADORA.Ruc)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.GS_ORDEN_MEDICA.Estado)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.IDSRS }) |
+            @Html.ActionLink("Details", "Details", new { id=item.IDSRS }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.IDSRS })
+        </td>
+    </tr>
+}
+
+</table>

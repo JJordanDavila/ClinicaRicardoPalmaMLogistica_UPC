@@ -1,0 +1,85 @@
+﻿@model DattatecPanel.Models.Licitacion
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+
+<script type="text/javascript">
+    function anularLicitacion() {
+
+        if (document.getElementById("txt_observacion").value == '') {
+
+            alert('Ingrese un motivo válido');
+            return false;
+        }
+        else {
+            if (confirm('¿Desea anular la licitación?')) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+    }
+</script>
+<br />
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-7">
+                <div class="panel panel-success">
+                    <div class="panel-heading"><h5>Anulación de Licitación</h5></div>
+                    <div class="panel-body">
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        <form class="form-horizontal" role="form">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Numero, new { @class = "col-sm-3 control-label" })
+                                <div class="col-sm-10">
+                                    @Html.DisplayFor(model => model.Numero)
+                                    @Html.HiddenFor(model => model.Numero)
+                                </div>
+                            </div>
+                            <br /><br /><br />
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.RequerimientoCompraID, new { @class = "col-sm-6 control-label" })
+                                <div class="col-sm-10">
+                                    @Html.DisplayFor(model => model.RequerimientoCompra.RequerimientoCompraID)
+                                    @Html.HiddenFor(model => model.RequerimientoCompra.RequerimientoCompraID)
+                                    @Html.HiddenFor(model => model.RequerimientoCompraID)
+                                </div>
+                            </div>
+                            <br /><br /><br />
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Fecha, new { @class = "col-sm-3 control-label" })
+                                <div class="col-sm-10">
+                                    @Html.DisplayFor(model => model.Fecha)
+                                    @Html.HiddenFor(model => model.Fecha)
+                                </div>
+                            </div>
+                            <br /><br /><br />
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.ObservacionAnulacion, new { @class = "col-sm-3 control-label" })
+                                <div class="col-sm-10">
+                                    @Html.TextAreaFor(model => model.ObservacionAnulacion, new { type = "text", id = "txt_observacion" })
+                                </div>
+                            </div>
+                            <br /><br /><br />
+                            <div class="btn-group col-md-7" style="text-align:center">
+                                @Html.ActionLink("Regresar", "Index", null, new { @class = "btn btn-default" })
+                                <input type="submit" value="Anular" class="btn btn-success" onclick="return anularLicitacion();" />
+                            </div>
+                        </form>
+                    </div>
+                    <div class="panel-footer"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+}
+

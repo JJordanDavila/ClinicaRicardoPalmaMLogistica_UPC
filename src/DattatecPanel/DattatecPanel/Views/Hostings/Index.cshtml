@@ -1,0 +1,129 @@
+﻿@model IEnumerable<DattatecPanel.Models.Hosting>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.dominio)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.servicio)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.usuario)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.clave)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.fecCrea)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.fecActualiza)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.fecVence)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.espacio)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.contacto)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.emailContacto)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.precio)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.estado)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.observaciones)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.certificadoSSL)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.fecCreaSSL)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.fecActualizaSSL)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.fecVenceSSL)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.dominio)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.servicio)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.usuario)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.clave)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.fecCrea)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.fecActualiza)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.fecVence)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.espacio)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.contacto)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.emailContacto)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.precio)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.estado)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.observaciones)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.certificadoSSL)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.fecCreaSSL)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.fecActualizaSSL)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.fecVenceSSL)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.ID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.ID })
+        </td>
+    </tr>
+}
+
+</table>
