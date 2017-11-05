@@ -84,3 +84,50 @@ function formatdate(fecha) {
     var partsDate = fecha.split("/");
     return result = partsDate[1] + "-" + partsDate[0] + "-" + partsDate[2]
 }
+
+function dialogoConfirmacion(dialogText, okFunc, dialogTitle) {
+    $('<div style="padding: 10px; max-width: 500px; word-wrap: break-word;">' + dialogText + '</div>').dialog({
+        draggable: false,
+        modal: true,
+        resizable: false,
+        width: 'auto',
+        title: dialogTitle || 'Confirm',
+        minHeight: 75,
+        buttons: {
+            OK: function () {
+                if (typeof (okFunc) == 'function') {
+                    setTimeout(okFunc, 50);
+                }
+                $(this).dialog('destroy');
+            },
+            Cancel: function () {
+                $(this).dialog('destroy');
+            }
+        }
+    });
+}
+
+function gMensajeConfirmacion(mensaje, llamada) {
+    bootbox.confirm({
+        message: mensaje,
+        buttons: {
+            confirm: {
+                label: '&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp Si &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp',
+                className: 'btn-success'
+            },
+            cancel: {
+                label: '&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp No &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp',
+                className: 'btn-danger'
+            }
+        },
+        callback: function (result) {
+            if (result) {
+                llamada();
+            }
+        }
+    });
+};
+
+function gMensajeInformacion(mensaje) {
+    bootbox.alert(mensaje);
+};

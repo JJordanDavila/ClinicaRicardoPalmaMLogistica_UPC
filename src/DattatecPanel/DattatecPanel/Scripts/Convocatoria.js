@@ -2,7 +2,7 @@
     var Convocatoria = (function () {
         function Convocatoria() { };
         Convocatoria.prototype.PageLoad = function () {
-            gInputsFormatoFecha("FechaInicio,FechaFin");
+            gInputsFormatoFecha("FechaInicio,FechaFin,fechaInicioIndex,FechaFinIndex");
             Convocatoria.prototype.dataGrid();
             Convocatoria.prototype.buscar();
             Convocatoria.prototype.agregarEventos();
@@ -73,32 +73,39 @@
             });
         }
 
+        Convocatoria.prototype.Guardar = function () {
+            gMensajeConfirmacion("¿Esta seguro de registrar?", function () {
+                Convocatoria.prototype.GuardarConvocatoria();
+            });
+            return false;
+        };
+
         Convocatoria.prototype.GuardarConvocatoria = function () {
-            var convocatoria = $('#frmNuevoConvocatoria').serializeFormJSON();
-            var validacion = ValidarFechaInicio_Fin(convocatoria.FechaInicio, convocatoria.FechaFin);
-            if (validacion != "") { alert(validacion); return;}
+            var frmData = new FormData(document.getElementById('frmNuevoConvocatoria'));
             $.ajax({
                 url: globalRutaServidor + "Convocatoria/Nuevo",
                 type: 'POST',
-                data: { entidad: convocatoria },
+                async: false,
+                contentType: false,
+                processData: false,
+                data: frmData,
                 success: function (data) {
                     if (data.statusCode == 200) {
-                        alert(data.mensaje);
+                        gMensajeInformacion(data.mensaje);
+                        $("#btnCancelar").click();
                     } else {
-                        alert('Ocurrio un error.');
+                        gMensajeInformacion('Ocurrio un error.');
                     }
                 },
                 error: function () {
                     gMensajeErrorAjax();
                 }
             });
-
-            return false;
         };
 
         Convocatoria.prototype.agregarEventos = function () {
             $("#btnGuardar").on('click', function () {
-                Convocatoria.prototype.GuardarConvocatoria();
+                Convocatoria.prototype.Guardar();
             });
             $("#btnConsultar").on('click', function () {
                 Convocatoria.prototype.buscar();

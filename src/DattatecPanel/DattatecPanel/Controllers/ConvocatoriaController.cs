@@ -1,5 +1,6 @@
 ﻿using DattatecPanel.Context;
 using DattatecPanel.Models;
+using DattatecPanel.Models.DTO;
 using DattatecPanel.Models.Util;
 using System;
 using System.Collections.Generic;
@@ -49,21 +50,32 @@ namespace DattatecPanel.Controllers
         }
 
         [HttpPost]
-        public ActionResult Nuevo(Convocatoria entidad)
+        public ActionResult Nuevo(ConvocatoriaDTO entidad)
         {
             try
             {
                 var mensaje = string.Empty;
                 entidad.Estado = "E";
+                Convocatoria convocatoria = new Convocatoria
+                {
+                    Convocatoriaid = entidad.Convocatoriaid,
+                    Numero = entidad.Numero,
+                    FechaInicio = entidad.FechaInicio,
+                    FechaFin = entidad.FechaFin,
+                    Estado = entidad.Estado,
+                    RubroID = entidad.RubroID,
+                    EmpleadoID = entidad.EmpleadoID,
+                    Requisito = null
+                };
                 if (entidad.Convocatoriaid <= 0)
                 {
-                    db.DB_Convocatoria.Add(entidad);
+                    db.DB_Convocatoria.Add(convocatoria);
                     db.SaveChanges();
                     mensaje = "Se registro con exito";
                 }
                 else
                 {
-                    db.Entry(entidad).State = EntityState.Modified;
+                    db.Entry(convocatoria).State = EntityState.Modified;
                     db.SaveChanges();
                     mensaje = "Se actualizo con exito";
                 }

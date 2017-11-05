@@ -218,6 +218,7 @@
     <Compile Include="Models\Cotizacion.cs" />
     <Compile Include="Models\DetalleTransaccionCompra.cs" />
     <Compile Include="Models\DTO\AdjuntoCorreo.cs" />
+    <Compile Include="Models\DTO\ConvocatoriaDTO.cs" />
     <Compile Include="Models\DTO\DetalleOrdenCompraDTO.cs" />
     <Compile Include="Models\DTO\LicitacionDetalleDTO.cs" />
     <Compile Include="Models\DTO\LicitacionDTO.cs" />
@@ -391,6 +392,7 @@
       <LastGenOutput>configEntity.cs</LastGenOutput>
     </Content>
     <Content Include="Scripts\ActualizarOrdenCompra.js" />
+    <Content Include="Scripts\bootbox.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <EntityDeploy Include="Models\configEntity.edmx">
