@@ -2,7 +2,7 @@
     var Convocatoria = (function () {
         function Convocatoria() { };
         Convocatoria.prototype.PageLoad = function () {
-            
+            gInputsFormatoFecha("FechaInicio,FechaFin");
             Convocatoria.prototype.dataGrid();
             Convocatoria.prototype.buscar();
             Convocatoria.prototype.agregarEventos();
@@ -75,6 +75,8 @@
 
         Convocatoria.prototype.GuardarConvocatoria = function () {
             var convocatoria = $('#frmNuevoConvocatoria').serializeFormJSON();
+            var validacion = ValidarFechaInicio_Fin(convocatoria.FechaInicio, convocatoria.FechaFin);
+            if (validacion != "") { alert(validacion); return;}
             $.ajax({
                 url: globalRutaServidor + "Convocatoria/Nuevo",
                 type: 'POST',

@@ -45,3 +45,42 @@ function gAbrirModal(contenido) {
     $(".seccionModal").html(contenido);
     $("#contenedorModal").modal("show");
 };
+
+//Cargar input en formato fecha
+//se debe enviar el parametro: "idInput1,idInput2,..."
+function gInputsFormatoFecha(ids) {
+    var listaInput = ids.split(",");
+
+    for (var i = 0; i < listaInput.length; i++) {
+        $('#' + trim(listaInput[i])).datepicker({
+            dateFormat: "dd/mm/yy",
+            changeMonth: true,
+            changeYear: true
+        });
+    }
+};
+
+//Elimina campos vacios
+function trim(value) {
+    return value.replace(/^\s+|\s+$/g, "");
+};
+
+//Validar si la fecha Inicio es mayor a la fecha fin o viveversa
+function ValidarFechaInicio_Fin(fini, ffin) {
+    var mensaje = "";
+    var fechaini = new Date(formatdate(fini));
+    var fechafin = new Date(formatdate(ffin));
+    if (fechaini > fechafin) {
+        mensaje = "La fecha de inicio no puede ser mayor a la fecha fin.";
+    }
+    if (fechafin < fechaini) {
+        mensaje = "La fecha fin no puede ser menor a la fecha de inicio.";
+    }
+    return mensaje;
+};
+
+function formatdate(fecha) {
+    var result = "";
+    var partsDate = fecha.split("/");
+    return result = partsDate[1] + "-" + partsDate[0] + "-" + partsDate[2]
+}

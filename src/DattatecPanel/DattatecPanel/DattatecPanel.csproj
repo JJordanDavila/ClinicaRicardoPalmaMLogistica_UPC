@@ -296,6 +296,7 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\easyui.css" />
+    <Content Include="Content\fileinput.min.css" />
     <Content Include="Content\grid-0.4.3.css" />
     <Content Include="Content\grid-0.4.3.min.css" />
     <Content Include="Content\images\accordion_arrows.png" />
@@ -363,6 +364,7 @@
     <Content Include="Content\themes\base\tabs.css" />
     <Content Include="Content\themes\base\theme.css" />
     <Content Include="Content\themes\base\tooltip.css" />
+    <Content Include="Content\wickedpicker.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -413,6 +415,7 @@
     </Content>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\Convocatoria.js" />
+    <Content Include="Scripts\fileinput.min.js" />
     <Content Include="Scripts\General.js" />
     <Content Include="Scripts\grid-0.4.3.js" />
     <Content Include="Scripts\grid-0.4.3.min.js" />
@@ -476,9 +479,11 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.bootstrap.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\jqueryuiDatetimepicker.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\wickedpicker.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="style_bootstrap\css\animate.css" />
     <Content Include="style_bootstrap\css\bootstrap-theme.css" />
