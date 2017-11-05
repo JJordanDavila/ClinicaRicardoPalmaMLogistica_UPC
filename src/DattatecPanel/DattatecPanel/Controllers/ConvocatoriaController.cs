@@ -110,7 +110,7 @@ namespace DattatecPanel.Controllers
                 entidad.FechaSuspension = DateTime.Now;
                 db.Entry(entidad).State = EntityState.Modified;
                 db.SaveChanges();
-                correo.EnviarCorreo("Clinica Ricardo Palma", entidad.Empleado.Correo, "Suspension", "Correo de prueba", false, null);
+                //correo.EnviarCorreo("Clinica Ricardo Palma", entidad.Empleado.Correo, "Suspension", "Correo de prueba", false, null);
                 mensaje = "Se actualizo con exito";
                 return Json(new { statusCode = HttpStatusCode.OK, mensaje = mensaje }, JsonRequestBehavior.AllowGet);
             }

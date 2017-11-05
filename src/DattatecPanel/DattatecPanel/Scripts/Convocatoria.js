@@ -138,9 +138,9 @@
                 data: { entidad: convocatoria },
                 success: function (data) {
                     if (data.statusCode == 200) {
-                        alert(data.mensaje);
+                        gMensajeInformacion(data.mensaje);
                     } else {
-                        alert('Ocurrio un error.');
+                        gMensajeInformacion('Ocurrio un error.');
                     }
                 },
                 error: function () {
