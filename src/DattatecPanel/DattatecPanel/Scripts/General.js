@@ -131,3 +131,10 @@ function gMensajeConfirmacion(mensaje, llamada) {
 function gMensajeInformacion(mensaje) {
     bootbox.alert(mensaje);
 };
+
+//Mostrar modales de mensajes con una funcion callback
+function gMensajeInformacionConCallback(mensaje, callback) {
+    bootbox.alert(mensaje, function () {
+        callback();
+    });
+};

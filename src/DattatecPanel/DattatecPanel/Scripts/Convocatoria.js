@@ -2,7 +2,10 @@
     var Convocatoria = (function () {
         function Convocatoria() { };
         Convocatoria.prototype.PageLoad = function () {
-            gInputsFormatoFecha("FechaInicio,FechaFin,fechaInicioIndex,FechaFinIndex");
+            var s = suspender == undefined ? false : suspender;
+            if (!s || s == undefined) {
+                gInputsFormatoFecha("FechaInicio,FechaFin,fechaInicioIndex,FechaFinIndex");
+            }
             Convocatoria.prototype.dataGrid();
             Convocatoria.prototype.buscar();
             Convocatoria.prototype.agregarEventos();
@@ -32,7 +35,7 @@
                         field: 'Descripcion', title: 'Rubro', width: 150
                     },
                     {
-                        field: 'NombreCompleto', title: 'Empleado', width: 250
+                        field: 'NombreCompleto', title: 'Solicitante', width: 250
                     },
                     {
                         field: 'Estado', title: 'Estado', align: 'center', width: 100
@@ -41,7 +44,7 @@
                         field: 'action', title: 'Opciones', width: 100, align: 'center',
                         formatter: function (value, row, index) {
                             var a = '<a href="' + globalRutaServidor + 'Convocatoria/Actualizar/' + row.Convocatoriaid + '" ><span class="glyphicon glyphicon-pencil opciones" title="Modificar"></span></a>';
-                            var b = '<a href="' + globalRutaServidor + 'Convocatoria/Suspender/' + row.Convocatoriaid + '" ><span class="glyphicon glyphicon-remove opciones" title="Modificar"></span></a>';
+                            var b = '<a href="' + globalRutaServidor + 'Convocatoria/Suspender/' + row.Convocatoriaid + '" ><span class="glyphicon glyphicon-remove opciones" title="Suspender"></span></a>';
                             return a + b;
                         }
                     }
@@ -81,6 +84,7 @@
         };
 
         Convocatoria.prototype.GuardarConvocatoria = function () {
+
             var frmData = new FormData(document.getElementById('frmNuevoConvocatoria'));
             $.ajax({
                 url: globalRutaServidor + "Convocatoria/Nuevo",
@@ -91,8 +95,10 @@
                 data: frmData,
                 success: function (data) {
                     if (data.statusCode == 200) {
-                        gMensajeInformacion(data.mensaje);
-                        $("#btnCancelar").click();
+                        var callback = function () {
+                            $("#btnCancelar").click();
+                        };
+                        gMensajeInformacionConCallback(data.mensaje, callback);
                     } else {
                         gMensajeInformacion('Ocurrio un error.');
                     }
@@ -131,6 +137,7 @@
         };
 
         Convocatoria.prototype.GuardarSuspension = function () {
+
             var convocatoria = $('#frmSuspension').serializeFormJSON();
             $.ajax({
                 url: globalRutaServidor + "Convocatoria/Suspender",
@@ -138,7 +145,10 @@
                 data: { entidad: convocatoria },
                 success: function (data) {
                     if (data.statusCode == 200) {
-                        gMensajeInformacion(data.mensaje);
+                        var callback = function () {
+                            $("#btnCancelar").click();
+                        };
+                        gMensajeInformacionConCallback(data.mensaje, callback);
                     } else {
                         gMensajeInformacion('Ocurrio un error.');
                     }

@@ -14,6 +14,7 @@ namespace DattatecPanel.Models.DTO
         public string Estado { get; set; }
         public DateTime? FechaSuspension { get; set; }
         public string ObservacionSuspension { get; set; }
-        public HttpPostedFileBase Requisito { get; set; }
+        public HttpPostedFileBase RequisitoFile { get; set; }
+        public byte[] Requisito { get; set; }
     }
 }
