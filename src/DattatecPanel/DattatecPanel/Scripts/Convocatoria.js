@@ -2,7 +2,10 @@
     var Convocatoria = (function () {
         function Convocatoria() { };
         Convocatoria.prototype.PageLoad = function () {
-            gInputsFormatoFecha("FechaInicio,FechaFin,fechaInicioIndex,FechaFinIndex");
+            var s = suspender == undefined ? false : suspender;
+            if (!s || s == undefined) {
+                gInputsFormatoFecha("FechaInicio,FechaFin,fechaInicioIndex,FechaFinIndex");
+            }
             Convocatoria.prototype.dataGrid();
             Convocatoria.prototype.buscar();
             Convocatoria.prototype.agregarEventos();
@@ -92,8 +95,10 @@
                 data: frmData,
                 success: function (data) {
                     if (data.statusCode == 200) {
-                        gMensajeInformacion(data.mensaje);
-                        $("#btnCancelar").click();
+                        var callback = function () {
+                            $("#btnCancelar").click();
+                        };
+                        gMensajeInformacionConCallback(data.mensaje, callback);
                     } else {
                         gMensajeInformacion('Ocurrio un error.');
                     }
@@ -140,7 +145,10 @@
                 data: { entidad: convocatoria },
                 success: function (data) {
                     if (data.statusCode == 200) {
-                        gMensajeInformacion(data.mensaje);
+                        var callback = function () {
+                            $("#btnCancelar").click();
+                        };
+                        gMensajeInformacionConCallback(data.mensaje, callback);
                     } else {
                         gMensajeInformacion('Ocurrio un error.');
                     }

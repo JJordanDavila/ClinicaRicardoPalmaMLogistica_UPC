@@ -34,30 +34,54 @@ else
             @Html.ValidationMessageFor(model => model.FechaFin, "", new { @class = "text-danger" })
         </div>
     </div>
-    <div class="form-group colFormularioHorizontal">
-        @Html.LabelFor(model => model.RubroID, new { @class = "col-sm-4 control-label obligatorio" })
-        <div class="col-sm-7">
-            @Html.DropDownListFor(model => model.RubroID, new SelectList(ViewBag.Rubros, "RubroID", "Descripcion"), new { @data_width = "100%", @class = "form-control" })
-            @Html.ValidationMessageFor(model => model.RubroID, "", new { @class = "text-danger" })
+    @if (Model == null)
+    {
+        <div class="form-group colFormularioHorizontal">
+            @Html.LabelFor(model => model.RubroID, new { @class = "col-sm-4 control-label obligatorio" })
+            <div class="col-sm-7">
+                @Html.DropDownListFor(model => model.RubroID, new SelectList(ViewBag.Rubros, "RubroID", "Descripcion"), new { @data_width = "100%", @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.RubroID, "", new { @class = "text-danger" })
+            </div>
         </div>
-    </div>
-    <div class="form-group colFormularioHorizontal">
-        @Html.LabelFor(model => model.EmpleadoID, new { @class = "col-sm-4 control-label obligatorio" })
-        <div class="col-sm-7">
-            @Html.DropDownListFor(model => model.EmpleadoID, new SelectList(ViewBag.Solicitantes, "EmpleadoID", "NombreCompleto"), new { @data_width = "100%", @class = "form-control" })
-            @Html.ValidationMessageFor(model => model.EmpleadoID, "", new { @class = "text-danger" })
+        <div class="form-group colFormularioHorizontal">
+            @Html.LabelFor(model => model.EmpleadoID, new { @class = "col-sm-4 control-label obligatorio" })
+            <div class="col-sm-7">
+                @Html.DropDownListFor(model => model.EmpleadoID, new SelectList(ViewBag.Solicitantes, "EmpleadoID", "NombreCompleto"), new { @data_width = "100%", @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.EmpleadoID, "", new { @class = "text-danger" })
+            </div>
         </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(model => model.Requisito, new { @class = "col-sm-4 control-label" })
-        @*<div class="col-sm-7">
-            @Html.EditorFor(model => model.Requisito, new { htmlAttributes = new { @class = "form-control", @type = "file" } })
-            @Html.ValidationMessageFor(model => model.Requisito, "", new { @class = "text-danger" })
-        </div>*@
-        <div class="col-sm-7">
-            <input type="file" class="" id="Requisito" name="Requisito"/>
+    }
+    else
+    {
+
+        <div class="form-group colFormularioHorizontal">
+            @Html.LabelFor(model => model.RubroID, new { @class = "col-sm-4 control-label obligatorio" })
+            <div class="col-sm-7">
+                @Html.DropDownListFor(model => model.RubroID, new SelectList(ViewBag.Rubros, "RubroID", "Descripcion"), new { @data_width = "100%", @class = "form-control", @readonly = "readonly" })
+                @Html.ValidationMessageFor(model => model.RubroID, "", new { @class = "text-danger" })
+            </div>
         </div>
-    </div>
+        <div class="form-group colFormularioHorizontal">
+            @Html.LabelFor(model => model.EmpleadoID, new { @class = "col-sm-4 control-label obligatorio" })
+            <div class="col-sm-7">
+                @Html.DropDownListFor(model => model.EmpleadoID, new SelectList(ViewBag.Solicitantes, "EmpleadoID", "NombreCompleto"), new { @data_width = "100%", @class = "form-control", @readonly = "readonly" })
+                @Html.ValidationMessageFor(model => model.EmpleadoID, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    }
+    @if (Model == null)
+    {
+        <div class="form-group">
+            @Html.LabelFor(model => model.Requisito, new { @class = "col-sm-4 control-label" })
+            @*<div class="col-sm-7">
+                    @Html.EditorFor(model => model.Requisito, new { htmlAttributes = new { @class = "form-control", @type = "file" } })
+                    @Html.ValidationMessageFor(model => model.Requisito, "", new { @class = "text-danger" })
+                </div>*@
+            <div class="col-sm-7">
+                <input type="file" id="Requisito" name="Requisito" />
+            </div>
+        </div>
+    }
 
     <div class="modal-footer" style="margin-top: 20px;">
         <a href="@Url.Action("Index", "Convocatoria")" class="btn btn-primary" style="color: white;"><span class="glyphicon glyphicon-ok-sign" id="btnCancelar"></span> Cancelar</a>
@@ -67,6 +91,7 @@ else
 @section scripts{
 
     <script>
+        var suspender = false;
         var convocatoria = $("#Convocatoriaid").val();
         if (convocatoria == "") {
             $("#Numero").val('@ViewBag.NuevoNumeroConvocatoria');
@@ -75,6 +100,9 @@ else
             $('#FechaInicio').val($.datepicker.formatDate('dd-m-yy', currentdate));
             currentdate.setDate(currentdate.getDate() + 30);
             $('#FechaFin').val($.datepicker.formatDate('dd-m-yy', currentdate));
+        } else {
+            $('#RubroID option:not(:selected)').attr('disabled', true);
+            $('#EmpleadoID option:not(:selected)').attr('disabled', true);
         }
     </script>
     <script src="~/Scripts/Convocatoria.js"></script>

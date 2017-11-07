@@ -26,10 +26,11 @@ namespace DattatecPanel.Controllers
         public ActionResult ListarConvocatoriaProveedores(string numero, string fini, string ffin)
         {
             var dfini = string.IsNullOrEmpty(fini) ? DateTime.MinValue : Convert.ToDateTime(fini);
-            var dffin = string.IsNullOrEmpty(ffin) ? DateTime.Now : Convert.ToDateTime(ffin);
+            var dffin = string.IsNullOrEmpty(ffin) ? DateTime.MaxValue : Convert.ToDateTime(ffin);
             var lista = db.DB_Convocatoria.Where(x => x.Numero.Contains(numero)
            && x.FechaInicio >= dfini
-           && x.FechaFin <= dffin).ToList().Select(s => new {
+           && x.FechaFin <= dffin
+           && x.Estado == "E").ToList().Select(s => new {
                s.Convocatoriaid,
                s.Numero,
                s.FechaInicio,
@@ -39,7 +40,9 @@ namespace DattatecPanel.Controllers
                s.Rubro.Descripcion,
                s.Empleado.NombreCompleto
            }).ToList();
-            return Json(new { rows = lista }, JsonRequestBehavior.AllowGet);
+            var jsonresult =  Json(new { rows = lista }, JsonRequestBehavior.AllowGet);
+            jsonresult.MaxJsonLength = int.MaxValue;
+            return jsonresult;
         }
 
         public ActionResult Nuevo()
@@ -58,16 +61,19 @@ namespace DattatecPanel.Controllers
             try
             {
                 var mensaje = string.Empty;
-                byte[] data;
-                using (Stream inputStream = entidad.Requisito.InputStream)
+                byte[] data = null;
+                if (entidad.Requisito != null)
                 {
-                    MemoryStream memoryStream = inputStream as MemoryStream;
-                    if (memoryStream == null)
+                    using (Stream inputStream = entidad.Requisito.InputStream)
                     {
-                        memoryStream = new MemoryStream();
-                        inputStream.CopyTo(memoryStream);
+                        MemoryStream memoryStream = inputStream as MemoryStream;
+                        if (memoryStream == null)
+                        {
+                            memoryStream = new MemoryStream();
+                            inputStream.CopyTo(memoryStream);
+                        }
+                        data = memoryStream.ToArray();
                     }
-                    data = memoryStream.ToArray();
                 }
 
                 entidad.Estado = "E";
