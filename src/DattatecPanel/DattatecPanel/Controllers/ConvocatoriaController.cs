@@ -47,10 +47,22 @@ namespace DattatecPanel.Controllers
 
         public ActionResult Nuevo()
         {
-            Random r = new Random();
-            var numero = db.DB_Convocatoria.OrderByDescending(x => x.Numero).First().Numero;
-            var correlativo = Convert.ToInt32(numero.ToString().Substring(6)) + 1;
-            ViewBag.NuevoNumeroConvocatoria = numero.Substring(0, 6) + correlativo.ToString();
+            var numerogenerado = string.Empty;
+            if(db.DB_Convocatoria.Count() > 0)
+            {
+                var convocatoria = db.DB_Convocatoria.OrderByDescending(x => x.Numero).First();
+                if (convocatoria != null)
+                {
+                    var numero = convocatoria.Numero;
+                    var correlativo = Convert.ToInt32(numero.ToString().Substring(6)) + 1;
+                    numerogenerado = numero.Substring(0, 6) + correlativo.ToString();
+                }
+            }
+            else
+            {
+                
+            }
+            ViewBag.NuevoNumeroConvocatoria = numerogenerado;
             CargarCombos();
             return View();
         }
