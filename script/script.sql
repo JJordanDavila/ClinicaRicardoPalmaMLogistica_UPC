@@ -1,11 +1,11 @@
 USE [master]
 GO
 
-CREATE DATABASE [BDRicardoPalma]
+CREATE DATABASE [BD_RicardoPalma]
 
 GO
 
-USE [BDRicardoPalma]
+USE [BD_RicardoPalma]
 GO
 /****** Object:  StoredProcedure [dbo].[Spl_GetIdLic]    Script Date: 11/7/2017 2:09:12 AM ******/
 SET ANSI_NULLS ON
@@ -765,27 +765,7 @@ CREATE TABLE [dbo].[GL_RegistroProveedorParticipante](
 GO
 SET ANSI_PADDING OFF
 GO
-/****** Object:  Table [dbo].[GL_ReqMovAlmacen]    Script Date: 11/7/2017 2:09:12 AM ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-SET ANSI_PADDING ON
-GO
-CREATE TABLE [dbo].[GL_ReqMovAlmacen](
-	[ReqMovAlmacenID] [int] NOT NULL,
-	[TipoMovimientoID] [int] NOT NULL,
-	[Descripcion] [varchar](10) NOT NULL,
-PRIMARY KEY CLUSTERED 
-(
-	[ReqMovAlmacenID] ASC,
-	[TipoMovimientoID] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-) ON [PRIMARY]
 
-GO
-SET ANSI_PADDING OFF
-GO
 /****** Object:  Table [dbo].[GL_RequerimientoCompra]    Script Date: 11/7/2017 2:09:12 AM ******/
 SET ANSI_NULLS ON
 GO
@@ -844,25 +824,7 @@ PRIMARY KEY CLUSTERED
 GO
 SET ANSI_PADDING OFF
 GO
-/****** Object:  Table [dbo].[GL_TipoMovimiento]    Script Date: 11/7/2017 2:09:12 AM ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-SET ANSI_PADDING ON
-GO
-CREATE TABLE [dbo].[GL_TipoMovimiento](
-	[TipoMovimientoID] [int] IDENTITY(1,1) NOT NULL,
-	[Descripcion] [varchar](10) NOT NULL,
-PRIMARY KEY CLUSTERED 
-(
-	[TipoMovimientoID] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-) ON [PRIMARY]
 
-GO
-SET ANSI_PADDING OFF
-GO
 /****** Object:  Table [dbo].[GL_TipoSolicitud]    Script Date: 11/7/2017 2:09:12 AM ******/
 SET ANSI_NULLS ON
 GO
@@ -2013,6 +1975,11 @@ REFERENCES [dbo].[GL_SolicitudActProveedor] ([SolicitudActProveedorID])
 GO
 ALTER TABLE [dbo].[GL_DetSolicitudActProveedor] CHECK CONSTRAINT [FK_DetSolicitudActProveedor]
 GO
+ALTER TABLE [dbo].[GL_DetSolicitudActProveedor]  WITH CHECK ADD  CONSTRAINT [FK_DetSolicitudActProveedor_ProveedorID] FOREIGN KEY([ProveedorID])
+REFERENCES [dbo].[GL_Proveedor] ([ProveedorID])
+GO
+ALTER TABLE [dbo].[GL_DetSolicitudActProveedor] CHECK CONSTRAINT [FK_DetSolicitudActProveedor_ProveedorID]
+GO
 ALTER TABLE [dbo].[GL_Empleado]  WITH CHECK ADD  CONSTRAINT [FK_AreaEmpleado] FOREIGN KEY([AreaID])
 REFERENCES [dbo].[GL_Area] ([AreaID])
 GO
@@ -2063,11 +2030,9 @@ REFERENCES [dbo].[GL_Proveedor] ([ProveedorID])
 GO
 ALTER TABLE [dbo].[GL_RegistroProveedorParticipante] CHECK CONSTRAINT [FK_GL_RegistroProveedorParticipante_GL_Proveedor]
 GO
-ALTER TABLE [dbo].[GL_ReqMovAlmacen]  WITH CHECK ADD  CONSTRAINT [FK_GL_ReqMovAlmacen] FOREIGN KEY([TipoMovimientoID])
-REFERENCES [dbo].[GL_TipoMovimiento] ([TipoMovimientoID])
-GO
-ALTER TABLE [dbo].[GL_ReqMovAlmacen] CHECK CONSTRAINT [FK_GL_ReqMovAlmacen]
-GO
+
+
+
 ALTER TABLE [dbo].[GL_RequerimientoCompra]  WITH CHECK ADD  CONSTRAINT [FK_EmpleadoReq] FOREIGN KEY([SolicitanteID])
 REFERENCES [dbo].[GL_Empleado] ([EmpleadoID])
 GO
