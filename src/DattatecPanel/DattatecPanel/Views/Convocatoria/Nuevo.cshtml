@@ -13,6 +13,7 @@ else
 
 <form id="frmNuevoConvocatoria">
     @Html.HiddenFor(model => model.Convocatoriaid, new { htmlAttributes = new { @class = "form-control" } })
+    
     <div class="form-group">
         @Html.LabelFor(model => model.Numero, new { @class = "col-sm-4 control-label" })
         <div class="col-sm-7">
@@ -78,9 +79,13 @@ else
                     @Html.ValidationMessageFor(model => model.Requisito, "", new { @class = "text-danger" })
                 </div>*@
             <div class="col-sm-7">
-                <input type="file" id="Requisito" name="Requisito" />
+                <input type="file" id="RequisitoFile" name="RequisitoFile" />
             </div>
         </div>
+    }
+    else
+    {
+        @Html.HiddenFor(model => model.Requisito, new { htmlAttributes = new { @class = "form-control" } })
     }
 
     <div class="modal-footer" style="margin-top: 20px;">

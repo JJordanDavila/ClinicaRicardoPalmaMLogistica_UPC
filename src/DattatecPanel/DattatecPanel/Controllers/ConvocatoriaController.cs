@@ -62,9 +62,9 @@ namespace DattatecPanel.Controllers
             {
                 var mensaje = string.Empty;
                 byte[] data = null;
-                if (entidad.Requisito != null)
+                if (entidad.RequisitoFile != null)
                 {
-                    using (Stream inputStream = entidad.Requisito.InputStream)
+                    using (Stream inputStream = entidad.RequisitoFile.InputStream)
                     {
                         MemoryStream memoryStream = inputStream as MemoryStream;
                         if (memoryStream == null)
@@ -86,7 +86,7 @@ namespace DattatecPanel.Controllers
                     Estado = entidad.Estado,
                     RubroID = entidad.RubroID,
                     EmpleadoID = entidad.EmpleadoID,
-                    Requisito = data
+                    Requisito = data == null ? entidad.Requisito : data
                 };
                 if (entidad.Convocatoriaid <= 0)
                 {
