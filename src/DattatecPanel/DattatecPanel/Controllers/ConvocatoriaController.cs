@@ -44,7 +44,8 @@ namespace DattatecPanel.Controllers
         public ActionResult Nuevo()
         {
             Random r = new Random();
-            ViewBag.NuevoNumeroConvocatoria = DateTime.Now.Year.ToString() + DateTime.Now.Month.ToString() + r.Next(111111, 999999).ToString();
+            var numero = db.DB_Convocatoria.OrderByDescending(x => x.Numero).First().Numero;
+            ViewBag.NuevoNumeroConvocatoria = Convert.ToInt32(numero.ToString().Substring(6)) + 1;
             CargarCombos();
             return View();
         }
@@ -110,7 +111,7 @@ namespace DattatecPanel.Controllers
                 entidad.FechaSuspension = DateTime.Now;
                 db.Entry(entidad).State = EntityState.Modified;
                 db.SaveChanges();
-                //correo.EnviarCorreo("Clinica Ricardo Palma", entidad.Empleado.Correo, "Suspension", "Correo de prueba", false, null);
+                correo.EnviarCorreo("Clinica Ricardo Palma", entidad.Empleado.Correo, "Suspension", "Correo de prueba", false, null);
                 mensaje = "Se actualizo con exito";
                 return Json(new { statusCode = HttpStatusCode.OK, mensaje = mensaje }, JsonRequestBehavior.AllowGet);
             }

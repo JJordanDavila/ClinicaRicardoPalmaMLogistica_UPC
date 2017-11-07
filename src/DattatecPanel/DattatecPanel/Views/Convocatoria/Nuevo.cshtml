@@ -70,6 +70,11 @@ else
         var convocatoria = $("#Convocatoriaid").val();
         if (convocatoria == "") {
             $("#Numero").val('@ViewBag.NuevoNumeroConvocatoria');
+            var currentdate = new Date();
+
+            $('#FechaInicio').val($.datepicker.formatDate('dd-m-yy', currentdate));
+            currentdate.setDate(currentdate.getDate() + 30);
+            $('#FechaFin').val($.datepicker.formatDate('dd-m-yy', currentdate));
         }
     </script>
     <script src="~/Scripts/Convocatoria.js"></script>

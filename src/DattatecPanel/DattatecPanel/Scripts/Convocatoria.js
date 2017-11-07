@@ -32,7 +32,7 @@
                         field: 'Descripcion', title: 'Rubro', width: 150
                     },
                     {
-                        field: 'NombreCompleto', title: 'Empleado', width: 250
+                        field: 'NombreCompleto', title: 'Solicitante', width: 250
                     },
                     {
                         field: 'Estado', title: 'Estado', align: 'center', width: 100
@@ -41,7 +41,7 @@
                         field: 'action', title: 'Opciones', width: 100, align: 'center',
                         formatter: function (value, row, index) {
                             var a = '<a href="' + globalRutaServidor + 'Convocatoria/Actualizar/' + row.Convocatoriaid + '" ><span class="glyphicon glyphicon-pencil opciones" title="Modificar"></span></a>';
-                            var b = '<a href="' + globalRutaServidor + 'Convocatoria/Suspender/' + row.Convocatoriaid + '" ><span class="glyphicon glyphicon-remove opciones" title="Modificar"></span></a>';
+                            var b = '<a href="' + globalRutaServidor + 'Convocatoria/Suspender/' + row.Convocatoriaid + '" ><span class="glyphicon glyphicon-remove opciones" title="Suspender"></span></a>';
                             return a + b;
                         }
                     }
