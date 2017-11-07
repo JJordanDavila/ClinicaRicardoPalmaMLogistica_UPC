@@ -1,11 +1,11 @@
 USE [master]
 GO
 
-CREATE DATABASE [BD_RicardoPalma]
+CREATE DATABASE [BDRicardoPalma]
 
 GO
 
-USE [BD_RicardoPalma]
+USE [BDRicardoPalma]
 GO
 /****** Object:  StoredProcedure [dbo].[Spl_GetIdLic]    Script Date: 11/7/2017 2:09:12 AM ******/
 SET ANSI_NULLS ON
