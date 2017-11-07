@@ -28,7 +28,8 @@ namespace DattatecPanel.Controllers
             var dffin = string.IsNullOrEmpty(ffin) ? DateTime.Now : Convert.ToDateTime(ffin);
             var lista = db.DB_Convocatoria.Where(x => x.Numero.Contains(numero)
            && x.FechaInicio >= dfini
-           && x.FechaFin <= dffin).ToList().Select(s => new {
+           && x.FechaFin <= dffin).ToList().Select(s => new
+           {
                s.Convocatoriaid,
                s.Numero,
                s.FechaInicio,
@@ -80,7 +81,8 @@ namespace DattatecPanel.Controllers
                     mensaje = "Se actualizo con exito";
                 }
                 return Json(new { statusCode = HttpStatusCode.OK, mensaje = mensaje }, JsonRequestBehavior.AllowGet);
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 return Json(new { statusCode = HttpStatusCode.BadRequest }, JsonRequestBehavior.AllowGet);
             }

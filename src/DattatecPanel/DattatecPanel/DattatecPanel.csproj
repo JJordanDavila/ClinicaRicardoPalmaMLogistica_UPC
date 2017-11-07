@@ -184,6 +184,7 @@
     <Compile Include="Controllers\LicitacionController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\OrdenCompraController.cs" />
+    <Compile Include="Controllers\PostulanteController.cs" />
     <Compile Include="Controllers\RegistroProveedorParticipanteController.cs" />
     <Compile Include="Controllers\RequerimientoCompraController.cs" />
     <Compile Include="Datasets\dsDetalleOrdenCompra1.Designer.cs">
@@ -216,6 +217,7 @@
     </Compile>
     <Compile Include="Models\Convocatoria.cs" />
     <Compile Include="Models\Cotizacion.cs" />
+    <Compile Include="Models\DetallePostulante.cs" />
     <Compile Include="Models\DetalleTransaccionCompra.cs" />
     <Compile Include="Models\DTO\AdjuntoCorreo.cs" />
     <Compile Include="Models\DTO\ConvocatoriaDTO.cs" />
@@ -282,6 +284,7 @@
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Moneda.cs" />
     <Compile Include="Models\OrdenCompra.cs" />
+    <Compile Include="Models\Postulante.cs" />
     <Compile Include="Models\Proveedor.cs" />
     <Compile Include="Models\RegistroProveedorParticipante.cs" />
     <Compile Include="Models\RequerimientoCompra.cs" />
@@ -635,6 +638,7 @@
     <Content Include="Views\Convocatoria\Index.cshtml" />
     <Content Include="Views\Convocatoria\Nuevo.cshtml" />
     <Content Include="Views\Convocatoria\Suspender.cshtml" />
+    <Content Include="Views\Postulante\RegistrarPostulante.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

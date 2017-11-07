@@ -23,7 +23,7 @@ namespace DattatecPanel.Models
         public string Direccion { get; set; }
         public string Correo { get; set; }
         public string RUC { get; set; }
-        public bool Certificado { get; set; }
+        public bool CertificadoISO { get; set; }
         public string Estado { get; set; }
 
         [NotMapped]
