@@ -21,7 +21,7 @@ namespace DattatecPanel.Models
 
         [Display(Name = "Fecha Fin")]
         public DateTime FechaFin { get; set; }
-        public byte? Requisito { get; set; }
+        public byte[] Requisito { get; set; }
         public string Estado { get; set; }
 
         [Display(Name = "Rubro")]
@@ -30,7 +30,7 @@ namespace DattatecPanel.Models
         [ForeignKey("RubroID")]
         public virtual Rubro Rubro { get; set; }
 
-        [Display(Name = "Empleado")]
+        [Display(Name = "Solicitante")]
         public int EmpleadoID { get; set; }
 
         [ForeignKey("EmpleadoID")]

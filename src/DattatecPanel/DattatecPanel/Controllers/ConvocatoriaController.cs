@@ -5,6 +5,7 @@ using DattatecPanel.Models.Util;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -45,7 +46,8 @@ namespace DattatecPanel.Controllers
         {
             Random r = new Random();
             var numero = db.DB_Convocatoria.OrderByDescending(x => x.Numero).First().Numero;
-            ViewBag.NuevoNumeroConvocatoria = Convert.ToInt32(numero.ToString().Substring(6)) + 1;
+            var correlativo = Convert.ToInt32(numero.ToString().Substring(6)) + 1;
+            ViewBag.NuevoNumeroConvocatoria = numero.Substring(0, 6) + correlativo.ToString();
             CargarCombos();
             return View();
         }
@@ -56,6 +58,18 @@ namespace DattatecPanel.Controllers
             try
             {
                 var mensaje = string.Empty;
+                byte[] data;
+                using (Stream inputStream = entidad.Requisito.InputStream)
+                {
+                    MemoryStream memoryStream = inputStream as MemoryStream;
+                    if (memoryStream == null)
+                    {
+                        memoryStream = new MemoryStream();
+                        inputStream.CopyTo(memoryStream);
+                    }
+                    data = memoryStream.ToArray();
+                }
+
                 entidad.Estado = "E";
                 Convocatoria convocatoria = new Convocatoria
                 {
@@ -66,18 +80,24 @@ namespace DattatecPanel.Controllers
                     Estado = entidad.Estado,
                     RubroID = entidad.RubroID,
                     EmpleadoID = entidad.EmpleadoID,
-                    Requisito = null
+                    Requisito = data
                 };
                 if (entidad.Convocatoriaid <= 0)
                 {
+                    var empleado = db.DB_Empleado.Where(x => x.EmpleadoID == convocatoria.EmpleadoID).FirstOrDefault();
+                    var cuerpoCorreo = "Se registro la convocatoria con el numero : " + convocatoria.Numero.ToString();
                     db.DB_Convocatoria.Add(convocatoria);
                     db.SaveChanges();
+                    correo.EnviarCorreo("Clinica Ricardo Palma", empleado.Correo, "Creación de convocatoria", cuerpoCorreo, false, null);
                     mensaje = "Se registro con exito";
                 }
                 else
                 {
+                    var empleado = db.DB_Empleado.Where(x => x.EmpleadoID == convocatoria.EmpleadoID).FirstOrDefault();
+                    var cuerpoCorreo = "Se actualizo la convocatoria con el numero : " + convocatoria.Numero.ToString();
                     db.Entry(convocatoria).State = EntityState.Modified;
                     db.SaveChanges();
+                    correo.EnviarCorreo("Clinica Ricardo Palma", empleado.Correo, "Actualizacion de convocatoria", cuerpoCorreo, false, null);
                     mensaje = "Se actualizo con exito";
                 }
                 return Json(new { statusCode = HttpStatusCode.OK, mensaje = mensaje }, JsonRequestBehavior.AllowGet);
@@ -107,12 +127,18 @@ namespace DattatecPanel.Controllers
             try
             {
                 var mensaje = string.Empty;
+                if (string.IsNullOrEmpty(entidad.ObservacionSuspension))
+                {
+                    return Json(new { statusCode = HttpStatusCode.OK, mensaje = "Ingrese una observación." }, JsonRequestBehavior.AllowGet);
+                }
+                var cuerpoCorreo = "Se suspendio la convocatoria con el numero : " + entidad.Numero.ToString();
+                var empleado = db.DB_Empleado.Where(x => x.EmpleadoID == entidad.EmpleadoID).FirstOrDefault();
                 entidad.Estado = "S";
                 entidad.FechaSuspension = DateTime.Now;
                 db.Entry(entidad).State = EntityState.Modified;
                 db.SaveChanges();
-                correo.EnviarCorreo("Clinica Ricardo Palma", entidad.Empleado.Correo, "Suspension", "Correo de prueba", false, null);
-                mensaje = "Se actualizo con exito";
+                correo.EnviarCorreo("Clinica Ricardo Palma", empleado.Correo, "Suspension de convocatoria", cuerpoCorreo, false, null);
+                mensaje = "Se suspendio con exito";
                 return Json(new { statusCode = HttpStatusCode.OK, mensaje = mensaje }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)

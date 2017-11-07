@@ -81,6 +81,7 @@
         };
 
         Convocatoria.prototype.GuardarConvocatoria = function () {
+
             var frmData = new FormData(document.getElementById('frmNuevoConvocatoria'));
             $.ajax({
                 url: globalRutaServidor + "Convocatoria/Nuevo",
@@ -131,6 +132,7 @@
         };
 
         Convocatoria.prototype.GuardarSuspension = function () {
+
             var convocatoria = $('#frmSuspension').serializeFormJSON();
             $.ajax({
                 url: globalRutaServidor + "Convocatoria/Suspender",
