@@ -119,7 +119,8 @@ namespace DattatecPanel.Controllers
                     mensaje = "Se actualizo con exito";
                 }
                 return Json(new { statusCode = HttpStatusCode.OK, mensaje = mensaje }, JsonRequestBehavior.AllowGet);
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 return Json(new { statusCode = HttpStatusCode.BadRequest }, JsonRequestBehavior.AllowGet);
             }
