@@ -1,9 +1,283 @@
+USE [master]
+GO
+
 CREATE DATABASE [BDRicardoPalma]
+
 GO
 
 USE [BDRicardoPalma]
 GO
-/****** Object:  Table [dbo].[Destino]    Script Date: 02/11/2017 11:20:02 a.m. ******/
+/****** Object:  StoredProcedure [dbo].[Spl_GetIdLic]    Script Date: 11/7/2017 2:09:12 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+Create Procedure [dbo].[Spl_GetIdLic]
+AS
+Begin
+	Select (Year(GetDate())*1000000)+
+					 (Convert(TinyInt,Right('00'+Convert(Varchar,Month(GetDate())),2))*10000)+
+					 (Select IsNull(Max(Convert(Int,Right(LicitacionID,4)))+1,1) From GL_Licitacion) Id;
+End
+
+
+GO
+/****** Object:  StoredProcedure [dbo].[Spl_GetIdTra]    Script Date: 11/7/2017 2:09:12 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+Create Procedure [dbo].[Spl_GetIdTra]
+AS
+Begin
+	Select (Year(GetDate())*1000000)+
+					 (Convert(TinyInt,Right('00'+Convert(Varchar,Month(GetDate())),2))*10000)+
+					 (Select IsNull(Max(Convert(Int,Right([TransaccionCompraID],4)))+1,1) From GL_TransaccionCompra) Id;
+End
+
+GO
+/****** Object:  StoredProcedure [dbo].[Spl_GetNumero]    Script Date: 11/7/2017 2:09:12 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+Create Procedure [dbo].[Spl_GetNumero]
+@Doc Char(2)
+AS
+Begin
+	Declare @Num Int;
+	Declare @Txt Varchar(10)
+	--Declare @Doc Char(2)
+	--Set @Doc='OC'
+	If(@Doc='OC')
+		Begin
+			Set @Num = (Select IsNull(Max(Convert(Int,SubString(Tc.Numero,6,5))),0)+1 From GL_OrdenCompra Oc Inner Join GL_TransaccionCompra Tc On Tc.TransaccionCompraID=Oc.OrdenCompraID Where IsNumeric(SubString(Tc.Numero,6,5))=1)
+			Set @Txt = Convert(Varchar,Year(GetDate())) + '-' + Right('00000' + Convert(Varchar,@Num),5)
+		End
+	If(@Doc='LI')
+		Begin
+			Set @Num = (Select IsNull(Max(Convert(Int,SubString(Numero,7,4))),0)+1 From GL_Licitacion Oc  Where IsNumeric(SubString(Numero,7,4))=1)
+			Set @Txt = Convert(Varchar,Year(GetDate())) + Right('00'+Convert(Varchar,Month(GetDate())),2) + Right('0000' + Convert(Varchar,@Num),4)
+			--YYYYMM####
+		End
+	Select @Txt Id
+End
+
+
+GO
+/****** Object:  StoredProcedure [dbo].[sql2pdf]    Script Date: 11/7/2017 2:09:12 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+-- DROP PROCEDURE sql2pdf
+CREATE PROCEDURE [dbo].[sql2pdf]
+   @filename VARCHAR(100) 
+AS 
+  CREATE TABLE #pdf (idnumber INT IDENTITY(1,1)
+  		    ,code NVARCHAR(200))
+  CREATE TABLE #xref (idnumber INT IDENTITY(1,1)
+  		    ,code VARCHAR(30))
+  CREATE TABLE #text (idnumber INT IDENTITY(1,1)
+  		    ,code VARCHAR(200))
+
+  DECLARE @end VARCHAR(7),
+  	@beg   VARCHAR(7),
+  	@a1    VARCHAR(3),
+  	@a2    VARCHAR(3),
+  	@ad    VARCHAR(5),
+  	@cr    VARCHAR(8),
+  	@pr    VARCHAR(9),
+  	@ti    VARCHAR(6),
+  	@xstr  VARCHAR(10),
+  	@page  VARCHAR(8000),
+	@pdf   VARCHAR(100),
+	@trenutniRed NVARCHAR(200),
+  	@rows   INT,
+  	@ofset  INT,
+  	@len    INT,
+  	@nopg   INT,
+        @fs 	INT,
+	@ole    INT,
+	@x 	INT,
+	@file   INT,
+  	@object INT
+  SELECT @pdf = 'C:\pdf\' + @filename + '.pdf'  
+  SET @page = ''
+  SET @nopg = 0
+  SET @object = 6
+  SET @end = 'endobj'
+  SET @beg = ' 0 obj'
+  SET @a1 = '<<'
+  SET @a2 = '>>'
+  SET @ad = ' 0 R'
+  SET @cr = CHAR(67) + CHAR(114) + CHAR (101) + CHAR(97) + CHAR(116) + CHAR (111) + CHAR(114)
+  SET @pr = CHAR(80) + CHAR(114) + CHAR (111) + CHAR(100) + CHAR(117) + CHAR (99 ) + CHAR(101) + CHAR(114)
+  SET @ti = CHAR(84) + CHAR(105) + CHAR (116) + CHAR(108) + CHAR(101)
+  SET @xstr = ' 00000 n'
+  SET @ofset = 396  
+  INSERT INTO #xref(code) VALUES ('xref')
+  INSERT INTO #xref(code) VALUES ('0 10')
+  INSERT INTO #xref(code) VALUES ('0000000000 65535 f')
+  INSERT INTO #xref(code) VALUES ('0000000017' + @xstr)
+  INSERT INTO #xref(code) VALUES ('0000000790' + @xstr)
+  INSERT INTO #xref(code) VALUES ('0000000869' + @xstr)
+  INSERT INTO #xref(code) VALUES ('0000000144' + @xstr)
+  INSERT INTO #xref(code) VALUES ('0000000247' + @xstr)
+  INSERT INTO #xref(code) VALUES ('0000000321' + @xstr)
+  INSERT INTO #xref(code) VALUES ('0000000396' + @xstr)  
+  INSERT INTO #pdf (code) VALUES ('%' + CHAR(80) + CHAR(68) + CHAR (70) + '-1.2')
+  INSERT INTO #pdf (code) VALUES ('%сссс')
+  INSERT INTO #pdf (code) VALUES ('1' + @beg)
+  INSERT INTO #pdf (code) VALUES (@a1)
+  INSERT INTO #pdf (code) VALUES ('/' + @cr + ' (Ivica Masar ' + CHAR(80) + CHAR(83) + CHAR (79) + CHAR(80) + CHAR(68) + CHAR (70) + ')')
+  INSERT INTO #pdf (code) VALUES ('/' + @pr + ' (stored procedure for ms sql  pso@vip.hr)')
+  INSERT INTO #pdf (code) VALUES ('/' + @ti + ' (SQL2' + CHAR(80) + CHAR(68) + CHAR (70) + ')')
+  INSERT INTO #pdf (code) VALUES (@a2)
+  INSERT INTO #pdf (code) VALUES (@end)
+  INSERT INTO #pdf (code) VALUES ('4' + @beg)
+  INSERT INTO #pdf (code) VALUES (@a1)
+  INSERT INTO #pdf (code) VALUES ('/Type /Font')
+  INSERT INTO #pdf (code) VALUES ('/Subtype /Type1')
+  INSERT INTO #pdf (code) VALUES ('/Name /F1')
+  INSERT INTO #pdf (code) VALUES ('/Encoding 5' + @ad)
+  INSERT INTO #pdf (code) VALUES ('/BaseFont /Courier')
+  INSERT INTO #pdf (code) VALUES (@a2)
+  INSERT INTO #pdf (code) VALUES (@end)
+  INSERT INTO #pdf (code) VALUES ('5' + @beg)
+  INSERT INTO #pdf (code) VALUES (@a1)
+  INSERT INTO #pdf (code) VALUES ('/Type /Encoding')
+  INSERT INTO #pdf (code) VALUES ('/BaseEncoding /WinAnsiEncoding')
+  INSERT INTO #pdf (code) VALUES (@a2)
+  INSERT INTO #pdf (code) VALUES (@end)
+  INSERT INTO #pdf (code) VALUES ('6' + @beg)
+  INSERT INTO #pdf (code) VALUES (@a1)
+  INSERT INTO #pdf (code) VALUES ('  /Font ' + @a1 + ' /F1 4' + @ad + ' ' + @a2 + '  /ProcSet [ /' + CHAR(80) + CHAR(68) + CHAR (70) + ' /Text ]')
+  INSERT INTO #pdf (code) VALUES (@a2)
+  INSERT INTO #pdf (code) VALUES (@end)
+  INSERT INTO #text(code) (SELECT code FROM psopdf)
+  SELECT @x = COUNT(*) FROM #text
+  SELECT @x = (@x / 60) + 1
+  WHILE  @nopg < @x
+    BEGIN
+      DECLARE SysKursor  INSENSITIVE SCROLL CURSOR 
+      FOR SELECT SUBSTRING((code + SPACE(81)), 1, 80) FROM #text WHERE idnumber BETWEEN ((@nopg * 60) + 1) AND ((@nopg + 1) * 60 )
+      FOR READ ONLY    
+      OPEN SysKursor
+      FETCH NEXT FROM SysKursor INTO @trenutniRed
+      SELECT @object = @object + 1
+      SELECT @page = @page +  ' ' + CAST(@object AS VARCHAR) + @ad
+      SELECT @len = LEN(@object) + LEN(@object + 1)
+      INSERT INTO #pdf (code) VALUES (CAST(@object AS VARCHAR)  + @beg)
+      INSERT INTO #pdf (code) VALUES (@a1)
+      INSERT INTO #pdf (code) VALUES ('/Type /Page')
+      INSERT INTO #pdf (code) VALUES ('/Parent 3' + @ad)
+      INSERT INTO #pdf (code) VALUES ('/Resources 6' + @ad)
+      SELECT @object = @object + 1
+      INSERT INTO #pdf (code) VALUES ('/Contents ' + CAST(@object AS VARCHAR) + @ad)
+      INSERT INTO #pdf (code) VALUES (@a2)
+      INSERT INTO #pdf (code) VALUES (@end)
+      SELECT @ofset = @len + 86 + @ofset
+      INSERT INTO #xref(code) (SELECT SUBSTRING('0000000000' + CAST(@ofset AS VARCHAR), 
+    	LEN('0000000000' + CAST(@ofset AS VARCHAR)) - 9, 
+    	LEN('0000000000' + CAST(@ofset AS VARCHAR))) + @xstr)  
+      INSERT INTO #pdf (code) VALUES (CAST(@object AS VARCHAR)  + @beg)
+      INSERT INTO #pdf (code) VALUES (@a1)
+      SELECT @object = @object + 1
+      INSERT INTO #pdf (code) VALUES ('/Length ' + CAST(@object AS VARCHAR) + @ad)
+      INSERT INTO #pdf (code) VALUES (@a2)
+      INSERT INTO #pdf (code) VALUES ('stream')
+      INSERT INTO #pdf (code) VALUES ('BT')
+      INSERT INTO #pdf (code) VALUES ('/F1 10 Tf')
+      INSERT INTO #pdf (code) VALUES ('1 0 0 1 50 802 Tm')
+      INSERT INTO #pdf (code) VALUES ('12 TL')
+      WHILE @@Fetch_Status = 0
+         BEGIN
+             INSERT INTO #pdf (code) VALUES ('T* (' + @trenutniRed + ') Tj')
+             FETCH NEXT FROM  SysKursor INTO @trenutniRed
+          END
+      INSERT INTO #pdf (code) VALUES ('ET')
+      INSERT INTO #pdf (code) VALUES ('endstream')
+      INSERT INTO #pdf (code) VALUES (@end)
+      SELECT @rows = (SELECT COUNT(*) FROM #text WHERE idnumber BETWEEN ((@nopg * 60) + 1) AND ((@nopg + 1) * 60 ))* 90 + 45
+      SELECT @nopg = @nopg + 1    
+      SELECT @len = LEN(@object) + LEN(@object - 1)
+      SELECT @ofset = @len + 57 + @ofset + @rows
+      INSERT INTO #xref(code) (SELECT SUBSTRING('0000000000' + CAST(@ofset AS VARCHAR), 
+     	LEN('0000000000' + CAST(@ofset AS VARCHAR)) - 9, 
+   	LEN('0000000000' + CAST(@ofset AS VARCHAR))) + @xstr)   
+      INSERT INTO #pdf (code) VALUES (CAST(@object AS VARCHAR)  + @beg)
+      INSERT INTO #pdf (code) VALUES (@rows)
+      INSERT INTO #pdf (code) VALUES (@end)
+      SELECT @len = LEN(@object) + LEN(@rows)
+      SELECT @ofset = @len + 18 + @ofset
+      INSERT INTO #xref(code) (SELECT SUBSTRING('0000000000' + CAST(@ofset AS VARCHAR), 
+    	LEN('0000000000' + CAST(@ofset AS VARCHAR)) - 9, 
+    	LEN('0000000000' + CAST(@ofset AS VARCHAR))) + @xstr)  
+      CLOSE SysKursor
+      DEALLOCATE SysKursor
+    END
+    INSERT INTO #pdf (code) VALUES ('2' + @beg)
+    INSERT INTO #pdf (code) VALUES (@a1)
+    INSERT INTO #pdf (code) VALUES ('/Type /Catalog')
+    INSERT INTO #pdf (code) VALUES ('/Pages 3' + @ad)
+    INSERT INTO #pdf (code) VALUES ('/PageLayout /OneColumn')
+    INSERT INTO #pdf (code) VALUES (@a2)
+    INSERT INTO #pdf (code) VALUES (@end)
+    UPDATE #xref SET code = (SELECT code FROM #xref WHERE idnumber = (SELECT MAX(idnumber) FROM #xref)) WHERE idnumber = 5
+    DELETE FROM #xref WHERE idnumber = (SELECT MAX(idnumber) FROM #xref)
+    INSERT INTO #pdf (code) VALUES ('3' + @beg)
+    INSERT INTO #pdf (code) VALUES (@a1)
+    INSERT INTO #pdf (code) VALUES ('/Type /Pages')
+    INSERT INTO #pdf (code) VALUES ('/Count ' + CAST(@nopg AS VARCHAR))
+    INSERT INTO #pdf (code) VALUES ('/MediaBox [ 0 0 595 842 ]')
+    INSERT INTO #pdf (code) VALUES ('/Kids [' + @page + ' ]')
+    INSERT INTO #pdf (code) VALUES (@a2)
+    INSERT INTO #pdf (code) VALUES (@end)
+    SELECT @ofset = @ofset + 79
+    UPDATE #xref SET code =(SELECT SUBSTRING('0000000000' + CAST(@ofset AS VARCHAR), 
+  	LEN('0000000000' + CAST(@ofset AS VARCHAR)) - 9, 
+  	LEN('0000000000' + CAST(@ofset AS VARCHAR))) + @xstr) WHERE idnumber = 6
+    INSERT INTO #xref(code) VALUES ('trailer')
+    INSERT INTO #xref(code) VALUES (@a1)
+    SELECT @object = @object + 1
+    UPDATE #xref SET code = '0 ' + CAST(@object AS VARCHAR) WHERE idnumber = 2
+    INSERT INTO #xref(code) VALUES ('/Size ' + CAST(@object AS VARCHAR))
+    INSERT INTO #xref(code) VALUES ('/Root 2' + @ad)
+    INSERT INTO #xref(code) VALUES ('/Info 1' + @ad)
+    INSERT INTO #xref(code) VALUES (@a2)
+    INSERT INTO #xref(code) VALUES ('startxref')
+    SELECT @len = LEN(@nopg) + LEN(@page)
+    SELECT @ofset = @len + 86 + @ofset
+    INSERT INTO #xref(code) VALUES (@ofset)
+    INSERT INTO #xref(code) VALUES ('%%' + CHAR(69) + CHAR (79) + CHAR(70))
+    INSERT INTO #pdf (code) (SELECT code FROM #xref) 
+    --SELECT code FROM #pdf
+    SELECT @trenutniRed = 'del '+ @pdf
+    EXECUTE @ole = sp_OACreate 'Scripting.FileSystemObject', @fs OUT
+    EXEC master..xp_cmdshell @trenutniRed, NO_OUTPUT
+
+    EXECUTE @ole = sp_OAMethod @fs, 'OpenTextFile', @file OUT, @pdf, 8, 1
+
+    DECLARE SysKursor  INSENSITIVE SCROLL CURSOR 
+    FOR SELECT code FROM #pdf ORDER BY idnumber
+    FOR READ ONLY    
+    OPEN SysKursor
+    FETCH NEXT FROM SysKursor INTO @trenutniRed
+    WHILE @@Fetch_Status = 0
+	BEGIN
+	  EXECUTE @ole = sp_OAMethod @file, 'WriteLine', Null, @trenutniRed
+	  FETCH NEXT FROM  SysKursor INTO @trenutniRed 
+        END
+    CLOSE SysKursor
+    DEALLOCATE SysKursor
+    DELETE FROM psopdf
+    EXECUTE @ole = sp_OADestroy @file
+    EXECUTE @ole = sp_OADestroy @fs
+
+GO
+/****** Object:  Table [dbo].[Destino]    Script Date: 11/7/2017 2:09:12 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -22,7 +296,636 @@ CREATE TABLE [dbo].[Destino](
 GO
 SET ANSI_PADDING OFF
 GO
-/****** Object:  Table [dbo].[Paciente]    Script Date: 02/11/2017 11:20:02 a.m. ******/
+/****** Object:  Table [dbo].[GL_Almacen]    Script Date: 11/7/2017 2:09:12 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [dbo].[GL_Almacen](
+	[AlmacenID] [int] IDENTITY(1,1) NOT NULL,
+	[Direccion] [varchar](50) NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[AlmacenID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [dbo].[GL_Area]    Script Date: 11/7/2017 2:09:12 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [dbo].[GL_Area](
+	[AreaID] [int] IDENTITY(1,1) NOT NULL,
+	[Descripcion] [varchar](100) NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[AreaID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [dbo].[GL_Articulo]    Script Date: 11/7/2017 2:09:12 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [dbo].[GL_Articulo](
+	[ArticuloID] [int] IDENTITY(1,1) NOT NULL,
+	[UnidadMedidaID] [int] NOT NULL,
+	[Codigo] [varchar](10) NOT NULL,
+	[Descripcion] [varchar](50) NOT NULL,
+	[PrecioReferencial] [money] NOT NULL,
+	[StockMinimo] [int] NOT NULL,
+	[StockMaximo] [int] NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[ArticuloID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [dbo].[GL_ConsultaLicitacion]    Script Date: 11/7/2017 2:09:12 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [dbo].[GL_ConsultaLicitacion](
+	[ProveedorID] [int] NOT NULL,
+	[LicitacionID] [int] NOT NULL,
+	[ConsultaID] [tinyint] IDENTITY(1,1) NOT NULL,
+	[consulta] [varchar](100) NOT NULL,
+	[observacion] [varchar](100) NOT NULL,
+	[fechaConsulta] [datetime] NOT NULL,
+	[revisado] [bit] NOT NULL,
+	[respuesta] [varchar](100) NULL,
+	[fechaRespuesta] [nchar](10) NULL,
+ CONSTRAINT [PK_GL_ConsultaLicitacion] PRIMARY KEY CLUSTERED 
+(
+	[ProveedorID] ASC,
+	[LicitacionID] ASC,
+	[ConsultaID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [dbo].[GL_Contrato]    Script Date: 11/7/2017 2:09:12 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [dbo].[GL_Contrato](
+	[ContratoID] [int] IDENTITY(1,1) NOT NULL,
+	[LicitacionID] [int] NOT NULL,
+	[MonedaID] [int] NOT NULL,
+	[FormaPagoID] [int] NOT NULL,
+	[Numero] [varchar](10) NOT NULL,
+	[FechaInicio] [date] NOT NULL,
+	[FechaFin] [date] NOT NULL,
+	[Monto] [money] NOT NULL,
+	[Penalidades] [varbinary](max) NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[ContratoID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [dbo].[GL_Convocatoria]    Script Date: 11/7/2017 2:09:12 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [dbo].[GL_Convocatoria](
+	[ConvocatoriaId] [int] IDENTITY(1,1) NOT NULL,
+	[Numero] [varchar](12) NULL,
+	[FechaInicio] [datetime] NULL,
+	[FechaFin] [datetime] NULL,
+	[Requisito] [image] NULL,
+	[Estado] [char](2) NULL,
+	[RubroID] [int] NOT NULL,
+	[EmpleadoID] [int] NOT NULL,
+	[ObservacionSuspension] [nvarchar](max) NULL,
+	[FechaSuspension] [datetime] NULL,
+ CONSTRAINT [PK_GL_Convocatoria] PRIMARY KEY CLUSTERED 
+(
+	[ConvocatoriaId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [dbo].[GL_Cotizacion]    Script Date: 11/7/2017 2:09:12 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [dbo].[GL_Cotizacion](
+	[CotizacionID] [int] NOT NULL,
+	[RequerimientoCompraID] [int] NOT NULL,
+	[ProveedorID] [int] NOT NULL,
+	[FormaPagoID] [int] NOT NULL,
+	[PlazoEntrega] [int] NOT NULL,
+	[TiempoValidez] [int] NOT NULL,
+	[NroReferencia] [varchar](10) NOT NULL,
+ CONSTRAINT [PK__GL_Cotiz__30443A59136E90E1] PRIMARY KEY CLUSTERED 
+(
+	[CotizacionID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [dbo].[GL_DetalleConvocatoria]    Script Date: 11/7/2017 2:09:12 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[GL_DetalleConvocatoria](
+	[ConvocatoriaId] [int] NOT NULL,
+	[PostulanteId] [int] NOT NULL,
+	[Fecha_Registro] [date] NOT NULL,
+ CONSTRAINT [PK_GL_DetalleConvocatoria] PRIMARY KEY CLUSTERED 
+(
+	[ConvocatoriaId] ASC,
+	[PostulanteId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+/****** Object:  Table [dbo].[GL_DetallePostulante]    Script Date: 11/7/2017 2:09:12 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [dbo].[GL_DetallePostulante](
+	[DetalleId] [int] NOT NULL,
+	[PostulanteId] [int] NOT NULL,
+	[NombreArchivo] [varchar](100) NULL,
+	[Archivo] [image] NULL,
+ CONSTRAINT [PK_GL_DetallePostulante] PRIMARY KEY CLUSTERED 
+(
+	[DetalleId] ASC,
+	[PostulanteId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [dbo].[GL_DetalleTransaccionCompra]    Script Date: 11/7/2017 2:09:12 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[GL_DetalleTransaccionCompra](
+	[TransaccionCompraID] [int] NOT NULL,
+	[DetalleTransaccionCompraID] [int] NOT NULL,
+	[ArticuloID] [int] NOT NULL,
+	[Cantidad] [int] NOT NULL,
+	[Precio] [money] NOT NULL,
+ CONSTRAINT [PK_GL_DetalleTransaccionCompra] PRIMARY KEY CLUSTERED 
+(
+	[DetalleTransaccionCompraID] ASC,
+	[TransaccionCompraID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+/****** Object:  Table [dbo].[GL_DetSolicitudActProveedor]    Script Date: 11/7/2017 2:09:12 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [dbo].[GL_DetSolicitudActProveedor](
+	[SolicitudActProveedorID] [int] NOT NULL,
+	[ProveedorID] [int] NOT NULL,
+	[Adjunto] [varbinary](max) NOT NULL,
+	[Resultado] [varchar](50) NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[SolicitudActProveedorID] ASC,
+	[ProveedorID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [dbo].[GL_Empleado]    Script Date: 11/7/2017 2:09:12 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [dbo].[GL_Empleado](
+	[EmpleadoID] [int] IDENTITY(1,1) NOT NULL,
+	[AreaID] [int] NOT NULL,
+	[DNI] [varchar](10) NOT NULL,
+	[ApellidoPaterno] [varchar](20) NOT NULL,
+	[ApellidoMaterno] [varchar](20) NOT NULL,
+	[Nombres] [varchar](20) NOT NULL,
+	[Correo] [varchar](20) NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[EmpleadoID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [dbo].[GL_FormaPago]    Script Date: 11/7/2017 2:09:12 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [dbo].[GL_FormaPago](
+	[FormaPagoID] [int] IDENTITY(1,1) NOT NULL,
+	[Nombre] [varchar](50) NOT NULL,
+	[NroDiasPago] [int] NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[FormaPagoID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [dbo].[GL_Licitacion]    Script Date: 11/7/2017 2:09:12 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [dbo].[GL_Licitacion](
+	[LicitacionID] [int] IDENTITY(1,1) NOT NULL,
+	[RequerimientoCompraID] [int] NOT NULL,
+	[Numero] [varchar](10) NOT NULL,
+	[Fecha] [date] NOT NULL,
+	[TerminoRefInicial] [image] NULL,
+	[TerminoRefFinal] [image] NULL,
+	[FechaConvocatoria] [date] NULL,
+	[FecRecepcionConsultas] [date] NULL,
+	[FecAbsolucionConsultas] [date] NULL,
+	[FecRecepcionExpediente] [date] NULL,
+	[FecEvaluacionIni] [date] NULL,
+	[FecEvaluacionFin] [date] NULL,
+	[FecAdjudicacion] [date] NULL,
+	[ObservacionAnulacion] [varchar](100) NULL,
+	[Estado] [char](2) NULL,
+	[FileNameTDR1] [nvarchar](500) NULL,
+	[ContentTypeTDR1] [nvarchar](500) NULL,
+	[FileNameTDR2] [nvarchar](500) NULL,
+	[ContentTypeTDR2] [nvarchar](500) NULL,
+ CONSTRAINT [PK__GL_Licit__415A04ACC13CDF9E] PRIMARY KEY CLUSTERED 
+(
+	[LicitacionID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [dbo].[GL_Moneda]    Script Date: 11/7/2017 2:09:12 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [dbo].[GL_Moneda](
+	[MonedaID] [int] IDENTITY(1,1) NOT NULL,
+	[Descripcion] [varchar](50) NOT NULL,
+	[Abreviatura] [varchar](5) NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[MonedaID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [dbo].[GL_OrdenCompra]    Script Date: 11/7/2017 2:09:12 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [dbo].[GL_OrdenCompra](
+	[OrdenCompraID] [int] NOT NULL,
+	[CotizacionID] [int] NOT NULL,
+	[AlmacenID] [int] NOT NULL,
+	[Observacion] [varchar](50) NOT NULL,
+	[FechaEntrega] [datetime] NOT NULL,
+ CONSTRAINT [PK__GL_Orden__0B556E16AE5DA502] PRIMARY KEY CLUSTERED 
+(
+	[OrdenCompraID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [dbo].[GL_Postulante]    Script Date: 11/7/2017 2:09:12 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [dbo].[GL_Postulante](
+	[PostulanteId] [int] NOT NULL,
+	[RazonSocial] [varchar](50) NOT NULL,
+	[Direccion] [varchar](50) NOT NULL,
+	[Correo] [varchar](50) NOT NULL,
+	[RUC] [varchar](11) NOT NULL,
+	[ConstanciaRNP] [bit] NOT NULL,
+	[FechaRegistro] [datetime] NOT NULL,
+ CONSTRAINT [PK_GL_Postulante] PRIMARY KEY CLUSTERED 
+(
+	[PostulanteId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [dbo].[GL_Presupuesto]    Script Date: 11/7/2017 2:09:12 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [dbo].[GL_Presupuesto](
+	[PresupuestoID] [int] IDENTITY(1,1) NOT NULL,
+	[AreaID] [int] NOT NULL,
+	[Periodo] [varchar](10) NOT NULL,
+	[Monto] [money] NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[PresupuestoID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [dbo].[GL_Proveedor]    Script Date: 11/7/2017 2:09:12 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [dbo].[GL_Proveedor](
+	[ProveedorID] [int] IDENTITY(1,1) NOT NULL,
+	[RubroID] [int] NOT NULL,
+	[NombreComercial] [varchar](50) NOT NULL,
+	[RazonSocial] [varchar](50) NOT NULL,
+	[Direccion] [varchar](50) NOT NULL,
+	[Correo] [varchar](50) NOT NULL,
+	[RUC] [varchar](11) NOT NULL,
+	[CertificadoISO] [bit] NOT NULL,
+	[ConstanciaRNP] [bit] NOT NULL,
+	[PostulanteId] [int] NULL,
+	[ObservacionesSuspension] [varchar](100) NULL,
+	[FechaSuspension] [datetime] NULL,
+	[Estado] [char](2) NULL,
+ CONSTRAINT [PK__GL_Prove__61266BB907EBCC72] PRIMARY KEY CLUSTERED 
+(
+	[ProveedorID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [dbo].[GL_RegistroProveedorParticipante]    Script Date: 11/7/2017 2:09:12 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [dbo].[GL_RegistroProveedorParticipante](
+	[ProveedorID] [int] NOT NULL,
+	[LicitacionID] [int] NOT NULL,
+	[envioExpediente] [bit] NULL,
+	[fechaColExpediente] [datetime] NULL,
+	[expediente] [varbinary](max) NULL,
+	[adjudicado] [bit] NULL,
+	[monto] [money] NULL,
+ CONSTRAINT [PK_GL_RegistroProveedorParticipante] PRIMARY KEY CLUSTERED 
+(
+	[ProveedorID] ASC,
+	[LicitacionID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [dbo].[GL_ReqMovAlmacen]    Script Date: 11/7/2017 2:09:12 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [dbo].[GL_ReqMovAlmacen](
+	[ReqMovAlmacenID] [int] NOT NULL,
+	[TipoMovimientoID] [int] NOT NULL,
+	[Descripcion] [varchar](10) NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[ReqMovAlmacenID] ASC,
+	[TipoMovimientoID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [dbo].[GL_RequerimientoCompra]    Script Date: 11/7/2017 2:09:12 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[GL_RequerimientoCompra](
+	[RequerimientoCompraID] [int] NOT NULL,
+	[SolicitanteID] [int] NOT NULL,
+	[EncargadoID] [int] NOT NULL,
+	[FechaEstimada] [datetime] NOT NULL,
+ CONSTRAINT [PK_GL_RequerimientoCompra] PRIMARY KEY CLUSTERED 
+(
+	[RequerimientoCompraID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+/****** Object:  Table [dbo].[GL_Rubro]    Script Date: 11/7/2017 2:09:12 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [dbo].[GL_Rubro](
+	[RubroID] [int] IDENTITY(1,1) NOT NULL,
+	[Descripcion] [varchar](50) NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[RubroID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [dbo].[GL_SolicitudActProveedor]    Script Date: 11/7/2017 2:09:12 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [dbo].[GL_SolicitudActProveedor](
+	[SolicitudActProveedorID] [int] NOT NULL,
+	[TipoSolicitudID] [int] NOT NULL,
+	[fecha] [date] NOT NULL,
+	[Observaciones] [varchar](50) NOT NULL,
+	[fechaPublicacion] [date] NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[SolicitudActProveedorID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [dbo].[GL_TipoMovimiento]    Script Date: 11/7/2017 2:09:12 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [dbo].[GL_TipoMovimiento](
+	[TipoMovimientoID] [int] IDENTITY(1,1) NOT NULL,
+	[Descripcion] [varchar](10) NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[TipoMovimientoID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [dbo].[GL_TipoSolicitud]    Script Date: 11/7/2017 2:09:12 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [dbo].[GL_TipoSolicitud](
+	[TipoSolicitudID] [int] NOT NULL,
+	[Descripcion] [varchar](50) NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[TipoSolicitudID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [dbo].[GL_TransaccionCompra]    Script Date: 11/7/2017 2:09:12 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [dbo].[GL_TransaccionCompra](
+	[TransaccionCompraID] [int] NOT NULL,
+	[MonedaID] [int] NOT NULL,
+	[Numero] [varchar](20) NOT NULL,
+	[Fecha] [datetime] NOT NULL,
+	[Estado] [char](2) NOT NULL,
+	[ObservacionAnulacion] [varchar](50) NULL,
+ CONSTRAINT [PK__GL_Trans__72A28926D7A2870F] PRIMARY KEY CLUSTERED 
+(
+	[TransaccionCompraID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [dbo].[GL_UnidadMedida]    Script Date: 11/7/2017 2:09:12 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [dbo].[GL_UnidadMedida](
+	[UnidadMedidaID] [int] IDENTITY(1,1) NOT NULL,
+	[Abreviatura] [varchar](10) NOT NULL,
+	[Descripcion] [varchar](50) NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[UnidadMedidaID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [dbo].[Paciente]    Script Date: 11/7/2017 2:09:12 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -45,7 +948,7 @@ CREATE TABLE [dbo].[Paciente](
 GO
 SET ANSI_PADDING OFF
 GO
-/****** Object:  Table [dbo].[Prioridad]    Script Date: 02/11/2017 11:20:02 a.m. ******/
+/****** Object:  Table [dbo].[Prioridad]    Script Date: 11/7/2017 2:09:12 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -64,7 +967,7 @@ CREATE TABLE [dbo].[Prioridad](
 GO
 SET ANSI_PADDING OFF
 GO
-/****** Object:  Table [dbo].[Protocolo]    Script Date: 02/11/2017 11:20:02 a.m. ******/
+/****** Object:  Table [dbo].[Protocolo]    Script Date: 11/7/2017 2:09:12 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -90,7 +993,17 @@ CREATE TABLE [dbo].[Protocolo](
 GO
 SET ANSI_PADDING OFF
 GO
-/****** Object:  Table [dbo].[Sintoma]    Script Date: 02/11/2017 11:20:02 a.m. ******/
+/****** Object:  Table [dbo].[psopdf]    Script Date: 11/7/2017 2:09:12 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[psopdf](
+	[code] [nvarchar](200) NULL
+) ON [PRIMARY]
+
+GO
+/****** Object:  Table [dbo].[Sintoma]    Script Date: 11/7/2017 2:09:12 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -109,7 +1022,7 @@ CREATE TABLE [dbo].[Sintoma](
 GO
 SET ANSI_PADDING OFF
 GO
-/****** Object:  Table [dbo].[TicketEmergencia]    Script Date: 02/11/2017 11:20:02 a.m. ******/
+/****** Object:  Table [dbo].[TicketEmergencia]    Script Date: 11/7/2017 2:09:12 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -130,7 +1043,7 @@ CREATE TABLE [dbo].[TicketEmergencia](
 ) ON [PRIMARY]
 
 GO
-/****** Object:  Table [dbo].[TicketSalaObservacion]    Script Date: 02/11/2017 11:20:02 a.m. ******/
+/****** Object:  Table [dbo].[TicketSalaObservacion]    Script Date: 11/7/2017 2:09:12 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -153,7 +1066,7 @@ CREATE TABLE [dbo].[TicketSalaObservacion](
 GO
 SET ANSI_PADDING OFF
 GO
-/****** Object:  Table [dbo].[TicketTraumaShockTopico]    Script Date: 02/11/2017 11:20:02 a.m. ******/
+/****** Object:  Table [dbo].[TicketTraumaShockTopico]    Script Date: 11/7/2017 2:09:12 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -175,7 +1088,7 @@ CREATE TABLE [dbo].[TicketTraumaShockTopico](
 GO
 SET ANSI_PADDING OFF
 GO
-/****** Object:  Table [dbo].[TipoPaciente]    Script Date: 02/11/2017 11:20:02 a.m. ******/
+/****** Object:  Table [dbo].[TipoPaciente]    Script Date: 11/7/2017 2:09:12 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -194,7 +1107,7 @@ CREATE TABLE [dbo].[TipoPaciente](
 GO
 SET ANSI_PADDING OFF
 GO
-/****** Object:  Table [dbo].[Triaje]    Script Date: 02/11/2017 11:20:02 a.m. ******/
+/****** Object:  Table [dbo].[Triaje]    Script Date: 11/7/2017 2:09:12 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -211,7 +1124,7 @@ CREATE TABLE [dbo].[Triaje](
 ) ON [PRIMARY]
 
 GO
-/****** Object:  Table [dbo].[Usuario]    Script Date: 02/11/2017 11:20:02 a.m. ******/
+/****** Object:  Table [dbo].[Usuario]    Script Date: 11/7/2017 2:09:12 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -732,83 +1645,83 @@ GO
 SET IDENTITY_INSERT [dbo].[TicketEmergencia] ON 
 
 GO
-INSERT [dbo].[TicketEmergencia] ([IdTicketEmergencia], [IdPaciente], [IdDestino], [EsViolencia], [IdTicketTrauma], [IdTicketSala], [Ingreso], [Egreso]) VALUES (7, 1, 1, NULL, 1, NULL, CAST(N'2017-10-31 11:53:35.470' AS DateTime), CAST(N'2017-11-08 11:53:36.413' AS DateTime))
+INSERT [dbo].[TicketEmergencia] ([IdTicketEmergencia], [IdPaciente], [IdDestino], [EsViolencia], [IdTicketTrauma], [IdTicketSala], [Ingreso], [Egreso]) VALUES (7, 1, 1, NULL, 1, NULL, CAST(0x0000A81D00C3FE61 AS DateTime), CAST(0x0000A82500C3FF7C AS DateTime))
 GO
-INSERT [dbo].[TicketEmergencia] ([IdTicketEmergencia], [IdPaciente], [IdDestino], [EsViolencia], [IdTicketTrauma], [IdTicketSala], [Ingreso], [Egreso]) VALUES (11, 1, 1, NULL, NULL, 4, CAST(N'2017-10-31 12:05:54.383' AS DateTime), CAST(N'2017-11-01 12:05:54.357' AS DateTime))
+INSERT [dbo].[TicketEmergencia] ([IdTicketEmergencia], [IdPaciente], [IdDestino], [EsViolencia], [IdTicketTrauma], [IdTicketSala], [Ingreso], [Egreso]) VALUES (11, 1, 1, NULL, NULL, 4, CAST(0x0000A81D00C7604B AS DateTime), CAST(0x0000A81E00C76043 AS DateTime))
 GO
-INSERT [dbo].[TicketEmergencia] ([IdTicketEmergencia], [IdPaciente], [IdDestino], [EsViolencia], [IdTicketTrauma], [IdTicketSala], [Ingreso], [Egreso]) VALUES (12, 1, 1, NULL, NULL, 5, CAST(N'2017-10-31 12:07:39.813' AS DateTime), CAST(N'2017-11-01 12:07:39.800' AS DateTime))
+INSERT [dbo].[TicketEmergencia] ([IdTicketEmergencia], [IdPaciente], [IdDestino], [EsViolencia], [IdTicketTrauma], [IdTicketSala], [Ingreso], [Egreso]) VALUES (12, 1, 1, NULL, NULL, 5, CAST(0x0000A81D00C7DBD8 AS DateTime), CAST(0x0000A81E00C7DBD4 AS DateTime))
 GO
-INSERT [dbo].[TicketEmergencia] ([IdTicketEmergencia], [IdPaciente], [IdDestino], [EsViolencia], [IdTicketTrauma], [IdTicketSala], [Ingreso], [Egreso]) VALUES (13, 1, 1, NULL, NULL, 6, CAST(N'2017-10-31 12:16:42.120' AS DateTime), CAST(N'2017-11-01 12:16:42.097' AS DateTime))
+INSERT [dbo].[TicketEmergencia] ([IdTicketEmergencia], [IdPaciente], [IdDestino], [EsViolencia], [IdTicketTrauma], [IdTicketSala], [Ingreso], [Egreso]) VALUES (13, 1, 1, NULL, NULL, 6, CAST(0x0000A81D00CA575C AS DateTime), CAST(0x0000A81E00CA5755 AS DateTime))
 GO
-INSERT [dbo].[TicketEmergencia] ([IdTicketEmergencia], [IdPaciente], [IdDestino], [EsViolencia], [IdTicketTrauma], [IdTicketSala], [Ingreso], [Egreso]) VALUES (14, 1, 1, NULL, NULL, 7, CAST(N'2017-10-31 12:18:48.893' AS DateTime), CAST(N'2017-11-01 12:18:48.867' AS DateTime))
+INSERT [dbo].[TicketEmergencia] ([IdTicketEmergencia], [IdPaciente], [IdDestino], [EsViolencia], [IdTicketTrauma], [IdTicketSala], [Ingreso], [Egreso]) VALUES (14, 1, 1, NULL, NULL, 7, CAST(0x0000A81D00CAEBEC AS DateTime), CAST(0x0000A81E00CAEBE4 AS DateTime))
 GO
-INSERT [dbo].[TicketEmergencia] ([IdTicketEmergencia], [IdPaciente], [IdDestino], [EsViolencia], [IdTicketTrauma], [IdTicketSala], [Ingreso], [Egreso]) VALUES (17, 1, 1, NULL, NULL, 8, CAST(N'2017-10-31 12:21:06.717' AS DateTime), CAST(N'2017-11-01 12:21:06.693' AS DateTime))
+INSERT [dbo].[TicketEmergencia] ([IdTicketEmergencia], [IdPaciente], [IdDestino], [EsViolencia], [IdTicketTrauma], [IdTicketSala], [Ingreso], [Egreso]) VALUES (17, 1, 1, NULL, NULL, 8, CAST(0x0000A81D00CB8D6F AS DateTime), CAST(0x0000A81E00CB8D68 AS DateTime))
 GO
-INSERT [dbo].[TicketEmergencia] ([IdTicketEmergencia], [IdPaciente], [IdDestino], [EsViolencia], [IdTicketTrauma], [IdTicketSala], [Ingreso], [Egreso]) VALUES (18, 1, 1, NULL, 2, NULL, CAST(N'2017-10-31 12:21:59.140' AS DateTime), CAST(N'2017-11-06 12:21:59.140' AS DateTime))
+INSERT [dbo].[TicketEmergencia] ([IdTicketEmergencia], [IdPaciente], [IdDestino], [EsViolencia], [IdTicketTrauma], [IdTicketSala], [Ingreso], [Egreso]) VALUES (18, 1, 1, NULL, 2, NULL, CAST(0x0000A81D00CBCADE AS DateTime), CAST(0x0000A82300CBCADE AS DateTime))
 GO
-INSERT [dbo].[TicketEmergencia] ([IdTicketEmergencia], [IdPaciente], [IdDestino], [EsViolencia], [IdTicketTrauma], [IdTicketSala], [Ingreso], [Egreso]) VALUES (19, 1, 1, NULL, 3, NULL, CAST(N'2017-10-31 12:27:13.970' AS DateTime), CAST(N'2017-11-09 12:27:13.970' AS DateTime))
+INSERT [dbo].[TicketEmergencia] ([IdTicketEmergencia], [IdPaciente], [IdDestino], [EsViolencia], [IdTicketTrauma], [IdTicketSala], [Ingreso], [Egreso]) VALUES (19, 1, 1, NULL, 3, NULL, CAST(0x0000A81D00CD3BCF AS DateTime), CAST(0x0000A82600CD3BCF AS DateTime))
 GO
-INSERT [dbo].[TicketEmergencia] ([IdTicketEmergencia], [IdPaciente], [IdDestino], [EsViolencia], [IdTicketTrauma], [IdTicketSala], [Ingreso], [Egreso]) VALUES (20, 1, 1, 1, 4, NULL, CAST(N'2017-10-31 15:07:01.843' AS DateTime), CAST(N'2017-11-07 15:07:01.843' AS DateTime))
+INSERT [dbo].[TicketEmergencia] ([IdTicketEmergencia], [IdPaciente], [IdDestino], [EsViolencia], [IdTicketTrauma], [IdTicketSala], [Ingreso], [Egreso]) VALUES (20, 1, 1, 1, 4, NULL, CAST(0x0000A81D00F91F99 AS DateTime), CAST(0x0000A82400F91F99 AS DateTime))
 GO
-INSERT [dbo].[TicketEmergencia] ([IdTicketEmergencia], [IdPaciente], [IdDestino], [EsViolencia], [IdTicketTrauma], [IdTicketSala], [Ingreso], [Egreso]) VALUES (21, 1, 1, 1, 5, NULL, CAST(N'2017-10-31 15:07:31.817' AS DateTime), CAST(N'2017-11-07 15:07:31.817' AS DateTime))
+INSERT [dbo].[TicketEmergencia] ([IdTicketEmergencia], [IdPaciente], [IdDestino], [EsViolencia], [IdTicketTrauma], [IdTicketSala], [Ingreso], [Egreso]) VALUES (21, 1, 1, 1, 5, NULL, CAST(0x0000A81D00F942B9 AS DateTime), CAST(0x0000A82400F942B9 AS DateTime))
 GO
-INSERT [dbo].[TicketEmergencia] ([IdTicketEmergencia], [IdPaciente], [IdDestino], [EsViolencia], [IdTicketTrauma], [IdTicketSala], [Ingreso], [Egreso]) VALUES (22, 2, 1, 0, 6, NULL, CAST(N'2017-10-31 15:09:27.797' AS DateTime), CAST(N'2017-11-06 15:09:27.797' AS DateTime))
+INSERT [dbo].[TicketEmergencia] ([IdTicketEmergencia], [IdPaciente], [IdDestino], [EsViolencia], [IdTicketTrauma], [IdTicketSala], [Ingreso], [Egreso]) VALUES (22, 2, 1, 0, 6, NULL, CAST(0x0000A81D00F9CAA3 AS DateTime), CAST(0x0000A82300F9CAA3 AS DateTime))
 GO
-INSERT [dbo].[TicketEmergencia] ([IdTicketEmergencia], [IdPaciente], [IdDestino], [EsViolencia], [IdTicketTrauma], [IdTicketSala], [Ingreso], [Egreso]) VALUES (23, 1, 1, 0, NULL, 9, CAST(N'2017-10-31 15:24:44.200' AS DateTime), CAST(N'2017-11-01 15:24:44.173' AS DateTime))
+INSERT [dbo].[TicketEmergencia] ([IdTicketEmergencia], [IdPaciente], [IdDestino], [EsViolencia], [IdTicketTrauma], [IdTicketSala], [Ingreso], [Egreso]) VALUES (23, 1, 1, 0, NULL, 9, CAST(0x0000A81D00FDFC8C AS DateTime), CAST(0x0000A81E00FDFC84 AS DateTime))
 GO
-INSERT [dbo].[TicketEmergencia] ([IdTicketEmergencia], [IdPaciente], [IdDestino], [EsViolencia], [IdTicketTrauma], [IdTicketSala], [Ingreso], [Egreso]) VALUES (25, 1, 1, 0, 7, NULL, CAST(N'2017-10-31 15:27:46.837' AS DateTime), CAST(N'2017-11-09 15:27:46.837' AS DateTime))
+INSERT [dbo].[TicketEmergencia] ([IdTicketEmergencia], [IdPaciente], [IdDestino], [EsViolencia], [IdTicketTrauma], [IdTicketSala], [Ingreso], [Egreso]) VALUES (25, 1, 1, 0, 7, NULL, CAST(0x0000A81D00FED293 AS DateTime), CAST(0x0000A82600FED293 AS DateTime))
 GO
-INSERT [dbo].[TicketEmergencia] ([IdTicketEmergencia], [IdPaciente], [IdDestino], [EsViolencia], [IdTicketTrauma], [IdTicketSala], [Ingreso], [Egreso]) VALUES (26, 1, 1, 0, NULL, 10, CAST(N'2017-10-31 15:28:07.853' AS DateTime), CAST(N'2017-11-01 15:28:07.830' AS DateTime))
+INSERT [dbo].[TicketEmergencia] ([IdTicketEmergencia], [IdPaciente], [IdDestino], [EsViolencia], [IdTicketTrauma], [IdTicketSala], [Ingreso], [Egreso]) VALUES (26, 1, 1, 0, NULL, 10, CAST(0x0000A81D00FEEB34 AS DateTime), CAST(0x0000A81E00FEEB2D AS DateTime))
 GO
-INSERT [dbo].[TicketEmergencia] ([IdTicketEmergencia], [IdPaciente], [IdDestino], [EsViolencia], [IdTicketTrauma], [IdTicketSala], [Ingreso], [Egreso]) VALUES (27, 1, 1, 1, 8, NULL, CAST(N'2017-11-02 10:50:30.243' AS DateTime), CAST(N'2017-11-09 10:50:30.243' AS DateTime))
+INSERT [dbo].[TicketEmergencia] ([IdTicketEmergencia], [IdPaciente], [IdDestino], [EsViolencia], [IdTicketTrauma], [IdTicketSala], [Ingreso], [Egreso]) VALUES (27, 1, 1, 1, 8, NULL, CAST(0x0000A81F00B2AA91 AS DateTime), CAST(0x0000A82600B2AA91 AS DateTime))
 GO
-INSERT [dbo].[TicketEmergencia] ([IdTicketEmergencia], [IdPaciente], [IdDestino], [EsViolencia], [IdTicketTrauma], [IdTicketSala], [Ingreso], [Egreso]) VALUES (28, 1, 1, 1, 9, NULL, CAST(N'2017-11-02 10:50:59.277' AS DateTime), CAST(N'2017-11-09 10:50:59.277' AS DateTime))
+INSERT [dbo].[TicketEmergencia] ([IdTicketEmergencia], [IdPaciente], [IdDestino], [EsViolencia], [IdTicketTrauma], [IdTicketSala], [Ingreso], [Egreso]) VALUES (28, 1, 1, 1, 9, NULL, CAST(0x0000A81F00B2CC97 AS DateTime), CAST(0x0000A82600B2CC97 AS DateTime))
 GO
-INSERT [dbo].[TicketEmergencia] ([IdTicketEmergencia], [IdPaciente], [IdDestino], [EsViolencia], [IdTicketTrauma], [IdTicketSala], [Ingreso], [Egreso]) VALUES (29, 1, 1, 1, 10, NULL, CAST(N'2017-11-02 10:54:19.393' AS DateTime), CAST(N'2017-11-08 10:54:19.397' AS DateTime))
+INSERT [dbo].[TicketEmergencia] ([IdTicketEmergencia], [IdPaciente], [IdDestino], [EsViolencia], [IdTicketTrauma], [IdTicketSala], [Ingreso], [Egreso]) VALUES (29, 1, 1, 1, 10, NULL, CAST(0x0000A81F00B3B71A AS DateTime), CAST(0x0000A82500B3B71B AS DateTime))
 GO
 SET IDENTITY_INSERT [dbo].[TicketEmergencia] OFF
 GO
 SET IDENTITY_INSERT [dbo].[TicketSalaObservacion] ON 
 
 GO
-INSERT [dbo].[TicketSalaObservacion] ([IdTicketSala], [Ingreso], [Egreso], [Diagnostico], [CondicionIngreso], [CondicionEgreso]) VALUES (4, CAST(N'2017-10-31 12:05:54.383' AS DateTime), CAST(N'2017-11-01 12:05:54.357' AS DateTime), N'Receta médica', N'Consulta general', N'Tratamiento a seguir')
+INSERT [dbo].[TicketSalaObservacion] ([IdTicketSala], [Ingreso], [Egreso], [Diagnostico], [CondicionIngreso], [CondicionEgreso]) VALUES (4, CAST(0x0000A81D00C7604B AS DateTime), CAST(0x0000A81E00C76043 AS DateTime), N'Receta médica', N'Consulta general', N'Tratamiento a seguir')
 GO
-INSERT [dbo].[TicketSalaObservacion] ([IdTicketSala], [Ingreso], [Egreso], [Diagnostico], [CondicionIngreso], [CondicionEgreso]) VALUES (5, CAST(N'2017-10-31 12:07:39.813' AS DateTime), CAST(N'2017-11-01 12:07:39.800' AS DateTime), N'Receta médica', N'Consulta general', N'Tratamiento a seguir')
+INSERT [dbo].[TicketSalaObservacion] ([IdTicketSala], [Ingreso], [Egreso], [Diagnostico], [CondicionIngreso], [CondicionEgreso]) VALUES (5, CAST(0x0000A81D00C7DBD8 AS DateTime), CAST(0x0000A81E00C7DBD4 AS DateTime), N'Receta médica', N'Consulta general', N'Tratamiento a seguir')
 GO
-INSERT [dbo].[TicketSalaObservacion] ([IdTicketSala], [Ingreso], [Egreso], [Diagnostico], [CondicionIngreso], [CondicionEgreso]) VALUES (6, CAST(N'2017-10-31 12:16:42.120' AS DateTime), CAST(N'2017-11-01 12:16:42.097' AS DateTime), N'Receta médica', N'Consulta general', N'Tratamiento a seguir')
+INSERT [dbo].[TicketSalaObservacion] ([IdTicketSala], [Ingreso], [Egreso], [Diagnostico], [CondicionIngreso], [CondicionEgreso]) VALUES (6, CAST(0x0000A81D00CA575C AS DateTime), CAST(0x0000A81E00CA5755 AS DateTime), N'Receta médica', N'Consulta general', N'Tratamiento a seguir')
 GO
-INSERT [dbo].[TicketSalaObservacion] ([IdTicketSala], [Ingreso], [Egreso], [Diagnostico], [CondicionIngreso], [CondicionEgreso]) VALUES (7, CAST(N'2017-10-31 12:18:48.893' AS DateTime), CAST(N'2017-11-01 12:18:48.867' AS DateTime), N'Receta médica', N'Consulta general', N'Tratamiento a seguir')
+INSERT [dbo].[TicketSalaObservacion] ([IdTicketSala], [Ingreso], [Egreso], [Diagnostico], [CondicionIngreso], [CondicionEgreso]) VALUES (7, CAST(0x0000A81D00CAEBEC AS DateTime), CAST(0x0000A81E00CAEBE4 AS DateTime), N'Receta médica', N'Consulta general', N'Tratamiento a seguir')
 GO
-INSERT [dbo].[TicketSalaObservacion] ([IdTicketSala], [Ingreso], [Egreso], [Diagnostico], [CondicionIngreso], [CondicionEgreso]) VALUES (8, CAST(N'2017-10-31 12:21:06.717' AS DateTime), CAST(N'2017-11-01 12:21:06.693' AS DateTime), N'Receta médica', N'Consulta general', N'Tratamiento a seguir')
+INSERT [dbo].[TicketSalaObservacion] ([IdTicketSala], [Ingreso], [Egreso], [Diagnostico], [CondicionIngreso], [CondicionEgreso]) VALUES (8, CAST(0x0000A81D00CB8D6F AS DateTime), CAST(0x0000A81E00CB8D68 AS DateTime), N'Receta médica', N'Consulta general', N'Tratamiento a seguir')
 GO
-INSERT [dbo].[TicketSalaObservacion] ([IdTicketSala], [Ingreso], [Egreso], [Diagnostico], [CondicionIngreso], [CondicionEgreso]) VALUES (9, CAST(N'2017-10-31 15:24:44.200' AS DateTime), CAST(N'2017-11-01 15:24:44.173' AS DateTime), N'Receta médica', N'Consulta general', N'Tratamiento a seguir')
+INSERT [dbo].[TicketSalaObservacion] ([IdTicketSala], [Ingreso], [Egreso], [Diagnostico], [CondicionIngreso], [CondicionEgreso]) VALUES (9, CAST(0x0000A81D00FDFC8C AS DateTime), CAST(0x0000A81E00FDFC84 AS DateTime), N'Receta médica', N'Consulta general', N'Tratamiento a seguir')
 GO
-INSERT [dbo].[TicketSalaObservacion] ([IdTicketSala], [Ingreso], [Egreso], [Diagnostico], [CondicionIngreso], [CondicionEgreso]) VALUES (10, CAST(N'2017-10-31 15:28:07.853' AS DateTime), CAST(N'2017-11-01 15:28:07.830' AS DateTime), N'Receta médica', N'Consulta general', N'Tratamiento a seguir')
+INSERT [dbo].[TicketSalaObservacion] ([IdTicketSala], [Ingreso], [Egreso], [Diagnostico], [CondicionIngreso], [CondicionEgreso]) VALUES (10, CAST(0x0000A81D00FEEB34 AS DateTime), CAST(0x0000A81E00FEEB2D AS DateTime), N'Receta médica', N'Consulta general', N'Tratamiento a seguir')
 GO
 SET IDENTITY_INSERT [dbo].[TicketSalaObservacion] OFF
 GO
 SET IDENTITY_INSERT [dbo].[TicketTraumaShockTopico] ON 
 
 GO
-INSERT [dbo].[TicketTraumaShockTopico] ([IdTicketTrauma], [Ingreso], [Egreso], [Diagnostico], [EsTraumaShock]) VALUES (1, CAST(N'2017-10-31 11:53:35.470' AS DateTime), CAST(N'2017-11-08 11:53:36.413' AS DateTime), N'Cuidado intensivos', 1)
+INSERT [dbo].[TicketTraumaShockTopico] ([IdTicketTrauma], [Ingreso], [Egreso], [Diagnostico], [EsTraumaShock]) VALUES (1, CAST(0x0000A81D00C3FE61 AS DateTime), CAST(0x0000A82500C3FF7C AS DateTime), N'Cuidado intensivos', 1)
 GO
-INSERT [dbo].[TicketTraumaShockTopico] ([IdTicketTrauma], [Ingreso], [Egreso], [Diagnostico], [EsTraumaShock]) VALUES (2, CAST(N'2017-10-31 12:21:59.140' AS DateTime), CAST(N'2017-11-06 12:21:59.140' AS DateTime), N'Cuidado intensivos', 1)
+INSERT [dbo].[TicketTraumaShockTopico] ([IdTicketTrauma], [Ingreso], [Egreso], [Diagnostico], [EsTraumaShock]) VALUES (2, CAST(0x0000A81D00CBCADE AS DateTime), CAST(0x0000A82300CBCADE AS DateTime), N'Cuidado intensivos', 1)
 GO
-INSERT [dbo].[TicketTraumaShockTopico] ([IdTicketTrauma], [Ingreso], [Egreso], [Diagnostico], [EsTraumaShock]) VALUES (3, CAST(N'2017-10-31 12:27:13.970' AS DateTime), CAST(N'2017-11-09 12:27:13.970' AS DateTime), N'Cuidado intensivos', 1)
+INSERT [dbo].[TicketTraumaShockTopico] ([IdTicketTrauma], [Ingreso], [Egreso], [Diagnostico], [EsTraumaShock]) VALUES (3, CAST(0x0000A81D00CD3BCF AS DateTime), CAST(0x0000A82600CD3BCF AS DateTime), N'Cuidado intensivos', 1)
 GO
-INSERT [dbo].[TicketTraumaShockTopico] ([IdTicketTrauma], [Ingreso], [Egreso], [Diagnostico], [EsTraumaShock]) VALUES (4, CAST(N'2017-10-31 15:07:01.843' AS DateTime), CAST(N'2017-11-07 15:07:01.843' AS DateTime), N'Cuidado intensivos', 1)
+INSERT [dbo].[TicketTraumaShockTopico] ([IdTicketTrauma], [Ingreso], [Egreso], [Diagnostico], [EsTraumaShock]) VALUES (4, CAST(0x0000A81D00F91F99 AS DateTime), CAST(0x0000A82400F91F99 AS DateTime), N'Cuidado intensivos', 1)
 GO
-INSERT [dbo].[TicketTraumaShockTopico] ([IdTicketTrauma], [Ingreso], [Egreso], [Diagnostico], [EsTraumaShock]) VALUES (5, CAST(N'2017-10-31 15:07:31.817' AS DateTime), CAST(N'2017-11-07 15:07:31.817' AS DateTime), N'Medicación bajo control', 1)
+INSERT [dbo].[TicketTraumaShockTopico] ([IdTicketTrauma], [Ingreso], [Egreso], [Diagnostico], [EsTraumaShock]) VALUES (5, CAST(0x0000A81D00F942B9 AS DateTime), CAST(0x0000A82400F942B9 AS DateTime), N'Medicación bajo control', 1)
 GO
-INSERT [dbo].[TicketTraumaShockTopico] ([IdTicketTrauma], [Ingreso], [Egreso], [Diagnostico], [EsTraumaShock]) VALUES (6, CAST(N'2017-10-31 15:09:27.797' AS DateTime), CAST(N'2017-11-06 15:09:27.797' AS DateTime), N'Cuidado intensivos', 1)
+INSERT [dbo].[TicketTraumaShockTopico] ([IdTicketTrauma], [Ingreso], [Egreso], [Diagnostico], [EsTraumaShock]) VALUES (6, CAST(0x0000A81D00F9CAA3 AS DateTime), CAST(0x0000A82300F9CAA3 AS DateTime), N'Cuidado intensivos', 1)
 GO
-INSERT [dbo].[TicketTraumaShockTopico] ([IdTicketTrauma], [Ingreso], [Egreso], [Diagnostico], [EsTraumaShock]) VALUES (7, CAST(N'2017-10-31 15:27:46.837' AS DateTime), CAST(N'2017-11-09 15:27:46.837' AS DateTime), N'Cuidado intensivos', 1)
+INSERT [dbo].[TicketTraumaShockTopico] ([IdTicketTrauma], [Ingreso], [Egreso], [Diagnostico], [EsTraumaShock]) VALUES (7, CAST(0x0000A81D00FED293 AS DateTime), CAST(0x0000A82600FED293 AS DateTime), N'Cuidado intensivos', 1)
 GO
-INSERT [dbo].[TicketTraumaShockTopico] ([IdTicketTrauma], [Ingreso], [Egreso], [Diagnostico], [EsTraumaShock]) VALUES (8, CAST(N'2017-11-02 10:50:30.243' AS DateTime), CAST(N'2017-11-09 10:50:30.243' AS DateTime), N'Medicación bajo control', 1)
+INSERT [dbo].[TicketTraumaShockTopico] ([IdTicketTrauma], [Ingreso], [Egreso], [Diagnostico], [EsTraumaShock]) VALUES (8, CAST(0x0000A81F00B2AA91 AS DateTime), CAST(0x0000A82600B2AA91 AS DateTime), N'Medicación bajo control', 1)
 GO
-INSERT [dbo].[TicketTraumaShockTopico] ([IdTicketTrauma], [Ingreso], [Egreso], [Diagnostico], [EsTraumaShock]) VALUES (9, CAST(N'2017-11-02 10:50:59.277' AS DateTime), CAST(N'2017-11-09 10:50:59.277' AS DateTime), N'Cuidado intensivos', 1)
+INSERT [dbo].[TicketTraumaShockTopico] ([IdTicketTrauma], [Ingreso], [Egreso], [Diagnostico], [EsTraumaShock]) VALUES (9, CAST(0x0000A81F00B2CC97 AS DateTime), CAST(0x0000A82600B2CC97 AS DateTime), N'Cuidado intensivos', 1)
 GO
-INSERT [dbo].[TicketTraumaShockTopico] ([IdTicketTrauma], [Ingreso], [Egreso], [Diagnostico], [EsTraumaShock]) VALUES (10, CAST(N'2017-11-02 10:54:19.393' AS DateTime), CAST(N'2017-11-08 10:54:19.397' AS DateTime), N'Medicación bajo control', 1)
+INSERT [dbo].[TicketTraumaShockTopico] ([IdTicketTrauma], [Ingreso], [Egreso], [Diagnostico], [EsTraumaShock]) VALUES (10, CAST(0x0000A81F00B3B71A AS DateTime), CAST(0x0000A82500B3B71B AS DateTime), N'Medicación bajo control', 1)
 GO
 SET IDENTITY_INSERT [dbo].[TicketTraumaShockTopico] OFF
 GO
@@ -1008,6 +1921,177 @@ GO
 INSERT [dbo].[Usuario] ([IdUsuario], [CodigoUsuario], [Nombres], [Clave]) VALUES (1, N'RP001', N'Pablo Flores', N'123')
 GO
 SET IDENTITY_INSERT [dbo].[Usuario] OFF
+GO
+ALTER TABLE [dbo].[GL_ConsultaLicitacion] ADD  CONSTRAINT [DF_GL_ConsultaLicitacion_revisado]  DEFAULT ((0)) FOR [revisado]
+GO
+ALTER TABLE [dbo].[GL_Licitacion] ADD  CONSTRAINT [DF_GL_Licitacion_Fecha]  DEFAULT (getdate()) FOR [Fecha]
+GO
+ALTER TABLE [dbo].[GL_Proveedor] ADD  CONSTRAINT [DF_GL_Proveedor_ConstanciaRNP]  DEFAULT ((0)) FOR [ConstanciaRNP]
+GO
+ALTER TABLE [dbo].[GL_Articulo]  WITH CHECK ADD  CONSTRAINT [FK_UnidadMedArticulo] FOREIGN KEY([UnidadMedidaID])
+REFERENCES [dbo].[GL_UnidadMedida] ([UnidadMedidaID])
+GO
+ALTER TABLE [dbo].[GL_Articulo] CHECK CONSTRAINT [FK_UnidadMedArticulo]
+GO
+ALTER TABLE [dbo].[GL_ConsultaLicitacion]  WITH CHECK ADD  CONSTRAINT [FK_GL_ConsultaLicitacion_GL_RegistroProveedorParticipante] FOREIGN KEY([ProveedorID], [LicitacionID])
+REFERENCES [dbo].[GL_RegistroProveedorParticipante] ([ProveedorID], [LicitacionID])
+GO
+ALTER TABLE [dbo].[GL_ConsultaLicitacion] CHECK CONSTRAINT [FK_GL_ConsultaLicitacion_GL_RegistroProveedorParticipante]
+GO
+ALTER TABLE [dbo].[GL_Contrato]  WITH CHECK ADD  CONSTRAINT [FK_FormaPagoContrato] FOREIGN KEY([FormaPagoID])
+REFERENCES [dbo].[GL_FormaPago] ([FormaPagoID])
+GO
+ALTER TABLE [dbo].[GL_Contrato] CHECK CONSTRAINT [FK_FormaPagoContrato]
+GO
+ALTER TABLE [dbo].[GL_Contrato]  WITH CHECK ADD  CONSTRAINT [FK_LicitacionContrato] FOREIGN KEY([LicitacionID])
+REFERENCES [dbo].[GL_Licitacion] ([LicitacionID])
+GO
+ALTER TABLE [dbo].[GL_Contrato] CHECK CONSTRAINT [FK_LicitacionContrato]
+GO
+ALTER TABLE [dbo].[GL_Contrato]  WITH CHECK ADD  CONSTRAINT [FK_MonedaContrato] FOREIGN KEY([MonedaID])
+REFERENCES [dbo].[GL_Moneda] ([MonedaID])
+GO
+ALTER TABLE [dbo].[GL_Contrato] CHECK CONSTRAINT [FK_MonedaContrato]
+GO
+ALTER TABLE [dbo].[GL_Convocatoria]  WITH CHECK ADD  CONSTRAINT [FK_Convocatoria_Empleado] FOREIGN KEY([EmpleadoID])
+REFERENCES [dbo].[GL_Empleado] ([EmpleadoID])
+GO
+ALTER TABLE [dbo].[GL_Convocatoria] CHECK CONSTRAINT [FK_Convocatoria_Empleado]
+GO
+ALTER TABLE [dbo].[GL_Convocatoria]  WITH CHECK ADD  CONSTRAINT [FK_Convocatoria_Rubro] FOREIGN KEY([RubroID])
+REFERENCES [dbo].[GL_Rubro] ([RubroID])
+GO
+ALTER TABLE [dbo].[GL_Convocatoria] CHECK CONSTRAINT [FK_Convocatoria_Rubro]
+GO
+ALTER TABLE [dbo].[GL_Cotizacion]  WITH CHECK ADD  CONSTRAINT [FK_FormaPagoCotizacion] FOREIGN KEY([FormaPagoID])
+REFERENCES [dbo].[GL_FormaPago] ([FormaPagoID])
+GO
+ALTER TABLE [dbo].[GL_Cotizacion] CHECK CONSTRAINT [FK_FormaPagoCotizacion]
+GO
+ALTER TABLE [dbo].[GL_Cotizacion]  WITH CHECK ADD  CONSTRAINT [FK_ProveedorCotizacion] FOREIGN KEY([ProveedorID])
+REFERENCES [dbo].[GL_Proveedor] ([ProveedorID])
+GO
+ALTER TABLE [dbo].[GL_Cotizacion] CHECK CONSTRAINT [FK_ProveedorCotizacion]
+GO
+ALTER TABLE [dbo].[GL_Cotizacion]  WITH CHECK ADD  CONSTRAINT [FK_ReqCompraCotizacion] FOREIGN KEY([RequerimientoCompraID])
+REFERENCES [dbo].[GL_RequerimientoCompra] ([RequerimientoCompraID])
+GO
+ALTER TABLE [dbo].[GL_Cotizacion] CHECK CONSTRAINT [FK_ReqCompraCotizacion]
+GO
+ALTER TABLE [dbo].[GL_Cotizacion]  WITH CHECK ADD  CONSTRAINT [FK_TransaccionCompra_Cotizacion] FOREIGN KEY([CotizacionID])
+REFERENCES [dbo].[GL_TransaccionCompra] ([TransaccionCompraID])
+GO
+ALTER TABLE [dbo].[GL_Cotizacion] CHECK CONSTRAINT [FK_TransaccionCompra_Cotizacion]
+GO
+ALTER TABLE [dbo].[GL_DetalleConvocatoria]  WITH CHECK ADD  CONSTRAINT [FK_DetalleConvocatoria_Convocatoria] FOREIGN KEY([ConvocatoriaId])
+REFERENCES [dbo].[GL_Convocatoria] ([ConvocatoriaId])
+GO
+ALTER TABLE [dbo].[GL_DetalleConvocatoria] CHECK CONSTRAINT [FK_DetalleConvocatoria_Convocatoria]
+GO
+ALTER TABLE [dbo].[GL_DetalleConvocatoria]  WITH CHECK ADD  CONSTRAINT [FK_DetalleConvocatoria_Postulante] FOREIGN KEY([PostulanteId])
+REFERENCES [dbo].[GL_Postulante] ([PostulanteId])
+GO
+ALTER TABLE [dbo].[GL_DetalleConvocatoria] CHECK CONSTRAINT [FK_DetalleConvocatoria_Postulante]
+GO
+ALTER TABLE [dbo].[GL_DetallePostulante]  WITH CHECK ADD  CONSTRAINT [FK_DetallePostulante_Postulante] FOREIGN KEY([PostulanteId])
+REFERENCES [dbo].[GL_Postulante] ([PostulanteId])
+GO
+ALTER TABLE [dbo].[GL_DetallePostulante] CHECK CONSTRAINT [FK_DetallePostulante_Postulante]
+GO
+ALTER TABLE [dbo].[GL_DetalleTransaccionCompra]  WITH CHECK ADD  CONSTRAINT [FK_Articulodetalle] FOREIGN KEY([ArticuloID])
+REFERENCES [dbo].[GL_Articulo] ([ArticuloID])
+GO
+ALTER TABLE [dbo].[GL_DetalleTransaccionCompra] CHECK CONSTRAINT [FK_Articulodetalle]
+GO
+ALTER TABLE [dbo].[GL_DetalleTransaccionCompra]  WITH CHECK ADD  CONSTRAINT [FK_TransaccionDetalle] FOREIGN KEY([TransaccionCompraID])
+REFERENCES [dbo].[GL_TransaccionCompra] ([TransaccionCompraID])
+GO
+ALTER TABLE [dbo].[GL_DetalleTransaccionCompra] CHECK CONSTRAINT [FK_TransaccionDetalle]
+GO
+ALTER TABLE [dbo].[GL_DetSolicitudActProveedor]  WITH CHECK ADD  CONSTRAINT [FK_DetSolicitudActProveedor] FOREIGN KEY([SolicitudActProveedorID])
+REFERENCES [dbo].[GL_SolicitudActProveedor] ([SolicitudActProveedorID])
+GO
+ALTER TABLE [dbo].[GL_DetSolicitudActProveedor] CHECK CONSTRAINT [FK_DetSolicitudActProveedor]
+GO
+ALTER TABLE [dbo].[GL_Empleado]  WITH CHECK ADD  CONSTRAINT [FK_AreaEmpleado] FOREIGN KEY([AreaID])
+REFERENCES [dbo].[GL_Area] ([AreaID])
+GO
+ALTER TABLE [dbo].[GL_Empleado] CHECK CONSTRAINT [FK_AreaEmpleado]
+GO
+ALTER TABLE [dbo].[GL_Licitacion]  WITH CHECK ADD  CONSTRAINT [FK_ReqCompraLicitacion] FOREIGN KEY([RequerimientoCompraID])
+REFERENCES [dbo].[GL_RequerimientoCompra] ([RequerimientoCompraID])
+GO
+ALTER TABLE [dbo].[GL_Licitacion] CHECK CONSTRAINT [FK_ReqCompraLicitacion]
+GO
+ALTER TABLE [dbo].[GL_OrdenCompra]  WITH CHECK ADD  CONSTRAINT [FK_AlmacenOrdenCompra] FOREIGN KEY([AlmacenID])
+REFERENCES [dbo].[GL_Almacen] ([AlmacenID])
+GO
+ALTER TABLE [dbo].[GL_OrdenCompra] CHECK CONSTRAINT [FK_AlmacenOrdenCompra]
+GO
+ALTER TABLE [dbo].[GL_OrdenCompra]  WITH CHECK ADD  CONSTRAINT [FK_CotizacionOrdenCompra] FOREIGN KEY([CotizacionID])
+REFERENCES [dbo].[GL_Cotizacion] ([CotizacionID])
+GO
+ALTER TABLE [dbo].[GL_OrdenCompra] CHECK CONSTRAINT [FK_CotizacionOrdenCompra]
+GO
+ALTER TABLE [dbo].[GL_OrdenCompra]  WITH CHECK ADD  CONSTRAINT [FK_TransaccionCompra_OrdenCompra] FOREIGN KEY([OrdenCompraID])
+REFERENCES [dbo].[GL_TransaccionCompra] ([TransaccionCompraID])
+GO
+ALTER TABLE [dbo].[GL_OrdenCompra] CHECK CONSTRAINT [FK_TransaccionCompra_OrdenCompra]
+GO
+ALTER TABLE [dbo].[GL_Presupuesto]  WITH CHECK ADD  CONSTRAINT [FK_AreaPresupuesto] FOREIGN KEY([AreaID])
+REFERENCES [dbo].[GL_Area] ([AreaID])
+GO
+ALTER TABLE [dbo].[GL_Presupuesto] CHECK CONSTRAINT [FK_AreaPresupuesto]
+GO
+ALTER TABLE [dbo].[GL_Proveedor]  WITH CHECK ADD  CONSTRAINT [FK_Proveedor_Postulante] FOREIGN KEY([PostulanteId])
+REFERENCES [dbo].[GL_Postulante] ([PostulanteId])
+GO
+ALTER TABLE [dbo].[GL_Proveedor] CHECK CONSTRAINT [FK_Proveedor_Postulante]
+GO
+ALTER TABLE [dbo].[GL_Proveedor]  WITH CHECK ADD  CONSTRAINT [FK_RubroProveedor] FOREIGN KEY([RubroID])
+REFERENCES [dbo].[GL_Rubro] ([RubroID])
+GO
+ALTER TABLE [dbo].[GL_Proveedor] CHECK CONSTRAINT [FK_RubroProveedor]
+GO
+ALTER TABLE [dbo].[GL_RegistroProveedorParticipante]  WITH CHECK ADD  CONSTRAINT [FK_GL_RegistroProveedorParticipante_GL_Licitacion] FOREIGN KEY([LicitacionID])
+REFERENCES [dbo].[GL_Licitacion] ([LicitacionID])
+GO
+ALTER TABLE [dbo].[GL_RegistroProveedorParticipante] CHECK CONSTRAINT [FK_GL_RegistroProveedorParticipante_GL_Licitacion]
+GO
+ALTER TABLE [dbo].[GL_RegistroProveedorParticipante]  WITH CHECK ADD  CONSTRAINT [FK_GL_RegistroProveedorParticipante_GL_Proveedor] FOREIGN KEY([ProveedorID])
+REFERENCES [dbo].[GL_Proveedor] ([ProveedorID])
+GO
+ALTER TABLE [dbo].[GL_RegistroProveedorParticipante] CHECK CONSTRAINT [FK_GL_RegistroProveedorParticipante_GL_Proveedor]
+GO
+ALTER TABLE [dbo].[GL_ReqMovAlmacen]  WITH CHECK ADD  CONSTRAINT [FK_GL_ReqMovAlmacen] FOREIGN KEY([TipoMovimientoID])
+REFERENCES [dbo].[GL_TipoMovimiento] ([TipoMovimientoID])
+GO
+ALTER TABLE [dbo].[GL_ReqMovAlmacen] CHECK CONSTRAINT [FK_GL_ReqMovAlmacen]
+GO
+ALTER TABLE [dbo].[GL_RequerimientoCompra]  WITH CHECK ADD  CONSTRAINT [FK_EmpleadoReq] FOREIGN KEY([SolicitanteID])
+REFERENCES [dbo].[GL_Empleado] ([EmpleadoID])
+GO
+ALTER TABLE [dbo].[GL_RequerimientoCompra] CHECK CONSTRAINT [FK_EmpleadoReq]
+GO
+ALTER TABLE [dbo].[GL_RequerimientoCompra]  WITH CHECK ADD  CONSTRAINT [FK_GL_RequerimientoCompra_GL_Empleado] FOREIGN KEY([EncargadoID])
+REFERENCES [dbo].[GL_Empleado] ([EmpleadoID])
+GO
+ALTER TABLE [dbo].[GL_RequerimientoCompra] CHECK CONSTRAINT [FK_GL_RequerimientoCompra_GL_Empleado]
+GO
+ALTER TABLE [dbo].[GL_RequerimientoCompra]  WITH CHECK ADD  CONSTRAINT [FK_TransaccionCompra_RequerimientoCompra] FOREIGN KEY([RequerimientoCompraID])
+REFERENCES [dbo].[GL_TransaccionCompra] ([TransaccionCompraID])
+GO
+ALTER TABLE [dbo].[GL_RequerimientoCompra] CHECK CONSTRAINT [FK_TransaccionCompra_RequerimientoCompra]
+GO
+ALTER TABLE [dbo].[GL_SolicitudActProveedor]  WITH CHECK ADD  CONSTRAINT [FK_SolicitudActProveedor] FOREIGN KEY([TipoSolicitudID])
+REFERENCES [dbo].[GL_TipoSolicitud] ([TipoSolicitudID])
+GO
+ALTER TABLE [dbo].[GL_SolicitudActProveedor] CHECK CONSTRAINT [FK_SolicitudActProveedor]
+GO
+ALTER TABLE [dbo].[GL_TransaccionCompra]  WITH CHECK ADD  CONSTRAINT [FK_MonedaTransaccion] FOREIGN KEY([MonedaID])
+REFERENCES [dbo].[GL_Moneda] ([MonedaID])
+GO
+ALTER TABLE [dbo].[GL_TransaccionCompra] CHECK CONSTRAINT [FK_MonedaTransaccion]
 GO
 ALTER TABLE [dbo].[Paciente]  WITH CHECK ADD  CONSTRAINT [FK_Paciente_TipoPaciente] FOREIGN KEY([IdTipoPaciente])
 REFERENCES [dbo].[TipoPaciente] ([IdTipoPaciente])
