@@ -72,6 +72,13 @@ namespace DattatecPanel.Controllers
         {
             try
             {
+                if (entidad.Convocatoriaid <= 0)
+                {
+                    if (!entidad.RequisitoFile.FileName.EndsWith("pdf"))
+                    {
+                        return Json(new { statusCode = HttpStatusCode.OK, mensajeInfo = "Solo adjuntar archivo en formato PDF." }, JsonRequestBehavior.AllowGet);
+                    }
+                }
                 var mensaje = string.Empty;
                 byte[] data = null;
                 if (entidad.RequisitoFile != null)
@@ -118,7 +125,8 @@ namespace DattatecPanel.Controllers
                     correo.EnviarCorreo("Clinica Ricardo Palma", empleado.Correo, "Actualizacion de convocatoria", cuerpoCorreo, false, null);
                     mensaje = "Se actualizo con exito";
                 }
-                return Json(new { statusCode = HttpStatusCode.OK, mensaje = mensaje }, JsonRequestBehavior.AllowGet);
+                return Json(new { statusCode = HttpStatusCode.OK, mensaje = mensaje, mensajeInfo = "" }, 
+                    JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
