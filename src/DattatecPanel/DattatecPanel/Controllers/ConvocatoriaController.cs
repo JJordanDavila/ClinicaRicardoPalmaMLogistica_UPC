@@ -146,10 +146,10 @@ namespace DattatecPanel.Controllers
             try
             {
                 var mensaje = string.Empty;
-                if (string.IsNullOrEmpty(entidad.ObservacionSuspension))
-                {
-                    return Json(new { statusCode = HttpStatusCode.OK, mensaje = "Ingrese una observación." }, JsonRequestBehavior.AllowGet);
-                }
+                //if (string.IsNullOrEmpty(entidad.ObservacionSuspension))
+                //{
+                //    return Json(new { statusCode = HttpStatusCode.OK, mensaje = "Ingrese una observación." }, JsonRequestBehavior.AllowGet);
+                //}
                 var cuerpoCorreo = "Se suspendio la convocatoria con el numero : " + entidad.Numero.ToString();
                 var empleado = db.DB_Empleado.Where(x => x.EmpleadoID == entidad.EmpleadoID).FirstOrDefault();
                 entidad.Estado = "S";

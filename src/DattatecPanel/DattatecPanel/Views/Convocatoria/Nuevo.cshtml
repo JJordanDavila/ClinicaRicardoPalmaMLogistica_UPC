@@ -102,9 +102,9 @@ else
             $("#Numero").val('@ViewBag.NuevoNumeroConvocatoria');
             var currentdate = new Date();
 
-            $('#FechaInicio').val($.datepicker.formatDate('dd-m-yy', currentdate));
+            $('#FechaInicio').val($.datepicker.formatDate('dd/m/yy', currentdate));
             currentdate.setDate(currentdate.getDate() + 30);
-            $('#FechaFin').val($.datepicker.formatDate('dd-m-yy', currentdate));
+            $('#FechaFin').val($.datepicker.formatDate('dd/m/yy', currentdate));
         } else {
             $('#RubroID option:not(:selected)').attr('disabled', true);
             $('#EmpleadoID option:not(:selected)').attr('disabled', true);

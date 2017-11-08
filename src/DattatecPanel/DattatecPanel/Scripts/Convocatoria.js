@@ -77,6 +77,11 @@
         }
 
         Convocatoria.prototype.Guardar = function () {
+            var fini = $("#FechaInicio").val();
+            var ffin = $("#FechaFin").val();
+            var mensaje = ValidarFechaInicio_Fin(fini, ffin);
+            if (mensaje != "") { return gMensajeInformacion(mensaje); }
+
             gMensajeConfirmacion("¿Esta seguro de registrar?", function () {
                 Convocatoria.prototype.GuardarConvocatoria();
             });
@@ -138,26 +143,31 @@
 
         Convocatoria.prototype.GuardarSuspension = function () {
 
-            var convocatoria = $('#frmSuspension').serializeFormJSON();
-            $.ajax({
-                url: globalRutaServidor + "Convocatoria/Suspender",
-                type: 'POST',
-                data: { entidad: convocatoria },
-                success: function (data) {
-                    if (data.statusCode == 200) {
-                        var callback = function () {
-                            $("#btnCancelar").click();
-                        };
-                        gMensajeInformacionConCallback(data.mensaje, callback);
-                    } else {
-                        gMensajeInformacion('Ocurrio un error.');
-                    }
-                },
-                error: function () {
-                    gMensajeErrorAjax();
-                }
-            });
+            var obs = $("#ObservacionSuspension").val();
+            if (obs == "") { return gMensajeInformacion("Ingrese una observación."); }
 
+            gMensajeConfirmacion("¿Esta seguro de suspender?", function () {
+                var convocatoria = $('#frmSuspension').serializeFormJSON();
+                $.ajax({
+                    url: globalRutaServidor + "Convocatoria/Suspender",
+                    type: 'POST',
+                    async: false,
+                    data: { entidad: convocatoria },
+                    success: function (data) {
+                        if (data.statusCode == 200) {
+                            var callback = function () {
+                                $("#btnCancelar").click();
+                            };
+                            gMensajeInformacionConCallback(data.mensaje, callback);
+                        } else {
+                            gMensajeInformacion('Ocurrio un error.');
+                        }
+                    },
+                    error: function () {
+                        gMensajeErrorAjax();
+                    }
+                });
+            });
             return false;
         };
 
