@@ -38,7 +38,10 @@
                         field: 'NombreCompleto', title: 'Solicitante', width: 250
                     },
                     {
-                        field: 'Estado', title: 'Estado', align: 'center', width: 100
+                        field: 'Estado', title: 'Estado', align: 'center', width: 100,
+                        formatter: function (value, row, index) {
+                            return value.trim() == "E" ? "Emitido" : "Suspendido";
+                        }
                     },
                     {
                         field: 'action', title: 'Opciones', width: 100, align: 'center',
@@ -55,6 +58,13 @@
         }
 
         Convocatoria.prototype.buscar = function () {
+            var nroConvocatoria = $("#nroConvocatoria").val();
+            if (nroConvocatoria != undefined && nroConvocatoria.trim() != "") {
+                if (isNaN(nroConvocatoria.trim())) {
+                    return gMensajeInformacion("Solo se admiten numeros en el campo número de convocatoria.");
+                }
+            }
+
             $.ajax({
                 url: globalRutaServidor + "Convocatoria/ListarConvocatoriaProveedores",
                 type: 'GET',
@@ -89,7 +99,6 @@
         };
 
         Convocatoria.prototype.GuardarConvocatoria = function () {
-
             var frmData = new FormData(document.getElementById('frmNuevoConvocatoria'));
             $.ajax({
                 url: globalRutaServidor + "Convocatoria/Nuevo",
@@ -127,6 +136,15 @@
             });
             $("#btnSuspender").on('click', function () {
                 Convocatoria.prototype.GuardarSuspension();
+            });
+            $("#nroConvocatoria").keypress(function (e) {
+                return (e.keyCode >= 48 && e.keyCode <= 57)
+            });
+            $("#fechaInicioIndex").keypress(function (e) {
+                return ((e.keyCode >= 48 && e.keyCode <= 57) || e.keyCode == 47)
+            });
+            $("#FechaFinIndex").keypress(function (e) {
+                return ((e.keyCode >= 48 && e.keyCode <= 57) || e.keyCode == 47)
             });
         }
 

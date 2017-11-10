@@ -55,12 +55,12 @@ namespace DattatecPanel.Controllers
                 {
                     var numero = convocatoria.Numero;
                     var correlativo = Convert.ToInt32(numero.ToString().Substring(6)) + 1;
-                    numerogenerado = numero.Substring(0, 6) + correlativo.ToString();
+                    numerogenerado = numero.Substring(0, 6) + correlativo.ToString().PadLeft(6, '0');
                 }
             }
             else
             {
-                
+                numerogenerado = DateTime.Now.Year.ToString() + DateTime.Now.Month.ToString() + "000001";
             }
             ViewBag.NuevoNumeroConvocatoria = numerogenerado;
             CargarCombos();
@@ -74,9 +74,16 @@ namespace DattatecPanel.Controllers
             {
                 if (entidad.Convocatoriaid <= 0)
                 {
-                    if (!entidad.RequisitoFile.FileName.EndsWith("pdf"))
+                    if (entidad.RequisitoFile != null)
                     {
-                        return Json(new { statusCode = HttpStatusCode.OK, mensajeInfo = "Solo adjuntar archivo en formato PDF." }, JsonRequestBehavior.AllowGet);
+                        if (!entidad.RequisitoFile.FileName.EndsWith("pdf"))
+                        {
+                            return Json(new { statusCode = HttpStatusCode.OK, mensajeInfo = "Solo adjuntar archivo en formato PDF." }, JsonRequestBehavior.AllowGet);
+                        }
+                    }
+                    else
+                    {
+                        return Json(new { statusCode = HttpStatusCode.OK, mensajeInfo = "Adjuntar un archivo." }, JsonRequestBehavior.AllowGet);
                     }
                 }
                 var mensaje = string.Empty;

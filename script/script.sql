@@ -557,7 +557,7 @@ CREATE TABLE [dbo].[GL_Empleado](
 	[ApellidoPaterno] [varchar](20) NOT NULL,
 	[ApellidoMaterno] [varchar](20) NOT NULL,
 	[Nombres] [varchar](20) NOT NULL,
-	[Correo] [varchar](20) NOT NULL,
+	[Correo] [varchar](100) NOT NULL,
 PRIMARY KEY CLUSTERED 
 (
 	[EmpleadoID] ASC

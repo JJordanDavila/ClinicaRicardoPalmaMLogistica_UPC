@@ -113,9 +113,9 @@
             <td>
                 @Html.DisplayFor(modelItem => Model.DetallePostulantes[i].DetalleId)
             </td>
-            <td>
+            @*<td>
                 @Html.DisplayFor(modelItem => Model.DetallePostulantes[i].NombreArchivo)
-            </td>
+            </td>*@
             <td>
                 @Html.ActionLink("Edit", "Edit", new { id = Model.DetallePostulantes[i].DetalleId }) |
                 @Html.ActionLink("Delete", "Delete", new { id = Model.DetallePostulantes[i].DetalleId })
