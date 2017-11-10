@@ -1,4 +1,5 @@
 ﻿using DattatecPanel.Context;
+using DattatecPanel.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,9 +18,20 @@ namespace DattatecPanel.Controllers
             return View();
         }
 
-        public ActionResult RegistrarPostulante()
+        public ActionResult RegistrarPostulante(Postulante postulante)
         {
+            //try
+            //{
+            //    Postulante postular = new Postulante
+            //    {
+            //        postular.RazonSocial = postulante.RazonSocial;
+            //};
+            //}
+            //catch (DataException)
+            //{
+            //    ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
+            //}
             return View();
-        }
+}
     }
 }

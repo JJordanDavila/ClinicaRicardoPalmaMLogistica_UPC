@@ -13,10 +13,10 @@ namespace DattatecPanel.Models
     {
         [Key]
         public int DetalleId { get; set; }
-        [ForeignKey("PostulanteId")]
+        public int PostulanteId { get; set; }
+        //public string NombreArchivo { get; set; }
+        // public string Archivo { get; set; }
+
         public virtual Postulante Postulante { get; set; }
-        //public int Postulante_ID { get; set; }
-        public string NombreArchivo { get; set; }
-        public string Archivo { get; set; }
     }
 }

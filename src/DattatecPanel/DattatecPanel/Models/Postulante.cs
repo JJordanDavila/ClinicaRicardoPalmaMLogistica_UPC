@@ -17,14 +17,9 @@ namespace DattatecPanel.Models
         public string Correo { get; set; }
         public string RUC { get; set; }
         public bool ConstanciaRNP { get; set; }
-        public DateTime Fecha_Registro { get; set; }
+        //public DateTime Fecha_Registro { get; set; }
 
-
-        //[NotMapped]
-        //[DisplayName("Término de Referencia de Inicio")]
-        //public HttpPostedFileBase FileTDR1 { get; set; }
-        //public string FileNameTDR1 { get; set; }
-        //public string ContentTypeTDR1 { get; set; }
-
+        public ICollection<DetallePostulante> DetallePostulantes { set; get; }
+    
     }
 }

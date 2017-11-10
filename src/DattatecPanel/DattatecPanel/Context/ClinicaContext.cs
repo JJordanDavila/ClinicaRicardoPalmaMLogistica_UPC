@@ -32,5 +32,8 @@ namespace DattatecPanel.Context
         public System.Data.Entity.DbSet<DattatecPanel.Models.Rubro> Rubroes { get; set; }
         public DbSet<Convocatoria> DB_Convocatoria { get; set; }
 
+        public DbSet<Postulante> DB_Postulante { get; set; }
+        public DbSet<DetallePostulante> DB_DetallePostulante { get; set; }
+
     }
 }
