@@ -422,7 +422,8 @@
       <DependentUpon>dsDetalleOrdenCompra.xsd</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
-    <Content Include="Scripts\Convocatoria.js" />
+    <Content Include="Scripts\Convocatoria\Index.js" />
+    <Content Include="Scripts\Convocatoria\Nuevo.js" />
     <Content Include="Scripts\fileinput.min.js" />
     <Content Include="Scripts\General.js" />
     <Content Include="Scripts\grid-0.4.3.js" />
@@ -647,6 +648,8 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Models\Entidades\" />
+    <Folder Include="Models\ViewModel\" />
     <Folder Include="Views\RegistroProveedorParticipante\" />
   </ItemGroup>
   <ItemGroup>
