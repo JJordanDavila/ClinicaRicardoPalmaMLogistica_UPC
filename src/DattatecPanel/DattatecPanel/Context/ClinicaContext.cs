@@ -1,4 +1,5 @@
 ﻿using DattatecPanel.Models;
+using DattatecPanel.Models.Entidades;
 using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
 
