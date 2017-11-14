@@ -1,4 +1,5 @@
 ﻿using DattatecPanel.Context;
+using DattatecPanel.Models;
 using DattatecPanel.Models.DTO;
 using DattatecPanel.Models.Entidades;
 using DattatecPanel.Models.Util;
@@ -23,24 +24,17 @@ namespace DattatecPanel.Controllers
 
         public ActionResult ListarConvocatoriaProveedores(string numero, string fini, string ffin)
         {
-            var dfini = string.IsNullOrEmpty(fini) ? DateTime.MinValue : Convert.ToDateTime(fini);
-            var dffin = string.IsNullOrEmpty(ffin) ? DateTime.MaxValue : Convert.ToDateTime(ffin);
-            var lista = db.DB_Convocatoria.Where(x => x.Numero.Contains(numero)
-           && x.FechaInicio >= dfini
-           && x.FechaFin <= dffin
-           && x.Estado == "E").ToList().Select(s => new {
-               s.Convocatoriaid,
-               s.Numero,
-               s.FechaInicio,
-               s.FechaFin,
-               s.Requisito,
-               s.Estado,
-               s.Rubro.Descripcion,
-               s.Empleado.NombreCompleto
-           }).ToList();
-            var jsonresult =  Json(new { rows = lista }, JsonRequestBehavior.AllowGet);
-            jsonresult.MaxJsonLength = int.MaxValue;
-            return jsonresult;
+            try
+            {
+                var lista = new ConvocatoriaModel().ListarConvocatoriaProveedores(numero, fini, ffin);
+                var jsonresult = Json(new { rows = lista }, JsonRequestBehavior.AllowGet);
+                jsonresult.MaxJsonLength = int.MaxValue;
+                return jsonresult;
+            }
+            catch(Exception ex)
+            {
+                return Json(new { statusCode = HttpStatusCode.BadRequest }, JsonRequestBehavior.AllowGet);
+            }
         }
 
         public ActionResult Nuevo()
