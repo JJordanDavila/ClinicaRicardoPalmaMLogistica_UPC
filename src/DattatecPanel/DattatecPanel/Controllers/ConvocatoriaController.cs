@@ -39,22 +39,7 @@ namespace DattatecPanel.Controllers
 
         public ActionResult Nuevo()
         {
-            var numerogenerado = string.Empty;
-            if(db.DB_Convocatoria.Count() > 0)
-            {
-                var convocatoria = db.DB_Convocatoria.OrderByDescending(x => x.Numero).First();
-                if (convocatoria != null)
-                {
-                    var numero = convocatoria.Numero;
-                    var correlativo = Convert.ToInt32(numero.ToString().Substring(6)) + 1;
-                    numerogenerado = numero.Substring(0, 6) + correlativo.ToString().PadLeft(6, '0');
-                }
-            }
-            else
-            {
-                numerogenerado = DateTime.Now.Year.ToString() + DateTime.Now.Month.ToString() + "000001";
-            }
-            ViewBag.NuevoNumeroConvocatoria = numerogenerado;
+            ViewBag.NuevoNumeroConvocatoria = new ConvocatoriaModel().GenerarNumeroCorrelativo();
             CargarCombos();
             return View();
         }
@@ -64,67 +49,8 @@ namespace DattatecPanel.Controllers
         {
             try
             {
-                if (entidad.Convocatoriaid <= 0)
-                {
-                    if (entidad.RequisitoFile != null)
-                    {
-                        if (!entidad.RequisitoFile.FileName.EndsWith("pdf"))
-                        {
-                            return Json(new { statusCode = HttpStatusCode.OK, mensajeInfo = "Solo adjuntar archivo en formato PDF." }, JsonRequestBehavior.AllowGet);
-                        }
-                    }
-                    else
-                    {
-                        return Json(new { statusCode = HttpStatusCode.OK, mensajeInfo = "Adjuntar un archivo." }, JsonRequestBehavior.AllowGet);
-                    }
-                }
-                var mensaje = string.Empty;
-                byte[] data = null;
-                if (entidad.RequisitoFile != null)
-                {
-                    using (Stream inputStream = entidad.RequisitoFile.InputStream)
-                    {
-                        MemoryStream memoryStream = inputStream as MemoryStream;
-                        if (memoryStream == null)
-                        {
-                            memoryStream = new MemoryStream();
-                            inputStream.CopyTo(memoryStream);
-                        }
-                        data = memoryStream.ToArray();
-                    }
-                }
-
-                entidad.Estado = "E";
-                Convocatoria convocatoria = new Convocatoria
-                {
-                    Convocatoriaid = entidad.Convocatoriaid,
-                    Numero = entidad.Numero,
-                    FechaInicio = entidad.FechaInicio,
-                    FechaFin = entidad.FechaFin,
-                    Estado = entidad.Estado,
-                    RubroID = entidad.RubroID,
-                    EmpleadoID = entidad.EmpleadoID,
-                    Requisito = data == null ? entidad.Requisito : data
-                };
-                if (entidad.Convocatoriaid <= 0)
-                {
-                    var empleado = db.DB_Empleado.Where(x => x.EmpleadoID == convocatoria.EmpleadoID).FirstOrDefault();
-                    var cuerpoCorreo = "Se registro la convocatoria con el numero : " + convocatoria.Numero.ToString();
-                    db.DB_Convocatoria.Add(convocatoria);
-                    db.SaveChanges();
-                    correo.EnviarCorreo("Clinica Ricardo Palma", empleado.Correo, "Creación de convocatoria", cuerpoCorreo, false, null);
-                    mensaje = "Se registro con exito";
-                }
-                else
-                {
-                    var empleado = db.DB_Empleado.Where(x => x.EmpleadoID == convocatoria.EmpleadoID).FirstOrDefault();
-                    var cuerpoCorreo = "Se actualizo la convocatoria con el numero : " + convocatoria.Numero.ToString();
-                    db.Entry(convocatoria).State = EntityState.Modified;
-                    db.SaveChanges();
-                    correo.EnviarCorreo("Clinica Ricardo Palma", empleado.Correo, "Actualizacion de convocatoria", cuerpoCorreo, false, null);
-                    mensaje = "Se actualizo con exito";
-                }
-                return Json(new { statusCode = HttpStatusCode.OK, mensaje = mensaje, mensajeInfo = "" }, 
+                var response = new ConvocatoriaModel().GuardarConvocatoria(entidad);
+                return Json(new { statusCode = HttpStatusCode.OK, mensaje = response.mensaje, mensajeInfo = response.mensajeInfo }, 
                     JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
