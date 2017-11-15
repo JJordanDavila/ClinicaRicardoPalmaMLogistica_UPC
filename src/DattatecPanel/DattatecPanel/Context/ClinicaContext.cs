@@ -17,7 +17,7 @@ namespace DattatecPanel.Context
             base.OnModelCreating(modelBuilder);
         }
 
-        //GL_LOGISTICA
+        //GL_LOGISTICA  
         public DbSet<OrdenCompra> DB_OrdenCompra { get; set; }
         public DbSet<Cotizacion> DB_Cotizacion { get; set; }
         public DbSet<TransaccionCompra> DB_TransaccionCompra { get; set; }
@@ -35,6 +35,8 @@ namespace DattatecPanel.Context
 
         public DbSet<Postulante> DB_Postulante { get; set; }
         public DbSet<DetallePostulante> DB_DetallePostulante { get; set; }
+
+        public DbSet<Parametro> DB_Parametro { get; set; }
 
     }
 }

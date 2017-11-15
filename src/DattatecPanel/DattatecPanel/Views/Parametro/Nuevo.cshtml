@@ -1,0 +1,95 @@
+﻿@model DattatecPanel.Models.Entidades.Parametro
+@{
+    ViewBag.Title = "Nuevo";
+}
+@if (Model == null)
+{
+    <h2>Nuevo</h2>
+}
+else
+{
+    <h2>Actualizar</h2>
+}
+
+<form id="frmNuevoParametro">
+    @Html.HiddenFor(model => model.ParametroId, new { htmlAttributes = new { @class = "form-control" } })
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.FecIni, new { @class = "col-sm-2 control-label" })
+        <div class="col-sm-3">
+            @Html.EditorFor(model => model.FecIni, new { htmlAttributes = new { @class = "form-control date" } })
+            @Html.ValidationMessageFor(model => model.FecIni, "", new { @class = "text-danger" })
+        </div>
+        <div class="col-sm-12">&nbsp;</div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.FecFin, new { @class = "col-sm-2 control-label" })
+        <div class="col-sm-3">
+            @Html.EditorFor(model => model.FecFin, new { htmlAttributes = new { @class = "form-control date" } })
+            @Html.ValidationMessageFor(model => model.FecFin, "", new { @class = "text-danger" })
+        </div>
+        <div class="col-sm-12">&nbsp;</div>
+    </div>
+  
+        <div class="form-group colFormularioHorizontal">
+            @Html.LabelFor(model => model.Intervalo, new { @class = "col-sm-2 control-label obligatorio" })
+            <div class="col-md-3">
+                @Html.EditorFor(model => model.Intervalo, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Intervalo, "", new { @class = "text-danger" })
+            </div>
+            <div class="col-sm-12"></div>
+        </div>
+        <div class="form-group colFormularioHorizontal">
+            @Html.LabelFor(model => model.UnidadMedidaIntervalo, new { @class = "col-sm-2 control-label obligatorio" })
+            <div class="col-md-3">
+                @Html.EditorFor(model => model.UnidadMedidaIntervalo, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.UnidadMedidaIntervalo, "", new { @class = "text-danger" })
+            </div>
+            <div class="col-sm-12"></div>
+        </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.FecUltPro, new { @class = "col-sm-2 control-label" })
+        <div class="col-sm-3">
+            @Html.EditorFor(model => model.FecUltPro, new { htmlAttributes = new { @class = "form-control date" } })
+            @Html.ValidationMessageFor(model => model.FecUltPro, "", new { @class = "text-danger" })
+        </div>
+        <div class="col-sm-12"></div>
+    </div>
+
+    <div class="form-group colFormularioHorizontal">
+            @Html.LabelFor(model => model.UrlServicio01,  new { @class = "col-sm-2 control-label obligatorio" })
+        <div class="col-md-5">
+            @Html.EditorFor(model => model.UrlServicio01, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.UrlServicio01, "", new { @class = "text-danger" })
+        </div>
+        <div class="col-sm-12"></div>
+        </div>
+    
+    <div class="form-group colFormularioHorizontal">
+        @Html.LabelFor(model => model.UrlServicio02, new { @class = "col-sm-2 control-label obligatorio" })
+        <div class="col-md-5">
+            @Html.EditorFor(model => model.UrlServicio02, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.UrlServicio02, "", new { @class = "text-danger" })
+        </div>
+        <div class="col-sm-12"></div>
+    </div>
+
+    <div class="modal-footer" style="margin-top: 20px;">
+        <a href="@Url.Action("Index", "Parametro")" class="btn btn-primary" style="color: white;"><span class="glyphicon glyphicon-ok-sign" id="btnCancelar"></span> Cancelar</a>
+        <button type="button" class="btn btn-primary" id="btnGuardar">Guardar</button>
+    </div>
+</form>
+@section scripts{
+    <script>
+        var suspender = false;
+        var parametro = $("#Parametroid").val();
+        if (parametro == "") {
+            var currentdate = new Date();
+            $('#FecIni').val($.datepicker.formatDate('dd/m/yy', currentdate));
+            currentdate.setDate(currentdate.getDate() + 30);
+            $('#FecFin').val($.datepicker.formatDate('dd/m/yy', currentdate));
+        }
+       
+    </script>
+    <script src="~/Scripts/Parametro/Nuevo.js"></script>
+}

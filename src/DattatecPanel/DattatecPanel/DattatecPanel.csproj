@@ -46,7 +46,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Microsoft.ReportViewer.WebForms, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="microsoft.reportviewer.webforms, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\EPE\TP3\Fuentes\ClinicaRicardoPalmaMLogistica_UPC-master\microsoft.reportviewer.webforms.dll</HintPath>
+    </Reference>
     <Reference Include="PagedList">
       <HintPath>..\packages\PagedList.1.17.0.0\lib\net40\PagedList.dll</HintPath>
     </Reference>
@@ -184,6 +187,7 @@
     <Compile Include="Controllers\LicitacionController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\OrdenCompraController.cs" />
+    <Compile Include="Controllers\ParametroController.cs" />
     <Compile Include="Controllers\PostulanteController.cs" />
     <Compile Include="Controllers\PostularController.cs" />
     <Compile Include="Controllers\RegistroProveedorParticipanteController.cs" />
@@ -217,6 +221,7 @@
       <DependentUpon>configEntity.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\ConvocatoriaModel.cs" />
+    <Compile Include="Models\DTO\ParametroDTO.cs" />
     <Compile Include="Models\Entidades\Convocatoria.cs" />
     <Compile Include="Models\Cotizacion.cs" />
     <Compile Include="Models\DetalleConvocatoria.cs" />
@@ -232,6 +237,7 @@
       <DependentUpon>configEntity.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\EmpleadoL.cs" />
+    <Compile Include="Models\Entidades\Parametro.cs" />
     <Compile Include="Models\FormaPago.cs" />
     <Compile Include="Models\GS_ASEGURADORA.cs">
       <DependentUpon>configEntity.tt</DependentUpon>
@@ -287,6 +293,7 @@
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Moneda.cs" />
     <Compile Include="Models\OrdenCompra.cs" />
+    <Compile Include="Models\ParametroModel.cs" />
     <Compile Include="Models\Postulante.cs" />
     <Compile Include="Models\PostulanteView.cs" />
     <Compile Include="Models\Proveedor.cs" />
@@ -491,6 +498,8 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\jqueryuiDatetimepicker.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Scripts\Parametro\Index.js" />
+    <Content Include="Scripts\Parametro\Nuevo.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\wickedpicker.js" />
@@ -646,6 +655,8 @@
     <Content Include="Views\Postulante\RegistrarPostulante.cshtml" />
     <Content Include="Views\Postular\NuevoPostulante.cshtml" />
     <Content Include="Views\Postular\AddDocumento.cshtml" />
+    <Content Include="Views\Parametro\Index.cshtml" />
+    <Content Include="Views\Parametro\Nuevo.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
