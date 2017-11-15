@@ -221,7 +221,11 @@
       <DependentUpon>configEntity.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\ConvocatoriaModel.cs" />
+
     <Compile Include="Models\DTO\ParametroDTO.cs" />
+
+    <Compile Include="Models\DTO\ResponseConvocatoria.cs" />
+
     <Compile Include="Models\Entidades\Convocatoria.cs" />
     <Compile Include="Models\Cotizacion.cs" />
     <Compile Include="Models\DetalleConvocatoria.cs" />
