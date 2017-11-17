@@ -49,5 +49,10 @@ namespace DattatecPanel.Controllers
                 return Json(new { statusCode = HttpStatusCode.BadRequest }, JsonRequestBehavior.AllowGet);
             }
         }
+
+        public ActionResult Observacion()
+        {
+            return PartialView("_Observacion");
+        }
     }
 }
