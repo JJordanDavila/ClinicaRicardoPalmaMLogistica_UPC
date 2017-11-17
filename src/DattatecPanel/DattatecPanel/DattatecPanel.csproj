@@ -180,6 +180,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ConvocatoriaController.cs" />
     <Compile Include="Controllers\CotizacionController.cs" />
+    <Compile Include="Controllers\EvaluarProveedorController.cs" />
     <Compile Include="Controllers\GS_ORDEN_MEDICAController.cs" />
     <Compile Include="Controllers\GS_SRSController.cs" />
     <Compile Include="Controllers\GS_TRAMAController.cs" />
@@ -221,11 +222,10 @@
       <DependentUpon>configEntity.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\ConvocatoriaModel.cs" />
-
+    <Compile Include="Models\DTO\EvaluarProveedorDTO.cs" />
     <Compile Include="Models\DTO\ParametroDTO.cs" />
-
+    <Compile Include="Models\DTO\RequestEvaluarProveedor.cs" />
     <Compile Include="Models\DTO\ResponseConvocatoria.cs" />
-
     <Compile Include="Models\Entidades\Convocatoria.cs" />
     <Compile Include="Models\Cotizacion.cs" />
     <Compile Include="Models\DetalleConvocatoria.cs" />
@@ -241,7 +241,10 @@
       <DependentUpon>configEntity.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\EmpleadoL.cs" />
+    <Compile Include="Models\Entidades\Criterios.cs" />
     <Compile Include="Models\Entidades\Parametro.cs" />
+    <Compile Include="Models\Entidades\ProveedorCriterio.cs" />
+    <Compile Include="Models\EvaluarProveedorModel.cs" />
     <Compile Include="Models\FormaPago.cs" />
     <Compile Include="Models\GS_ASEGURADORA.cs">
       <DependentUpon>configEntity.tt</DependentUpon>
@@ -436,6 +439,7 @@
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\Convocatoria\Index.js" />
     <Content Include="Scripts\Convocatoria\Nuevo.js" />
+    <Content Include="Scripts\EvaluarProveedor\Index.js" />
     <Content Include="Scripts\fileinput.min.js" />
     <Content Include="Scripts\General.js" />
     <Content Include="Scripts\grid-0.4.3.js" />
@@ -661,6 +665,7 @@
     <Content Include="Views\Postular\AddDocumento.cshtml" />
     <Content Include="Views\Parametro\Index.cshtml" />
     <Content Include="Views\Parametro\Nuevo.cshtml" />
+    <Content Include="Views\EvaluarProveedor\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
