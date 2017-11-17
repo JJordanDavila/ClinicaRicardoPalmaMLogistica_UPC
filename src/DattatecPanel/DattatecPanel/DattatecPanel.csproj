@@ -191,6 +191,7 @@
     <Compile Include="Controllers\ParametroController.cs" />
     <Compile Include="Controllers\PostulanteController.cs" />
     <Compile Include="Controllers\PostularController.cs" />
+    <Compile Include="Controllers\ProveedorController.cs" />
     <Compile Include="Controllers\RegistroProveedorParticipanteController.cs" />
     <Compile Include="Controllers\RequerimientoCompraController.cs" />
     <Compile Include="Datasets\dsDetalleOrdenCompra1.Designer.cs">
@@ -223,6 +224,7 @@
     </Compile>
     <Compile Include="Models\ConvocatoriaModel.cs" />
     <Compile Include="Models\DTO\EvaluarProveedorDTO.cs" />
+    <Compile Include="Models\DTO\HistorialProveedorDTO.cs" />
     <Compile Include="Models\DTO\ParametroDTO.cs" />
     <Compile Include="Models\DTO\RequestEvaluarProveedor.cs" />
     <Compile Include="Models\DTO\ResponseConvocatoria.cs" />
@@ -304,6 +306,7 @@
     <Compile Include="Models\Postulante.cs" />
     <Compile Include="Models\PostulanteView.cs" />
     <Compile Include="Models\Proveedor.cs" />
+    <Compile Include="Models\ProveedorModel.cs" />
     <Compile Include="Models\RegistroProveedorParticipante.cs" />
     <Compile Include="Models\RequerimientoCompra.cs" />
     <Compile Include="Models\Rubro.cs" />
@@ -508,6 +511,7 @@
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\Parametro\Index.js" />
     <Content Include="Scripts\Parametro\Nuevo.js" />
+    <Content Include="Scripts\Proveedor\Index.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\wickedpicker.js" />
@@ -666,6 +670,8 @@
     <Content Include="Views\Parametro\Index.cshtml" />
     <Content Include="Views\Parametro\Nuevo.cshtml" />
     <Content Include="Views\EvaluarProveedor\Index.cshtml" />
+    <Content Include="Views\Proveedor\DetalleHistorial.cshtml" />
+    <Content Include="Views\Proveedor\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
