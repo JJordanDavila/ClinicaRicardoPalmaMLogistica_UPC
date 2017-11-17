@@ -232,9 +232,7 @@
     <Compile Include="Models\DTO\ResponseParametro.cs" />
     <Compile Include="Models\DTO\EvaluarProveedorDTO.cs" />
     <Compile Include="Models\DTO\HistorialProveedorDTO.cs" />
-    <Compile Include="Models\DTO\ParametroDTO.cs" />
     <Compile Include="Models\DTO\RequestEvaluarProveedor.cs" />
-    <Compile Include="Models\DTO\ResponseConvocatoria.cs" />
     <Compile Include="Models\Entidades\Convocatoria.cs" />
     <Compile Include="Models\Cotizacion.cs" />
     <Compile Include="Models\DetallePostulante.cs" />
