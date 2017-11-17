@@ -1,0 +1,99 @@
+﻿@model DattatecPanel.Models.DTO.HistorialProveedorDTO
+@{
+    ViewBag.Title = "DetalleHistorial";
+}
+
+<h3>Detalle Historial de Proveedor</h3>
+<hr />
+<form>
+    <div class="form-group row">
+        <div class="form-group">
+            @Html.LabelFor(model => model.Ruc, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-3">
+                @Html.TextBoxFor(model => model.Ruc, new { @class = "form-control text-box single-line", disabled = "disabled", @readonly = "readonly" })
+            </div>
+            @Html.LabelFor(model => model.RazonSocial, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-3">
+                @Html.TextBoxFor(model => model.RazonSocial, new { @class = "form-control text-box single-line", disabled = "disabled", @readonly = "readonly" })
+            </div>
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="form-group">
+            @Html.LabelFor(model => model.Estado, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-3">
+                @Html.TextBoxFor(model => model.Estado, new { @class = "form-control text-box single-line", disabled = "disabled", @readonly = "readonly" })
+            </div>
+            @Html.LabelFor(model => model.ObservacionesSuspension, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-3">
+                @Html.TextAreaFor(model => model.ObservacionesSuspension, new { @class = "form-control text-box single-line", disabled = "disabled", @readonly = "readonly" })
+            </div>
+        </div>
+    </div>
+
+    <h3>Licitaciones en las cuales ha participado</h3>
+    
+    <table class="table">
+        <tr>
+            <th>Número</th>
+            <th>Fecha</th>
+            <th>Fecha colocación expediente</th>
+            <th>Moneda</th>
+            <th>Monto</th>
+        </tr>
+        @foreach (var item in Model.ListaParticipacionLicitacionDTO)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Numero)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Fecha)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FechaColocacionExpediente)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Moneda)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Monto)
+                </td>
+            </tr>
+        }
+    </table>
+
+    <h3>Cotizaciones</h3>
+    
+    <table class="table">
+        <tr>
+            <th>Número</th>
+            <th>Fecha</th>
+            <th>Forma de Pago</th>
+            <th>N° días</th>
+        </tr>
+        @foreach (var item in Model.ListaParticipacionCotizacionDTO)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Numero)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Fecha)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FormaPago)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NroDiasPago)
+                </td>
+            </tr>
+        }
+    </table>
+    <div>
+        @Html.ActionLink("Regresar", "Index", "Proveedor")
+    </div>
+</form>
+
+
+

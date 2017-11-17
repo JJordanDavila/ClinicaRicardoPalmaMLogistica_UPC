@@ -12,7 +12,7 @@
         NuevaConvocatoria.prototype.Guardar = function () {
             var fini = $("#FechaInicio").val();
             var ffin = $("#FechaFin").val();
-            var mensaje = ValidarFechaInicio_Fin(fini, ffin);
+            var mensaje = ValidarFechaInicio_Fin(fini, ffin, 30);
             if (mensaje != "") { return gMensajeInformacion(mensaje); }
 
             gMensajeConfirmacion("¿Esta seguro de registrar?", function () {

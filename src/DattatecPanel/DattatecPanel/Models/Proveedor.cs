@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Web;
 
 namespace DattatecPanel.Models
 {
@@ -24,6 +21,12 @@ namespace DattatecPanel.Models
         public string Correo { get; set; }
         public string RUC { get; set; }
         public bool CertificadoISO { get; set; }
+        public bool ConstanciaRNP { get; set; }
+        public int? PostulanteId { get; set; }
+        [ForeignKey("PostulanteId")]
+        public virtual Postulante Postulante { get; set; }
+        public string ObservacionesSuspension { get; set; }
+        public DateTime? FechaSuspension { get; set; }
         public string Estado { get; set; }
 
         [NotMapped]

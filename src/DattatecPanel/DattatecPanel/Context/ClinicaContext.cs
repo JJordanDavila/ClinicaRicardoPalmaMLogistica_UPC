@@ -39,6 +39,8 @@ namespace DattatecPanel.Context
         public DbSet<DetallePostulante> DB_DetallePostulante { get; set; }
 
         public DbSet<Parametro> DB_Parametro { get; set; }
+        public DbSet<Criterios> DB_Criterios { get; set; }
+        public DbSet<ProveedorCriterio> DB_ProveedorCriterio { get; set; }
 
     }
 }

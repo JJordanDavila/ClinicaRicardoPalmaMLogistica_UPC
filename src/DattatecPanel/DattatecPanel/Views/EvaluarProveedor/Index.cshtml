@@ -1,0 +1,72 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+<h2 class="text-center">Evaluar Proveedor</h2>
+<form id="frmEvaluarProveedorIndex">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="col-sm-4">
+                <div class="col-sm-12">
+                    <div class="col-sm-4">
+                        <label class="" for="txtRUC">RUC</label>
+                    </div>
+                    <div class="col-sm-8">
+                        <input type="text" id="txtRUC" class="form-control input-sm" placeholder="RUC" />
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="col-sm-12">
+                    <div class="col-sm-4">
+                        <label class="" for="txtRazonSocial">Razón Social</label>
+                    </div>
+                    <div class="col-sm-8">
+                        <input type="text" id="txtRazonSocial" class="form-control input-sm" placeholder="Razón Social" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="col-sm-4">
+                <div class="col-sm-12">
+                    <div class="col-sm-4">
+                        <label class="" for="txtFechaInicio">Fecha Inicio</label>
+                    </div>
+                    <div class="col-sm-8">
+                        <input type="text" id="txtFechaInicio" class="form-control input-sm" placeholder="dd/MM/yyyy" readonly="readonly" />
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="col-sm-12">
+                    <div class="col-sm-4">
+                        <label class="" for="txtFechaFin">Fecha Fin</label>
+                    </div>
+                    <div class="col-sm-8">
+                        <input type="text" id="txtFechaFin" class="form-control input-sm" placeholder="dd/MM/yyyy" readonly="readonly" />
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="col-sm-12">
+                    <div class="col-sm-4">
+                        <button class="btn btn-primary glyphicon glyphicon-search btn-sm" id="btnConsultar">Consultar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-sm-12">
+            <table id="dgListaEvaluarProveedor"></table>
+        </div>
+    </div>
+</form>
+@section scripts{
+    <script src="~/Scripts/EvaluarProveedor/Index.js"></script>
+}
+
