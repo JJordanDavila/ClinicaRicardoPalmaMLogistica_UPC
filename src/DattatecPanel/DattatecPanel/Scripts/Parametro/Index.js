@@ -45,21 +45,21 @@
                     },
                     {
                         field: 'UrlServicio02', title: 'Servicio Osce', width: 250
-                    }
+                    },
                     //{
                     //    field: 'Estado', title: 'Estado', align: 'center', width: 100,
                     //    formatter: function (value, row, index) {
                     //        return value.trim() == "E" ? "Emitido" : "Suspendido";
                     //    }
                     //},
-                    //{
-                        ////field: 'action', title: 'Opciones', width: 100, align: 'center',
-                        ////formatter: function (value, row, index) {
-                        ////    var a = '<a href="' + globalRutaServidor + 'Parametro/Actualizar/' + row.Parametroid + '" ><span class="glyphicon glyphicon-pencil opciones" title="Modificar"></span></a>';
-                        ////    var b = '<a href="' + globalRutaServidor + 'Parametro/Suspender/' + row.Parametroid + '" ><span class="glyphicon glyphicon-remove opciones" title="Suspender"></span></a>';
-                        ////    return a + b;
-                        ////}
-                    //}
+                    {
+                        field: 'action', title: 'Opciones', width: 100, align: 'center',
+                        formatter: function (value, row, index) {
+                            var a = '<a href="' + globalRutaServidor + 'Parametro/Actualizar/' + row.ParametroId + '" ><span class="glyphicon glyphicon-pencil opciones" title="Modificar"></span></a>';
+                            var b = '<a href="' + globalRutaServidor + 'Parametro/Suspender/' + row.ParametroId + '" ><span class="glyphicon glyphicon-remove opciones" title="Suspender"></span></a>';
+                            return a + b;
+                        }
+                    }
                 ]],
                 width: '100%',
                 singleSelect: true

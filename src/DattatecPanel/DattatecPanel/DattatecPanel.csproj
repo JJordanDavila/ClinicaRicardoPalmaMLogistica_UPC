@@ -180,6 +180,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ConvocatoriaController.cs" />
     <Compile Include="Controllers\CotizacionController.cs" />
+    <Compile Include="Controllers\DetalleConvocatoriaController.cs" />
     <Compile Include="Controllers\GS_ORDEN_MEDICAController.cs" />
     <Compile Include="Controllers\GS_SRSController.cs" />
     <Compile Include="Controllers\GS_TRAMAController.cs" />
@@ -221,14 +222,14 @@
       <DependentUpon>configEntity.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\ConvocatoriaModel.cs" />
-
+    <Compile Include="Models\DetalleConvocatoriaModel.cs" />
+    <Compile Include="Models\DTO\DetalleConvocatoriaDTO.cs" />
     <Compile Include="Models\DTO\ParametroDTO.cs" />
-
+    <Compile Include="Models\DTO\PostulanteDTO.cs" />
     <Compile Include="Models\DTO\ResponseConvocatoria.cs" />
-
+    <Compile Include="Models\DTO\ResponseParametro.cs" />
     <Compile Include="Models\Entidades\Convocatoria.cs" />
     <Compile Include="Models\Cotizacion.cs" />
-    <Compile Include="Models\DetalleConvocatoria.cs" />
     <Compile Include="Models\DetallePostulante.cs" />
     <Compile Include="Models\DetalleTransaccionCompra.cs" />
     <Compile Include="Models\DTO\AdjuntoCorreo.cs" />
@@ -241,6 +242,7 @@
       <DependentUpon>configEntity.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\EmpleadoL.cs" />
+    <Compile Include="Models\Entidades\DetalleConvocatoria.cs" />
     <Compile Include="Models\Entidades\Parametro.cs" />
     <Compile Include="Models\FormaPago.cs" />
     <Compile Include="Models\GS_ASEGURADORA.cs">
@@ -436,6 +438,7 @@
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\Convocatoria\Index.js" />
     <Content Include="Scripts\Convocatoria\Nuevo.js" />
+    <Content Include="Scripts\DetalleConvocatoria\Index.js" />
     <Content Include="Scripts\fileinput.min.js" />
     <Content Include="Scripts\General.js" />
     <Content Include="Scripts\grid-0.4.3.js" />
@@ -661,10 +664,13 @@
     <Content Include="Views\Postular\AddDocumento.cshtml" />
     <Content Include="Views\Parametro\Index.cshtml" />
     <Content Include="Views\Parametro\Nuevo.cshtml" />
+    <Content Include="Views\DetalleConvocatoria\Index.cshtml" />
+    <Content Include="Views\DetalleConvocatoria\Validar.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Views\RegistroProveedorParticipante\" />
+    <Folder Include="Views\ValidarPostulante\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

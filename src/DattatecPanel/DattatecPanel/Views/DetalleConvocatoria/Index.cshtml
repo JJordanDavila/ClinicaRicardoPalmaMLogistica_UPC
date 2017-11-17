@@ -1,0 +1,42 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+<h3 style="text-align: center">
+   Listado de Postulantes
+</h3>
+<br />
+<form>
+    <div class="form-group row">
+        <label for="ruc" class="col-sm-2">N° RUC</label>
+        <div class="col-sm-4">
+            <input type="text" class="form-control input-sm" id="RUC" />
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="razonSocial" class="col-sm-2">Razón Social</label>
+        <div class="col-sm-2">
+            <input type="text" class="form-control input-sm" id="razonSocial"/>
+        </div>
+        <div class="col-sm-2">
+            <button type="button" class="btn btn-primary" id="btnConsultar">Consultar</button>
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-sm-2">
+            <a href="@Url.Action("Validar", "DetalleConvocatoria")" class="btn btn-primary" style="color: white;"><span class="glyphicon glyphicon-save" id="btnNuevo"></span> Validar Postulante</a>
+        </div>
+        <div class="col-sm-2">
+            <a href="@Url.Action("Rechazar", "DetalleConvocatoria")" class="btn btn-primary" style="color: white;"><span class="glyphicon glyphicon-save" id="btnNuevo"></span> Rechazar</a>
+        </div>
+    </div>
+    <article>
+        <table id="dgDetalleConvocatoriaPostulantes"></table>
+    </article>
+</form>
+@section scripts{
+    @*<script>
+            var suspender = false;
+        </script>*@
+    <script src="~/Scripts/DetalleConvocatoria/Index.js"></script>
+}
+

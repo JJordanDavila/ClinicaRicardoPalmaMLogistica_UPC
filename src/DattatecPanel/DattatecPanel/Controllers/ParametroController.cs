@@ -65,37 +65,9 @@ namespace DattatecPanel.Controllers
         {
             try
             {
-                //////if (entidad.Parametroid <= 0)
-                //////{
-                //////    if (entidad.RequisitoFile != null)
-                //////    {
-                //////        if (!entidad.RequisitoFile.FileName.EndsWith("pdf"))
-                //////        {
-                //////            return Json(new { statusCode = HttpStatusCode.OK, mensajeInfo = "Solo adjuntar archivo en formato PDF." }, JsonRequestBehavior.AllowGet);
-                //////        }
-                //////    }
-                //////    else
-                //////    {
-                //////        return Json(new { statusCode = HttpStatusCode.OK, mensajeInfo = "Adjuntar un archivo." }, JsonRequestBehavior.AllowGet);
-                //////    }
-                //////}
+               
                 var mensaje = string.Empty;
-                //////byte[] data = null;
-                //////if (entidad.RequisitoFile != null)
-                //////{
-                //////    using (Stream inputStream = entidad.RequisitoFile.InputStream)
-                //////    {
-                //////        MemoryStream memoryStream = inputStream as MemoryStream;
-                //////        if (memoryStream == null)
-                //////        {
-                //////            memoryStream = new MemoryStream();
-                //////            inputStream.CopyTo(memoryStream);
-                //////        }
-                //////        data = memoryStream.ToArray();
-                //////    }
-                //////}
-
-                ////entidad.Estado = "E";
+               
                 Parametro Parametro = new Parametro
                 {
                     ParametroId = entidad.ParametroId,
@@ -132,6 +104,22 @@ namespace DattatecPanel.Controllers
             {
                 return Json(new { statusCode = HttpStatusCode.BadRequest }, JsonRequestBehavior.AllowGet);
             }
+        }
+
+
+
+        public ActionResult Actualizar(int id)
+        {
+            var entidad = db.DB_Parametro.Where(x => x.ParametroId == id).First();
+            //CargarCombos();
+            return View("Nuevo", entidad);
+        }
+
+        public ActionResult Suspender(int id)
+        {
+            var entidad = db.DB_Parametro.Where(x => x.ParametroId == id).First();
+            //CargarCombos();
+            return View("Suspender", entidad);
         }
 
 	}
