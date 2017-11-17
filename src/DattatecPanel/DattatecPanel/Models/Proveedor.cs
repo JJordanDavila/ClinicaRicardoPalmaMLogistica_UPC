@@ -22,7 +22,7 @@ namespace DattatecPanel.Models
         public string RUC { get; set; }
         public bool CertificadoISO { get; set; }
         public bool ConstanciaRNP { get; set; }
-        public int PostulanteId { get; set; }
+        public int? PostulanteId { get; set; }
         [ForeignKey("PostulanteId")]
         public virtual Postulante Postulante { get; set; }
         public string ObservacionesSuspension { get; set; }
