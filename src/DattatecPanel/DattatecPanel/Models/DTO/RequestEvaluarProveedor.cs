@@ -11,5 +11,7 @@ namespace DattatecPanel.Models.DTO
         public string RazonSocial { get; set; }
         public string FechaInicio { get; set; }
         public string FechaFin { get; set; }
+        public int idProveedor { get; set; }
+        public string Estado { get; set; }
     }
 }

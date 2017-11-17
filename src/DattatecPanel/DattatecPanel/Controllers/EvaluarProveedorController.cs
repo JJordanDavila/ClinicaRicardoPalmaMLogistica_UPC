@@ -33,5 +33,21 @@ namespace DattatecPanel.Controllers
                 return Json(new { statusCode = HttpStatusCode.BadRequest }, JsonRequestBehavior.AllowGet);
             }
         }
+
+        [HttpPost]
+        public ActionResult ActualizarEstadoProveedor(RequestEvaluarProveedor request)
+        {
+            try
+            {
+                var lista = new EvaluarProveedorModel().ActualizarEstadoProveedor(request);
+                var jsonresult = Json(new { rows = lista, statusCode = HttpStatusCode.OK }, JsonRequestBehavior.AllowGet);
+                jsonresult.MaxJsonLength = int.MaxValue;
+                return jsonresult;
+            }
+            catch (Exception ex)
+            {
+                return Json(new { statusCode = HttpStatusCode.BadRequest }, JsonRequestBehavior.AllowGet);
+            }
+        }
     }
 }

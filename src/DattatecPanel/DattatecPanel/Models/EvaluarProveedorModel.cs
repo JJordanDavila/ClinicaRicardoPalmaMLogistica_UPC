@@ -31,5 +31,22 @@ namespace DattatecPanel.Models
                 throw;
             }
         }
+
+        public dynamic ActualizarEstadoProveedor(RequestEvaluarProveedor request)
+        {
+            try
+            {
+                var id = new SqlParameter("@ProveedorID", SqlDbType.VarChar);
+                id.Value = request.idProveedor;
+                var estado = new SqlParameter("@Estado", SqlDbType.VarChar);
+                estado.Value = request.Estado;
+                var lista = db.Database.SqlQuery<int>("PA_ActualizarEstado_Proveedor @ProveedorID, @Estado", id, estado);
+                return lista;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
     }
 }
