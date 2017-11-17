@@ -40,9 +40,11 @@ namespace DattatecPanel.Models
                 id.Value = request.idProveedor;
                 var estado = new SqlParameter("@Estado", SqlDbType.VarChar);
                 estado.Value = request.Estado;
-                var lista = db.Database.SqlQuery<int>("PA_ActualizarEstado_Proveedor @ProveedorID, @Estado", id, estado);
+                var obs = new SqlParameter("@Obs", SqlDbType.VarChar);
+                obs.Value = request.Observacion??"";
+                var lista = db.Database.SqlQuery<int>("PA_ActualizarEstado_Proveedor @ProveedorID, @Estado, @Obs", id, estado, obs);
                 var proveedor = db.DB_Proveedor.Where(x => x.ProveedorID == request.idProveedor).FirstOrDefault();
-                correo.EnviarCorreo("Clinica Ricardo Palma", proveedor.Correo, "Suspensión", "Ha sido suspendido en el proceso de evaluación.", false, null);
+                correo.EnviarCorreo("Clinica Ricardo Palma", proveedor.Correo, "Suspensión", "Ha sido suspendido en el proceso de evaluación. \nObservacion: "+request.Observacion, true, null);
                 return lista;
             }
             catch (Exception ex)
