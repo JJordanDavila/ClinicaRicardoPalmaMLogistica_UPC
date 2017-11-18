@@ -1,105 +1,156 @@
-﻿@model DattatecPanel.Models.PostulanteView
+﻿@model DattatecPanel.Models.Entidades.Postulante
 
-@*@{
-        Layout = null;
-    }*@
+@{
+    ViewBag.Title = "RegistrarPostulante";
+}
 
-<!DOCTYPE html>
+<h2>Registrar Postulante</h2>
+@{
+    var jss = new System.Web.Script.Serialization.JavaScriptSerializer();
+    var val = jss.Serialize(ViewBag.ConvocatoriaId);
+}
 
+<script>
+    $(function () {
+        var x = "@ViewBag.MessageAdvEditLC";
+        if (x == "True") {
+            $("#divMensajeAdvertenciaEdit").show();
+            $("#lblMensajeEdit").text("@ViewBag.MessageAdvertenciaLC");
+        } else {
+            $("#divMensajeAdvertenciaEdit").hide();
+        }
 
-<html>
-<head>
-    @*<meta name="viewport" content="width=device-width" />*@
-    <title>RegistrarPostulante</title>
-</head>
-<body>
-    <br />
-    <br />
-    <div class="panel-body">
-
-        <div class="form-group col-sm-4">
-
-            <div>
-                @Html.HiddenFor(model => model.RUC, new { htmlAttributes = new { @class = "form-control" } })
-                <div class="input-group" style="margin-bottom:5px;">
-                    <span class="input-group-addon">RUC</span>
-                    @Html.EditorFor(model => model.RUC, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.RUC, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-            <div>
-                @Html.HiddenFor(model => model.RazonSocial, new { htmlAttributes = new { @class = "form-control" } })
-                <div class="input-group" style="margin-bottom:5px;">
-                    <span class="input-group-addon">Razón Social</span>
-                    @Html.EditorFor(model => model.RazonSocial, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.RazonSocial, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-            <div>
-                @Html.HiddenFor(model => model.Correo, new { htmlAttributes = new { @class = "form-control" } })
-                <div class="input-group" style="margin-bottom:5px;">
-                    <span class="input-group-addon">Correo Electrónico</span>
-                    @Html.EditorFor(model => model.Correo, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.Correo, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-        </div>
-        <div class="form-group col-sm-4">
-            <div>
-                @Html.HiddenFor(model => model.RUC, new { htmlAttributes = new { @class = "form-control" } })
-                <div class="input-group" style="margin-bottom:5px;">
-                    <span class="input-group-addon">Rubro</span>
-                    @Html.EditorFor(model => model.RUC, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.RUC, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-            <div>
-                @Html.HiddenFor(model => model.RazonSocial, new { htmlAttributes = new { @class = "form-control" } })
-                <div class="input-group" style="margin-bottom:5px;">
-                    <span class="input-group-addon">Razón Social</span>
-                    @Html.EditorFor(model => model.RazonSocial, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.RazonSocial, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-            <div>
-                @Html.HiddenFor(model => model.ConstanciaRNP, new { htmlAttributes = new { @class = "form-control" } })
-                <div class="input-group" style="margin-bottom:5px;">
-                    <span class="input-group-addon">Tiene RNP</span>
-                    @Html.CheckBoxFor(model => model.ConstanciaRNP, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.ConstanciaRNP, "", new { @class = "text-danger" })
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="panel-body">
-        <div class="form-group col-sm-4">
-            <div class="input-group" style="margin-bottom:5px;">
-                Cargar Archivo
-                <div class="btn-group">
-                    @Html.ActionLink("Cargar", "Create", null, new { @class = "btn btn-success" })
-                </div>
+        $("#btn_Guardar").on("click", function () {
+            $("#divMensajeAdvertenciaEdit").hide();
+            $("#lblMensajeEdit").text("");
+        });
 
 
-                @*<div class="form-group">
-                        @Html.LabelFor(model => model.PostulanteId .FileTDR1, new { @class = "col-sm-6 control-label" })
-                        <div class="col-sm-10">
-                            @Html.TextBoxFor(model => model.FileTDR1, new { type = "file" })
-                            @Html.ValidationMessageFor(model => model.FileTDR1, "", new { @class = "validate" })
+         var val = '@Html.Raw(val)';
+            var obj = $.parseJSON(val);
+            console.log(0bj);
+    });
+
+    var ConvocatoriaId = @ViewBag.ConvocatoriaId;
+
+    var myVal = $("#myInput").data("myValue");
+
+
+
+</script>
+
+@*<form id="frmNuevoPostulante">*@
+
+@using (Html.BeginForm("RegistrarPostulante", "Postulante", FormMethod.Post))
+{
+    <div class="form-horizontal">
+        <h4>Postulante</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="panel">
+            <div class="panel">
+                <div class="form-group col-sm-4">
+                    <div>
+
+                        @ViewBag.ConvocatoriaId
+
+                        <input type="text" id="myInput" data-myValue="@ViewBag.ConvocatoriaId" />
+
+                        <input type="text" id="ConvocatoriaId" value="@ViewBag.ConvocatoriaId" />
+
+                        @*@Html.HiddenFor(model => model.Convocatoria.Convocatoriaid, new { htmlAttributes = new { @class = "form-control" } })*@
+
+                        @*@Html.LabelFor(model => model.PostulanteDTO.RUC, htmlAttributes: new { @class = "control-label col-md-2" })*@
+                        <div class="input-group" style="margin-bottom:5px;">
+                            <span class="input-group-addon">RUC</span>
+                            @Html.EditorFor(model => model.RUC, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.RUC, "", new { @class = "text-danger" })
                         </div>
-                    </div>*@
 
+                        @*@Html.LabelFor(model => model.PostulanteDTO.RazonSocial, htmlAttributes: new { @class = "control-label col-md-2" })*@
+                        <div class="input-group" style="margin-bottom:5px;">
+                            <span class="input-group-addon">Razón Social</span>
+                            @Html.EditorFor(model => model.RazonSocial, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.RazonSocial, "", new { @class = "text-danger" })
+                        </div>
 
+                        @*@Html.LabelFor(model => model.PostulanteDTO.Direccion, htmlAttributes: new { @class = "control-label col-md-2" })*@
+                        <div class="input-group" style="margin-bottom:5px;">
+                            <span class="input-group-addon">Dirección</span>
+                            @Html.EditorFor(model => model.Direccion, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Direccion, "", new { @class = "text-danger" })
+                        </div>
 
+                        @*@Html.LabelFor(model => model.PostulanteDTO.Correo, htmlAttributes: new { @class = "control-label col-md-2" })*@
+                        <div class="input-group" style="margin-bottom:5px;">
+                            <span class="input-group-addon">Correo</span>
+                            @Html.EditorFor(model => model.Correo, new { htmlAttributes = new { @class = "form-control checkbox" } })
+                            @Html.ValidationMessageFor(model => model.Correo, "", new { @class = "text-danger" })
+                        </div>
 
+                        <div class="input-group" style="margin-bottom:5px;">
+                            <span class="input-group-addon">Tiene Constancia RNP</span>
+                            <div class="checkbox" style="padding-left:40px">
+                                @Html.EditorFor(model => model.ConstanciaRNP)
+                                @Html.ValidationMessageFor(model => model.ConstanciaRNP, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+                <div>
+                    @if (!Model.DetallePostulantes.Equals(null))
+                {
+                        <table class="table">
+                            <tr>
+                                <th>Nombre Archivo</th>
+                            </tr>
+
+                            @foreach (var a in Model.DetallePostulantes)
+                            {
+                                <tr>
+                                    <td>
+                                        @a.NombreArchivo
+                                    </td>
+                                    @*<td>
+                                            @Html.ActionLink("Edit", "Edit", new { id = Model.DetallePostulantesDTO[i].DetalleId }) |
+                                            @Html.ActionLink("Delete", "Delete", new { id = Model.DetallePostulantesDTO[i].DetalleId })
+                                        </td>*@
+                                </tr>
+                            }
+                        </table>
+                    }
+                </div>
+                <div class="form-group" id="divMensajeAdvertenciaEdit">
+                    <label class="control-label col-sm-6"></label>
+                    <div class="col-sm-10">
+                        <label id="lblMensajeEdit" class="text-danger"></label>
+                    </div>
+                </div>
+                <br /><br /><br />
+
+                <div class="panel">
+                    <div class="form-group">
+                        <div class="form-group col-sm-4" style="padding-left:50px">
+                            <input type="submit" value="Guardar" class="btn btn-primary" id="btn_Guardar" />
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
+}
 
-</body>
-</html>
+
+<div style="position:absolute; top:480px; left:86px">
+    @using (Html.BeginForm("Cargar", "Postulante", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        var ConvocatoriaId = @ViewBag.ConvocatoriaId;
+        <input type="file" name="archivo" /> <input type="submit" value="Cargar" name="boton" />
+    }
+</div>
+
+@*</form>*@
+@section scripts{
+    <script src="~/Scripts/Postulante/RegistroPostulante.js"></script>
+}

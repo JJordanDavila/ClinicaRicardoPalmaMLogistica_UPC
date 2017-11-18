@@ -226,6 +226,7 @@
     <Compile Include="Models\ConvocatoriaModel.cs" />
     <Compile Include="Models\DetalleConvocatoriaModel.cs" />
     <Compile Include="Models\DTO\DetalleConvocatoriaDTO.cs" />
+    <Compile Include="Models\DTO\DetallePostulanteDTO.cs" />
     <Compile Include="Models\DTO\ParametroDTO.cs" />
     <Compile Include="Models\DTO\PostulanteDTO.cs" />
     <Compile Include="Models\DTO\ResponseConvocatoria.cs" />
@@ -233,9 +234,9 @@
     <Compile Include="Models\DTO\EvaluarProveedorDTO.cs" />
     <Compile Include="Models\DTO\HistorialProveedorDTO.cs" />
     <Compile Include="Models\DTO\RequestEvaluarProveedor.cs" />
+    <Compile Include="Models\DTO\ResponsePostulante.cs" />
     <Compile Include="Models\Entidades\Convocatoria.cs" />
     <Compile Include="Models\Cotizacion.cs" />
-    <Compile Include="Models\DetallePostulante.cs" />
     <Compile Include="Models\DetalleTransaccionCompra.cs" />
     <Compile Include="Models\DTO\AdjuntoCorreo.cs" />
     <Compile Include="Models\DTO\ConvocatoriaDTO.cs" />
@@ -247,9 +248,12 @@
       <DependentUpon>configEntity.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\EmpleadoL.cs" />
+    <Compile Include="Models\Entidades\DatosSunat.cs" />
     <Compile Include="Models\Entidades\DetalleConvocatoria.cs" />
     <Compile Include="Models\Entidades\Criterios.cs" />
+    <Compile Include="Models\Entidades\DetallePostulante.cs" />
     <Compile Include="Models\Entidades\Parametro.cs" />
+    <Compile Include="Models\Entidades\Postulante.cs" />
     <Compile Include="Models\Entidades\ProveedorCriterio.cs" />
     <Compile Include="Models\EvaluarProveedorModel.cs" />
     <Compile Include="Models\FormaPago.cs" />
@@ -308,7 +312,7 @@
     <Compile Include="Models\Moneda.cs" />
     <Compile Include="Models\OrdenCompra.cs" />
     <Compile Include="Models\ParametroModel.cs" />
-    <Compile Include="Models\Postulante.cs" />
+    <Compile Include="Models\PostulanteModel.cs" />
     <Compile Include="Models\PostulanteView.cs" />
     <Compile Include="Models\Proveedor.cs" />
     <Compile Include="Models\ProveedorModel.cs" />
