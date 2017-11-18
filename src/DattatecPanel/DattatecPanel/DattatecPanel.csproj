@@ -448,6 +448,7 @@
     <Content Include="Scripts\Convocatoria\Index.js" />
     <Content Include="Scripts\Convocatoria\Nuevo.js" />
     <Content Include="Scripts\DetalleConvocatoria\Index.js" />
+    <Content Include="Scripts\DetalleConvocatoria\Nuevo.js" />
     <Content Include="Scripts\EvaluarProveedor\Index.js" />
     <Content Include="Scripts\fileinput.min.js" />
     <Content Include="Scripts\General.js" />
