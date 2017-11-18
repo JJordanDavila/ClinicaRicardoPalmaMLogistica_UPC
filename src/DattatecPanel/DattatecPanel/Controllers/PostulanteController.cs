@@ -25,22 +25,13 @@ namespace DattatecPanel.Controllers
 
         public ActionResult RegistrarPostulante(int id)
         {
-
-            Postulante entidadPostulante = new Postulante();
-            entidadPostulante.DetallePostulantes = new List<DetallePostulante>();
-
-            List<DetallePostulante> listadoDetallePostulanteDTO = new List<DetallePostulante>();
-
-            //entidadPostulante.Convocatoria.Convocatoriaid = id;
-
-            ViewBag.ConvocatoriaId = id;
-
-            var entidad = db.DB_Convocatoria.Where(x => x.Convocatoriaid == id).First();
-            //   entidadPostulante.Convocatoria.Convocatoriaid = entidad.Convocatoriaid;
-
-            Session["entidadPostulante"] = entidadPostulante;
-
-            return View(entidadPostulante);
+            var convocatoria = db.DB_Convocatoria.Where(x => x.Convocatoriaid == id).First();
+            PostulanteDTO postulanteDTO = new PostulanteDTO
+            {
+                NumeroConvocatoria = convocatoria.Numero
+            };
+            CargarCombos();
+            return View("RegistrarPostulante", postulanteDTO);
         }
 
         [HttpPost]
@@ -146,5 +137,24 @@ namespace DattatecPanel.Controllers
             return View("RegistrarPostulante", entidadPostulante);
         }
 
+        public ActionResult ListarConvocatorias()
+        {
+            try
+            {
+                var lista = new PostulanteModel().ListarConvocatorias();
+                var jsonresult = Json(new { rows = lista }, JsonRequestBehavior.AllowGet);
+                jsonresult.MaxJsonLength = int.MaxValue;
+                return jsonresult;
+            }
+            catch (Exception ex)
+            {
+                return Json(new { statusCode = HttpStatusCode.BadRequest }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        private void CargarCombos()
+        {
+
+        }
     }
 }

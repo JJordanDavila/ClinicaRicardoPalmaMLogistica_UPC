@@ -109,7 +109,6 @@ namespace DattatecPanel.Models
             }
         }
 
-
         public Datos getDatosSunat(string ruc)
         {
             try
@@ -134,6 +133,28 @@ namespace DattatecPanel.Models
                 errorCode = -1;
                 errorMessage = ex.Message;
                 return null;
+            }
+        }
+        public dynamic ListarConvocatorias()
+        {
+            try
+            {
+                var lista = db.DB_Convocatoria.ToList().Select(s => new
+                {
+                    s.Convocatoriaid,
+                    s.Numero,
+                    s.FechaInicio,
+                    s.FechaFin,
+                    s.Requisito,
+                    s.Estado,
+                    s.Rubro.Descripcion,
+                    s.Empleado.NombreCompleto
+                }).ToList();
+                return lista;
+            }
+            catch (Exception ex)
+            {
+                throw;
             }
         }
     }

@@ -1,156 +1,57 @@
-﻿@model DattatecPanel.Models.Entidades.Postulante
+﻿@model DattatecPanel.Models.DTO.PostulanteDTO
 
 @{
-    ViewBag.Title = "RegistrarPostulante";
+    ViewBag.Title = "Registrar Postulante";
 }
 
-<h2>Registrar Postulante</h2>
-@{
-    var jss = new System.Web.Script.Serialization.JavaScriptSerializer();
-    var val = jss.Serialize(ViewBag.ConvocatoriaId);
-}
-
-<script>
-    $(function () {
-        var x = "@ViewBag.MessageAdvEditLC";
-        if (x == "True") {
-            $("#divMensajeAdvertenciaEdit").show();
-            $("#lblMensajeEdit").text("@ViewBag.MessageAdvertenciaLC");
-        } else {
-            $("#divMensajeAdvertenciaEdit").hide();
-        }
-
-        $("#btn_Guardar").on("click", function () {
-            $("#divMensajeAdvertenciaEdit").hide();
-            $("#lblMensajeEdit").text("");
-        });
-
-
-         var val = '@Html.Raw(val)';
-            var obj = $.parseJSON(val);
-            console.log(0bj);
-    });
-
-    var ConvocatoriaId = @ViewBag.ConvocatoriaId;
-
-    var myVal = $("#myInput").data("myValue");
-
-
-
-</script>
-
-@*<form id="frmNuevoPostulante">*@
-
-@using (Html.BeginForm("RegistrarPostulante", "Postulante", FormMethod.Post))
-{
-    <div class="form-horizontal">
-        <h4>Postulante</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="panel">
-            <div class="panel">
-                <div class="form-group col-sm-4">
-                    <div>
-
-                        @ViewBag.ConvocatoriaId
-
-                        <input type="text" id="myInput" data-myValue="@ViewBag.ConvocatoriaId" />
-
-                        <input type="text" id="ConvocatoriaId" value="@ViewBag.ConvocatoriaId" />
-
-                        @*@Html.HiddenFor(model => model.Convocatoria.Convocatoriaid, new { htmlAttributes = new { @class = "form-control" } })*@
-
-                        @*@Html.LabelFor(model => model.PostulanteDTO.RUC, htmlAttributes: new { @class = "control-label col-md-2" })*@
-                        <div class="input-group" style="margin-bottom:5px;">
-                            <span class="input-group-addon">RUC</span>
-                            @Html.EditorFor(model => model.RUC, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.RUC, "", new { @class = "text-danger" })
-                        </div>
-
-                        @*@Html.LabelFor(model => model.PostulanteDTO.RazonSocial, htmlAttributes: new { @class = "control-label col-md-2" })*@
-                        <div class="input-group" style="margin-bottom:5px;">
-                            <span class="input-group-addon">Razón Social</span>
-                            @Html.EditorFor(model => model.RazonSocial, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.RazonSocial, "", new { @class = "text-danger" })
-                        </div>
-
-                        @*@Html.LabelFor(model => model.PostulanteDTO.Direccion, htmlAttributes: new { @class = "control-label col-md-2" })*@
-                        <div class="input-group" style="margin-bottom:5px;">
-                            <span class="input-group-addon">Dirección</span>
-                            @Html.EditorFor(model => model.Direccion, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.Direccion, "", new { @class = "text-danger" })
-                        </div>
-
-                        @*@Html.LabelFor(model => model.PostulanteDTO.Correo, htmlAttributes: new { @class = "control-label col-md-2" })*@
-                        <div class="input-group" style="margin-bottom:5px;">
-                            <span class="input-group-addon">Correo</span>
-                            @Html.EditorFor(model => model.Correo, new { htmlAttributes = new { @class = "form-control checkbox" } })
-                            @Html.ValidationMessageFor(model => model.Correo, "", new { @class = "text-danger" })
-                        </div>
-
-                        <div class="input-group" style="margin-bottom:5px;">
-                            <span class="input-group-addon">Tiene Constancia RNP</span>
-                            <div class="checkbox" style="padding-left:40px">
-                                @Html.EditorFor(model => model.ConstanciaRNP)
-                                @Html.ValidationMessageFor(model => model.ConstanciaRNP, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
+<h2 class="text-center">Registrar Postulante</h2>
+<form id="frmRegistrarPostulante">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="col-sm-4">
+                <div class="col-sm-12">
+                    <div class="col-sm-4">
+                        @Html.LabelFor(model => model.NumeroConvocatoria, new { @class = "control-label" })
                     </div>
-                </div>
-                <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
-                <div>
-                    @if (!Model.DetallePostulantes.Equals(null))
-                {
-                        <table class="table">
-                            <tr>
-                                <th>Nombre Archivo</th>
-                            </tr>
-
-                            @foreach (var a in Model.DetallePostulantes)
-                            {
-                                <tr>
-                                    <td>
-                                        @a.NombreArchivo
-                                    </td>
-                                    @*<td>
-                                            @Html.ActionLink("Edit", "Edit", new { id = Model.DetallePostulantesDTO[i].DetalleId }) |
-                                            @Html.ActionLink("Delete", "Delete", new { id = Model.DetallePostulantesDTO[i].DetalleId })
-                                        </td>*@
-                                </tr>
-                            }
-                        </table>
-                    }
-                </div>
-                <div class="form-group" id="divMensajeAdvertenciaEdit">
-                    <label class="control-label col-sm-6"></label>
-                    <div class="col-sm-10">
-                        <label id="lblMensajeEdit" class="text-danger"></label>
-                    </div>
-                </div>
-                <br /><br /><br />
-
-                <div class="panel">
-                    <div class="form-group">
-                        <div class="form-group col-sm-4" style="padding-left:50px">
-                            <input type="submit" value="Guardar" class="btn btn-primary" id="btn_Guardar" />
-                        </div>
+                    <div class="col-sm-8">
+                        @Html.EditorFor(model => model.NumeroConvocatoria, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                        @Html.ValidationMessageFor(model => model.NumeroConvocatoria, "", new { @class = "text-danger" })
                     </div>
                 </div>
             </div>
         </div>
     </div>
-}
-
-
-<div style="position:absolute; top:480px; left:86px">
-    @using (Html.BeginForm("Cargar", "Postulante", FormMethod.Post, new { enctype = "multipart/form-data" }))
-    {
-        var ConvocatoriaId = @ViewBag.ConvocatoriaId;
-        <input type="file" name="archivo" /> <input type="submit" value="Cargar" name="boton" />
-    }
-</div>
-
-@*</form>*@
-@section scripts{
-    <script src="~/Scripts/Postulante/RegistroPostulante.js"></script>
-}
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="col-sm-4">
+                <div class="col-sm-12">
+                    <div class="col-sm-4">
+                        <button class="btn btn-primary btn-sm" id="btnDescargarRequisitos">Descargar Requisitos</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="col-sm-4">
+                <div class="col-sm-12">
+                    <div class="col-sm-12">
+                        <h4>Ingrese sus datos</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="col-sm-4">
+                <div class="col-sm-12">
+                    <div class="col-sm-12">
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
