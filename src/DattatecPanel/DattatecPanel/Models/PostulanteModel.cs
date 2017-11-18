@@ -157,5 +157,36 @@ namespace DattatecPanel.Models
                 throw;
             }
         }
+        public dynamic ListarConvocatoriasPorID(int id)
+        {
+            try
+            {
+                var lista = db.DB_Convocatoria.Where(x => x.Convocatoriaid == id).First();
+                return lista;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
+        public PostulanteDTO MostrarDatosVistaRegistrar(int id)
+        {
+            try
+            {
+                var convocatoria = ListarConvocatoriasPorID(id);
+                PostulanteDTO postulante = new PostulanteDTO
+                {
+                    NumeroConvocatoria = convocatoria.Numero,
+                    descripcionRubro = convocatoria.Rubro.Descripcion,
+                    RequisitoConvocatoria = convocatoria.Requisito
+                };
+                return postulante;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
     }
 }

@@ -144,3 +144,32 @@ function gMensajeInformacionConCallback(mensaje, callback) {
         callback();
     });
 };
+
+function base64ToArrayBuffer(base64) {
+    var binaryString = window.atob(base64);
+    var binaryLen = binaryString.length;
+    var bytes = new Uint8Array(binaryLen);
+    for (var i = 0; i < binaryLen; i++) {
+        var ascii = binaryString.charCodeAt(i);
+        bytes[i] = ascii;
+    }
+    return bytes;
+}
+
+function saveByteArray(reportName, byte) {
+    var link = document.createElement('a');
+    document.body.appendChild(link);
+    link.style = "display: none";
+    var blob = new Blob([byte], { type: "application/octet-stream" });
+    var url = window.URL.createObjectURL(blob);
+    link.href = url;
+    var fileName = reportName + ".pdf";
+    link.download = fileName;
+    link.click();
+    document.body.appendChild(url);
+};
+
+function DescargarPDFPorArrayBytes(arrayBytes, name){
+    var bytes = base64ToArrayBuffer(arrayBytes);
+    saveByteArray(name, bytes);
+};

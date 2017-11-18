@@ -14,9 +14,6 @@ namespace DattatecPanel.Controllers
 {
     public class PostulanteController : Controller
     {
-        private ClinicaDBContext db = new ClinicaDBContext();
-        private DetallePostulanteDTO detallePostulanteDTO = new DetallePostulanteDTO();
-
         // GET: Postulante
         public ActionResult Index()
         {
@@ -25,13 +22,8 @@ namespace DattatecPanel.Controllers
 
         public ActionResult RegistrarPostulante(int id)
         {
-            var convocatoria = db.DB_Convocatoria.Where(x => x.Convocatoriaid == id).First();
-            PostulanteDTO postulanteDTO = new PostulanteDTO
-            {
-                NumeroConvocatoria = convocatoria.Numero
-            };
-            CargarCombos();
-            return View("RegistrarPostulante", postulanteDTO);
+            var postulante = new PostulanteModel().MostrarDatosVistaRegistrar(id);
+            return View("RegistrarPostulante", postulante);
         }
 
         [HttpPost]
@@ -150,11 +142,6 @@ namespace DattatecPanel.Controllers
             {
                 return Json(new { statusCode = HttpStatusCode.BadRequest }, JsonRequestBehavior.AllowGet);
             }
-        }
-
-        private void CargarCombos()
-        {
-
         }
     }
 }

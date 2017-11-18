@@ -14,12 +14,18 @@ namespace DattatecPanel.Models.DTO
         [Display(Name = "RUC")]
         public string RUC { get; set; }
         [Display(Name = "Rubro")]
-        public int idRubro { get; set; }
+        public string descripcionRubro { get; set; }
         [Display(Name = "Razón Social")]
         public string RazonSocial { get; set; }
         [Display(Name = "Correo Electronico")]
         public string Correo { get; set; }
         [Display(Name = "Tiene constancia RNP")]
         public bool flagConstanciaRNP { get; set; }
+        [Display(Name = "Archivo")]
+        public byte[] Archivo { get; set; }
+        public HttpPostedFileBase ArchivoFile { get; set; }
+        [Display(Name = "Dirección")]
+        public string Direccion { get; set; }
+        public byte[] RequisitoConvocatoria { get; set; }
     }
 }

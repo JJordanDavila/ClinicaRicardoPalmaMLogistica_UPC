@@ -318,7 +318,7 @@
     <Compile Include="Models\ProveedorModel.cs" />
     <Compile Include="Models\RegistroProveedorParticipante.cs" />
     <Compile Include="Models\RequerimientoCompra.cs" />
-    <Compile Include="Models\Rubro.cs" />
+    <Compile Include="Models\Entidades\Rubro.cs" />
     <Compile Include="Models\TransaccionCompra.cs" />
     <Compile Include="Models\sysdiagrams.cs" />
     <Compile Include="Models\UnidadMedida.cs" />
@@ -522,6 +522,7 @@
     <Content Include="Scripts\Parametro\Index.js" />
     <Content Include="Scripts\Parametro\Nuevo.js" />
     <Content Include="Scripts\Postulante\Index.js" />
+    <Content Include="Scripts\Postulante\Registro.js" />
     <Content Include="Scripts\Proveedor\Index.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
