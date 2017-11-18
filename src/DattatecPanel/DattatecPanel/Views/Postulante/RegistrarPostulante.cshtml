@@ -6,29 +6,25 @@
 
 <h2 class="text-center">Registrar Postulante</h2>
 <form id="frmRegistrarPostulante">
-    <div class="row">
-        <div class="col-sm-12">
-            <div class="col-sm-4">
-                <div class="col-sm-12">
-                    <div class="col-sm-4">
-                        @Html.LabelFor(model => model.NumeroConvocatoria, new { @class = "control-label" })
+    <div class="col-md-12">
+        <div class="panel panel-primary">
+            <div class="panel-heading">CONVOCATORIA</div>
+            <div class="panel-body">
+                <form role="form">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.NumeroConvocatoria, new { @class = "control-label col-md-2" })
+                        <div class="col-md-3">
+                            @Html.EditorFor(model => model.NumeroConvocatoria, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                            @Html.ValidationMessageFor(model => model.NumeroConvocatoria, "", new { @class = "text-danger" })
+                        </div>
                     </div>
-                    <div class="col-sm-8">
-                        @Html.EditorFor(model => model.NumeroConvocatoria, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                        @Html.ValidationMessageFor(model => model.NumeroConvocatoria, "", new { @class = "text-danger" })
+                    <div class="form-group">
+                        <label>Requisitos</label>
+                        <div class="col-md-3">
+                            <button class="btn btn-primary btn-sm" id="btnDescargarRequisitos">Descargar Requisitos</button>
+                        </div>
                     </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-sm-12">
-            <div class="col-sm-4">
-                <div class="col-sm-12">
-                    <div class="col-sm-4">
-                        <button class="btn btn-primary btn-sm" id="btnDescargarRequisitos">Descargar Requisitos</button>
-                    </div>
-                </div>
+                </form>
             </div>
         </div>
     </div>
@@ -48,7 +44,7 @@
             <div class="col-sm-4">
                 <div class="col-sm-12">
                     <div class="col-sm-12">
-                        
+
                     </div>
                 </div>
             </div>
