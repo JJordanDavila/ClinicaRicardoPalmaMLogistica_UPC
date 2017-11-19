@@ -12,6 +12,50 @@ namespace DattatecPanel.Models
     public class DetalleConvocatoriaModel
     {
         private ClinicaDBContext db = new ClinicaDBContext();
+
+        public RespuestaJsonDTO RechazarPostulante(RechazarPostulanteDTO datos) {
+            try
+            {
+                RespuestaJsonDTO mensaje = new RespuestaJsonDTO();
+                Postulante postulante = db.DB_Postulante.Find(datos.PostulanteId);
+                if (postulante != null)
+                {
+                    using (var dbContextTransaction = db.Database.BeginTransaction())
+                    {
+                        try
+                        {
+                            //Eliminar archivos relacionados
+                            db.Database.ExecuteSqlCommand("Delete From Gl_DetallePostulante Where PostulanteId=@p0", datos.PostulanteId);
+                            //Eliminar postulacion
+                            db.Database.ExecuteSqlCommand("Delete From GL_DetalleConvocatoria Where ConvocatoriaId=@p0 And PostulanteId=@p1", datos.ConvocatoriaId, datos.PostulanteId);
+                            //Eliminar postulante
+                            db.Database.ExecuteSqlCommand("Delete From GL_Postulante Where PostulanteId=@p0", datos.PostulanteId);
+                            db.SaveChanges();
+                            dbContextTransaction.Commit();
+                            mensaje.mensaje = "El rechazo fue satisfactorio";
+                            mensaje.mensajeInfo = string.Empty;
+                        }
+                        catch (Exception)
+                        {
+                            dbContextTransaction.Rollback();
+                            throw;
+                        }
+                    }
+                    
+                }
+                else
+                {
+                    mensaje.mensaje = string.Empty;
+                    mensaje.mensajeInfo = "No se encontró el postulante con identificador " + datos.PostulanteId;
+                }
+                mensaje.codigo = System.Net.HttpStatusCode.OK;
+                return mensaje;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
         
         public RespuestaJsonDTO ValidarPostulante(ValidarPostulanteDTO datos) {
             try
@@ -55,11 +99,11 @@ namespace DattatecPanel.Models
             }
         }
 
-        public dynamic ListarDetalleConvocatoriaPostulante(string ruc, string razonSocial)
+        public dynamic ListarDetalleConvocatoriaPostulante(string numeroConvocatoria, string ruc, string razonSocial)
         {
             try
             {
-                var lista = db.DB_DetalleConvocatoria.Where(x =>  x.Postulante.RUC.Contains(ruc)).ToList().Select(s => new
+                var lista = db.DB_DetalleConvocatoria.Where(x => x.Convocatoria.Numero.Contains(numeroConvocatoria) && x.Postulante.RUC.Contains(ruc) && x.Postulante.RazonSocial.Contains(razonSocial) && x.Convocatoria.Estado == "E" && !db.DB_Proveedor.Any(o => o.RUC == x.Postulante.RUC)).ToList().Select(s => new
                {
                    s.ConvocatoriaId,
                    s.Postulante.RUC,
@@ -140,6 +184,44 @@ namespace DattatecPanel.Models
                     }
                 }
 
+                return datos;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
+        public dynamic ObtenerDatosRechazar(int? convocatoriaId, int? postulanteId)
+        {
+            try
+            {
+                RechazarPostulanteDTO datos = new RechazarPostulanteDTO();
+
+                //datos del postulante
+                var detalleConvocatoria = db.DB_DetalleConvocatoria.Where(x => x.ConvocatoriaId == convocatoriaId && x.PostulanteId == postulanteId).ToList().Select(s => new
+                {
+                    s.Postulante.RUC,
+                    s.Postulante.RazonSocial,
+                    s.Postulante.Correo,
+                    s.Convocatoria.Rubro.Descripcion,
+                    s.PostulanteId,
+                    s.Convocatoria.RubroID,
+                    s.Convocatoria.Numero,
+                    s.Convocatoria.Convocatoriaid
+                }).FirstOrDefault();
+
+                if (detalleConvocatoria != null)
+                {
+                    datos.RUC = detalleConvocatoria.RUC;
+                    datos.RazonSocial = detalleConvocatoria.RazonSocial;
+                    datos.Correo = detalleConvocatoria.Correo;
+                    datos.Rubro = detalleConvocatoria.Descripcion;
+                    datos.RubroID = detalleConvocatoria.RubroID;
+                    datos.PostulanteId = detalleConvocatoria.PostulanteId;
+                    datos.NumeroConvocatoria = detalleConvocatoria.Numero;
+                    datos.ConvocatoriaId = detalleConvocatoria.Convocatoriaid;
+                }
                 return datos;
             }
             catch (Exception ex)

@@ -23,11 +23,14 @@ namespace DattatecPanel.Controllers
             return View();
         }
 
-        public ActionResult ListarDetalleConvocatoriaPostulante(string ruc, string razonSocial)
+        public ActionResult ListarDetalleConvocatoriaPostulante(string numeroConvocatoria, string ruc, string razonSocial)
         {
             try
             {
-                var lista = new DetalleConvocatoriaModel().ListarDetalleConvocatoriaPostulante(ruc,razonSocial);
+                if (!string.IsNullOrWhiteSpace(numeroConvocatoria)) numeroConvocatoria = numeroConvocatoria.Trim();
+                if (!string.IsNullOrWhiteSpace(ruc)) ruc = ruc.Trim();
+                if (!string.IsNullOrWhiteSpace(razonSocial)) razonSocial = razonSocial.Trim();
+                var lista = new DetalleConvocatoriaModel().ListarDetalleConvocatoriaPostulante(numeroConvocatoria, ruc, razonSocial);
                 var jsonresult = Json(new { rows = lista }, JsonRequestBehavior.AllowGet);
                 jsonresult.MaxJsonLength = int.MaxValue;
                 return jsonresult;
@@ -97,33 +100,59 @@ namespace DattatecPanel.Controllers
             }
         }
 
-        //[HttpPost]
-        //public ActionResult Suspender(Convocatoria entidad)
-        //{
-        //    try
-        //    {
-        //        //var mensaje = string.Empty;
-        //        ////if (string.IsNullOrEmpty(entidad.ObservacionSuspension))
-        //        ////{
-        //        ////    return Json(new { statusCode = HttpStatusCode.OK, mensaje = "Ingrese una observación." }, JsonRequestBehavior.AllowGet);
-        //        ////}
-        //        //var cuerpoCorreo = "Se suspendio la convocatoria con el numero : " + entidad.Numero.ToString();
-        //        //var empleado = db.DB_Empleado.Where(x => x.EmpleadoID == entidad.EmpleadoID).FirstOrDefault();
-        //        //entidad.Estado = "S";
-        //        //entidad.FechaSuspension = DateTime.Now;
-        //        //db.Entry(entidad).State = EntityState.Modified;
-        //        //db.SaveChanges();
-        //        //correo.EnviarCorreo("Clinica Ricardo Palma", empleado.Correo, "Suspension de convocatoria", cuerpoCorreo, false, null);
-        //        //mensaje = "Se suspendio con exito";
-        //        return Json(new { statusCode = HttpStatusCode.OK, mensaje = mensaje }, JsonRequestBehavior.AllowGet);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return Json(new { statusCode = HttpStatusCode.BadRequest }, JsonRequestBehavior.AllowGet);
-        //    }
-        //}
+        public ActionResult Rechazar(int? convocatoriaId, int? postulanteId)
+        {
+            try
+            {
+                var datosPostulante = new DetalleConvocatoriaModel().ObtenerDatosRechazar(convocatoriaId, postulanteId);
+                return View("Rechazar", datosPostulante);
+            }
+            catch (Exception ex)
+            {
+                return Json(new { statusCode = HttpStatusCode.BadRequest }, JsonRequestBehavior.AllowGet);
+            }
+        }
 
-
+        [HttpPost]
+        public ActionResult Rechazar(RechazarPostulanteDTO datos)
+        {
+            try
+            {
+                RespuestaJsonDTO response = null;
+                if (string.IsNullOrWhiteSpace(datos.Comentario))
+                {
+                    response = new RespuestaJsonDTO() { codigo = HttpStatusCode.OK, mensaje = "", mensajeInfo = "Es requisito ingresar un comentario" };
+                }
+                else {
+                    response = new DetalleConvocatoriaModel().RechazarPostulante(datos);
+                    if (string.IsNullOrWhiteSpace(response.mensajeInfo))
+                    {
+                        StringBuilder body = new StringBuilder();
+                        body.Append("Estimado " + datos.RazonSocial + ":");
+                        body.Append("<br></br>");
+                        body.Append("<br></br>");
+                        body.Append("Su solicitud para ser proveedor de la Clínica Ricardo Palma ha sido rechazada.");
+                        body.Append("<br></br>");
+                        body.Append("<br></br>");
+                        body.Append("Comentario:");
+                        body.Append("<br></br>");
+                        body.Append("<br></br>");
+                        body.Append(datos.Comentario);
+                        correo.EnviarCorreo("Clinica Ricardo Palma", datos.Correo, "Rechazo de Solicitud Convocatoria N° " + datos.NumeroConvocatoria, body.ToString(), true, null);
+                    }
+                }
+                return Json(new
+                {
+                    statusCode = response.codigo,
+                    mensaje = response.mensaje,
+                    mensajeInfo = response.mensajeInfo
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new { statusCode = HttpStatusCode.BadRequest }, JsonRequestBehavior.AllowGet);
+            }
+        }
 
 	}
 }

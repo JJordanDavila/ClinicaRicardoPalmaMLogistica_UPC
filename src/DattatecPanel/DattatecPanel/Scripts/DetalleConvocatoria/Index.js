@@ -5,6 +5,7 @@
             gInputsFormatoFecha("Fecha_Registro,Fecha_RegistroIndex");
             DetalleConvocatoria.prototype.dataGrid();
             DetalleConvocatoria.prototype.buscar();
+            DetalleConvocatoria.prototype.agregarEventos();
         }
 
         DetalleConvocatoria.prototype.dataGrid = function () {
@@ -12,12 +13,9 @@
                 title: 'RESULTADO',
                 loadMsg: "Cargando...",
                 columns: [[
-                    //{
-                    //    field: 'ConvocatoriaId', title: 'Convocatoria ID', align: 'center', width: 0
-                    //},
-                    //{
-                    //    field: 'PostulanteId', title: 'Postulante ID', align: 'center', width: 0
-                    //},
+                    {
+                        field: 'Numero', title: 'N° Convocatoria', align: 'center', width: 200
+                    },
                     {
                         field: 'RUC', title: 'Ruc', align: 'center', width: 150
                     },
@@ -26,9 +24,6 @@
                     },
                     {
                         field: 'Descripcion', title: 'Rubro', align: 'center', width: 200
-                    },
-                    {
-                        field: 'Numero', title: 'N° Convocatoria', align: 'center', width: 200
                     },
                     {
                         field: 'Fecha_Registro', title: 'Fecha de Registro', width: 150,
@@ -57,6 +52,7 @@
                 url: globalRutaServidor + "DetalleConvocatoria/ListarDetalleConvocatoriaPostulante",
                 type: 'GET',
                 data: {
+                    numeroConvocatoria: $("#numeroConvocatoria").val(),
                     ruc: $("#RUC").val(),
                     razonSocial: $("#razonSocial").val()
                 },
@@ -68,6 +64,19 @@
                 }
             });
         }
+
+        DetalleConvocatoria.prototype.agregarEventos = function () {
+            $("#btnConsultar").on('click', function () {
+                DetalleConvocatoria.prototype.buscar();
+            });
+            $("#RUC").keypress(function (e) {
+                return (e.keyCode >= 48 && e.keyCode <= 57)
+            });
+            $("#numeroConvocatoria").keypress(function (e) {
+                return (e.keyCode >= 48 && e.keyCode <= 57)
+            });
+        };
+
         return DetalleConvocatoria;
     }());
 
