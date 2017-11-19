@@ -6,12 +6,15 @@
 
 <h2 class="text-center">Registrar Postulante</h2>
 <form id="frmRegistrarPostulante">
+
     <div class="col-md-12">
         <div class="panel panel-primary">
+            <br />
             <div class="panel-heading">CONVOCATORIA</div>
-            <div class="panel-body">
+            <div class="panel-body" style="padding-top:10px; padding-bottom:10px">
                 <div class="col-md-6">
                     <div class="form-group">
+                        @Html.HiddenFor(model => model.IdConvocatoria)
                         @Html.HiddenFor(model => model.RequisitoConvocatoria)
                         @Html.LabelFor(model => model.NumeroConvocatoria, new { @class = "control-label col-md-2" })
                         <div class="col-md-6">
@@ -30,7 +33,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-6" style="padding-top:10px; padding-bottom:10px">
                     <div class="form-group">
                         <label class="control-label col-md-2">Requisitos</label>
                         <div class="col-md-5">
@@ -42,10 +45,10 @@
         </div>
     </div>
     <br />
-    <div class="col-md-12">
+    <div class="col-md-12" style="padding-top:10px; padding-bottom:10px">
         <div class="panel panel-success">
             <div class="panel-heading">DATOS</div>
-            <div class="panel-body">
+            <div class="panel-body" style="padding-top:10px; padding-bottom:10px">
                 <div class="col-md-12">
                     <div class="col-md-6">
                         <div class="form-group">
@@ -57,7 +60,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-12">
+                <div class="col-md-12" style="padding-top:10px; padding-bottom:10px">
                     <div class="col-md-6">
                         <div class="form-group">
                             @Html.LabelFor(model => model.RazonSocial, new { @class = "control-label col-md-3" })
@@ -97,7 +100,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-12">
+                <div class="col-md-12" style="padding-top:10px; padding-bottom:10px">
                     <div class="col-md-6">
                         <div class="form-group">
                             @Html.LabelFor(model => model.Archivo, new { @class = "control-label col-md-3" })
@@ -108,7 +111,7 @@
                     </div>
                 </div>
                 <br />
-                <div class="col-md-12">
+                <div class="col-md-12" style="padding-top:10px; padding-bottom:10px">
                     <article>
                         <table id="dgArchivosPostulante"></table>
                     </article>

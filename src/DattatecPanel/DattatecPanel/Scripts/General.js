@@ -79,7 +79,7 @@ function ValidarFechaInicio_Fin(fini, ffin, dias) {
             mensaje = "La fecha fin no puede ser menor a la fecha de inicio.";
         }
         if ((diff / (1000 * 60 * 60 * 24)) < dias) {
-            mensaje = "La diferencia entre la fecha inicio y fecha fin debe ser igual o mayor a " + dias+" días.";
+            mensaje = "La diferencia entre la fecha inicio y fecha fin debe ser igual o mayor a " + dias + " días.";
         }
     }
     return mensaje;
@@ -156,20 +156,105 @@ function base64ToArrayBuffer(base64) {
     return bytes;
 }
 
-function saveByteArray(reportName, byte) {
+function saveByteArray8(reportName, byte) {
     var link = document.createElement('a');
     document.body.appendChild(link);
     link.style = "display: none";
     var blob = new Blob([byte], { type: "application/octet-stream" });
     var url = window.URL.createObjectURL(blob);
+
     link.href = url;
     var fileName = reportName + ".pdf";
     link.download = fileName;
     link.click();
-    document.body.appendChild(url);
+
+    // document.body.appendChild(link);
+    //window.URL.revokeObjectURL(url);
+
+
+
 };
 
-function DescargarPDFPorArrayBytes(arrayBytes, name){
+var saveByteArray = (function () {
+    var a = document.createElement("a");
+    document.body.appendChild(a);
+    a.style = "display: none";
+    return function (data, name) {
+        var blob = new Blob(data, { type: "octet/stream" }),
+            url = window.URL.createObjectURL(blob);
+        a.href = url;
+        a.download = name;
+        a.click();
+        window.URL.revokeObjectURL(url);
+    };
+}());
+
+function saveByteArray5(reportName, byte) {
+    var a = document.createElement("a");
+    document.body.appendChild(a);
+    a.style.display = "none";
+
+    // IE
+    if (window.navigator.msSaveOrOpenBlob) {
+        a.onclick = ((evx) => {
+            var newBlob = new Blob([new Uint8Array(xhttpGetPack.response)]);
+            window.navigator.msSaveOrOpenBlob(newBlob, reportName + ".pdf");
+        });
+        a.click();
+    }
+    else //Chrome and safari
+    {
+        var file = URL.createObjectURL(xhttpGetPack.response);
+        a.href = file;
+        a["download"] = reportName + ".pdf";
+        a.click();
+        window.URL.revokeObjectURL(file);
+    }
+};
+
+
+
+
+function DescargarPDFPorArrayBytes(arrayBytes, name) {
     var bytes = base64ToArrayBuffer(arrayBytes);
     saveByteArray(name, bytes);
 };
+
+
+function ValidarPostulante(nuevoRUC, nuevaRazonSocial, nuevaDireccion, nuevoCorreo) {
+
+    var mensaje = "";
+
+    if (trim(nuevoRUC) == "") {
+        mensaje = "Ingrese un RUC válido.";
+    }
+    else {
+        if (trim(nuevoRUC).length != 11) {
+            mensaje = "El RUC debe contener 11 dígitos.";
+        }
+        else {
+            if (trim(nuevaRazonSocial) == "") {
+                mensaje = "Ingrese una Razón Social válida.";
+            }
+            else {
+                if (trim(nuevaDireccion).length == 0) {
+                    mensaje = "Ingrese una Dirección válida.";
+                }
+                else {
+                    if (trim(nuevoCorreo).length == 0) {
+                        mensaje = "Ingrese un correo electrónico válido.";
+                    }
+                }
+            }
+        }
+    }
+
+    return mensaje;
+};
+
+
+function EncriptarTexto(query) {
+    var encodedData = window.btoa(query);
+
+    return encodedData;
+}

@@ -27,5 +27,7 @@ namespace DattatecPanel.Models.DTO
         [Display(Name = "Dirección")]
         public string Direccion { get; set; }
         public byte[] RequisitoConvocatoria { get; set; }
+
+        public int IdConvocatoria { get; set; }
     }
 }

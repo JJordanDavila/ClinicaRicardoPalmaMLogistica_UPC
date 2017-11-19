@@ -27,52 +27,16 @@ namespace DattatecPanel.Controllers
         }
 
         [HttpPost]
-        public ActionResult RegistrarPostulante(Postulante entidadPostulanteDTO)
+        public ActionResult RegistrarPostulante(PostulanteDTO entidadPostulanteDTO)
         {
             try
             {
-                var entidadPostulante = Session["entidadPostulante"] as Postulante;
-                var s_detallePostulante = Session["detallePostulante"] as DetallePostulante;
+                var response = new PostulanteModel().ValidarRuc(entidadPostulanteDTO.RUC, entidadPostulanteDTO.IdConvocatoria);
 
-                /*  if (entidadPostulanteDTO.RUC.Equals(null))
-                  {
-                      ViewBag.MessageAdvCreateLC = true;
-                      ViewBag.MessageAdvertenciaLC = "Debe ingresar el número RUC";
-                      return View(entidadPostulante);
-                  }
-
-                  if (entidadPostulanteDTO.RazonSocial.Equals(null))
-                  {
-                      ViewBag.MessageAdvCreateLC = true;
-                      ViewBag.MessageAdvertenciaLC = "Debe ingresar la Raz{on Social";
-                      return View(entidadPostulante);
-                  }
-
-                  if (entidadPostulanteDTO.Direccion.Equals(null))
-                  {
-                      ViewBag.MessageAdvCreateLC = true;
-                      ViewBag.MessageAdvertenciaLC = "Debe ingresar la dirección";
-                      return View(entidadPostulante);
-                  }
-
-                  if (entidadPostulanteDTO.Correo.Equals(null))
-                  {
-                      ViewBag.MessageAdvCreateLC = true;
-                      ViewBag.MessageAdvertenciaLC = "Debe ingresar un correo electrónico válido";
-                      return View(entidadPostulante);
-                  }*/
-
-
-                entidadPostulante.RUC = entidadPostulanteDTO.RUC;
-                entidadPostulante.RazonSocial = entidadPostulanteDTO.RazonSocial;
-                entidadPostulante.Direccion = entidadPostulanteDTO.Direccion;
-                entidadPostulante.Correo = entidadPostulanteDTO.Correo;
-                entidadPostulante.ConstanciaRNP = entidadPostulanteDTO.ConstanciaRNP;
-
-                var response = new PostulanteModel().GuardarPostulante(entidadPostulante, ViewBag.ConvocatoriaId);
-
-                ViewBag.MessageAdvCreateLC = true;
-                ViewBag.MessageAdvertenciaLC = response.mensaje;
+                if (response.mensaje.Equals("1"))
+                {
+                    response = new PostulanteModel().GuardarPostulante(entidadPostulanteDTO);
+                }
 
 
                 return Json(new { statusCode = HttpStatusCode.OK, mensaje = response.mensaje, mensajeInfo = response.mensajeInfo },
@@ -82,8 +46,6 @@ namespace DattatecPanel.Controllers
             {
                 return Json(new { statusCode = HttpStatusCode.BadRequest }, JsonRequestBehavior.AllowGet);
 
-                ViewBag.MessageAdvCreateLC = true;
-                ViewBag.MessageAdvertenciaLC = ex.Message;
             }
         }
 

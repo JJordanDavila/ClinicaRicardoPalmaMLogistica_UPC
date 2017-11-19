@@ -20,86 +20,124 @@ namespace DattatecPanel.Models
         private int errorCode;
         private string errorMessage;
 
-        public ResponsePostulante GuardarPostulante(Postulante entidad, int id)
+        public ResponsePostulante GuardarPostulante(PostulanteDTO entidad)
         {
             try
             {
                 ResponsePostulante response = new ResponsePostulante { mensaje = string.Empty, mensajeInfo = string.Empty };
 
 
-                //Datos datosSunat = getDatosSunat(entidad.RUC);
-                //if (errorCode == 0)
-                //{
-                // response.mensaje = datosSunat.razonSocial;
-
                 Postulante postulante = new Postulante
                 {
-                    PostulanteId = entidad.PostulanteId,
                     RazonSocial = entidad.RazonSocial,
                     Direccion = entidad.Direccion,
                     Correo = entidad.Correo,
                     RUC = entidad.RUC,
-                    ConstanciaRNP = entidad.ConstanciaRNP
+                    ConstanciaRNP = entidad.flagConstanciaRNP
                 };
 
                 db.DB_Postulante.Add(postulante);
                 db.SaveChanges();
 
                 int lastPostulante = db.DB_Postulante.ToList().Select(a => a.PostulanteId).Max();
-                //entidad.Convocatoria.Convocatoriaid
+
                 DetalleConvocatoria detalleConvocatoria = new DetalleConvocatoria
                 {
                     PostulanteId = lastPostulante,
-                    ConvocatoriaId = 5
+                    ConvocatoriaId = entidad.IdConvocatoria,
+                    Fecha_Registro = DateTime.Now
                 };
 
                 db.DB_DetalleConvocatoria.Add(detalleConvocatoria);
                 db.SaveChanges();
 
-                foreach (var item in entidad.DetallePostulantes)
-                {
-                    var doc = new DetallePostulante
-                    {
-                        DetalleId = item.DetalleId,
-                        PostulanteId = lastPostulante,
-                        NombreArchivo = item.NombreArchivo,
-                        Archivo = item.Archivo
-                    };
-
-                    db.DB_DetallePostulante.Add(doc);
-                }
-
-                //if (entidad.DetallePostulantes.Count > 0)
+                //foreach (var item in entidad.DetallePostulantes)
                 //{
-                db.SaveChanges();
+                //    var doc = new DetallePostulante
+                //    {
+                //        DetalleId = item.DetalleId,
+                //        PostulanteId = lastPostulante,
+                //        NombreArchivo = item.NombreArchivo,
+                //        Archivo = item.Archivo
+                //    };
+
+                //    db.DB_DetallePostulante.Add(doc);
+                //}
+
+                ////if (entidad.DetallePostulantes.Count > 0)
+                ////{
+                //db.SaveChanges();
+
+
+                //}
+
+
+                var list = (from a in db.DB_Convocatoria
+                            join b in db.DB_DetalleConvocatoria on a.Convocatoriaid equals b.ConvocatoriaId
+                            select new { a, b }).FirstOrDefault();
+
+                var empleado = db.DB_Empleado.Where(x => x.EmpleadoID == list.a.EmpleadoID).FirstOrDefault();
+
+                // enviar correo al empleado
+                var cuerpoCorreoEmpleado = "<html><body>" +
+                      "<p><b>Se ha registrado el Postulante: </b>" + entidad.RazonSocial + "</p>" +
+                      "<p><b>RUC: </b>" + entidad.RUC + "</p>" +
+                      "<p><b>Convocatoria Nro: </b>" + entidad.NumeroConvocatoria + "</p>" +
+                      "<p><b>Rubro:  </b>" + list.a.Rubro.Descripcion + "</p>" +
+                      "</body> </html> ";
+                correo.EnviarCorreo("Clinica Ricardo Palma", empleado.Correo, "Registro de Postulante", cuerpoCorreoEmpleado, true, null);
+
+
+                // enviar correo al que postuló
+                var cuerpoCorreoPostulante = "<html><body>" +
+                    "<p><b>Gracias por postular </b></p> " + entidad.RazonSocial +
+                    "<p><b>a la convocatoria Nro: </b>" + entidad.NumeroConvocatoria + "</p>" +
+                    "<p><b>Rubro:  </b>" + list.a.Rubro.Descripcion + "</p>" +
+                    "</body> </html> ";
+                correo.EnviarCorreo("Clinica Ricardo Palma", entidad.Correo, "Registro de Postulante", cuerpoCorreoPostulante, true, null);
 
                 response.mensaje = "Se registro con exito";
-                //}
+                return response;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
 
 
-                //if (entidad.Convocatoriaid <= 0)
-                //{
-                //  var empleado = db.DB_Empleado.Where(x => x.EmpleadoID == convocatoria.EmpleadoID).FirstOrDefault();
-                var cuerpoCorreo = "Se registro el postulante";
-                //    db.DB_Convocatoria.Add(convocatoria);
-                //    db.SaveChanges();
-                // correo.EnviarCorreo("Clinica Ricardo Palma", empleado.Correo, "Creación de convocatoria", cuerpoCorreo, false, null);
-                //    response.mensaje = "Se registro con exito";
-                //}
-                //else
-                //{
-                //    var empleado = db.DB_Empleado.Where(x => x.EmpleadoID == convocatoria.EmpleadoID).FirstOrDefault();
-                //    var cuerpoCorreo = "Se actualizo la convocatoria con el numero : " + convocatoria.Numero.ToString();
-                //    db.Entry(convocatoria).State = EntityState.Modified;
-                //    db.SaveChanges();
-                //    correo.EnviarCorreo("Clinica Ricardo Palma", empleado.Correo, "Actualizacion de convocatoria", cuerpoCorreo, false, null);
-                //    response.mensaje = "Se actualizo con exito";
-                //}
-                //}
-                //else
-                //{
-                //    response.mensaje = errorMessage;
-                //}
+        public ResponsePostulante ValidarRuc(string numeroRUC, int convocatoriaId)
+        {
+            try
+            {
+                ResponsePostulante response = new ResponsePostulante { mensaje = string.Empty, mensajeInfo = string.Empty };
+
+
+                var postulanteRUC = (from a in db.DB_Postulante
+                                     join b in db.DB_DetalleConvocatoria on a.PostulanteId equals b.PostulanteId
+                                     select new { a, b }).Where(x => x.a.RUC.Equals(numeroRUC)).Where(a => a.b.ConvocatoriaId.Equals(convocatoriaId)).ToList();
+
+
+                if (postulanteRUC.Count() > 0)
+                {
+                    response.mensaje = "0";
+                    response.mensajeInfo = "Usted ya ha postulado a esta convocatoria";
+                }
+                else
+                {
+                    Datos datosSunat = getDatosSunat(numeroRUC);
+                    if (errorCode == 0)
+                    {
+                        response.mensaje = "1";
+                        response.mensajeInfo = datosSunat.razonSocial;
+                    }
+                    else
+                    {
+                        response.mensaje = "0";
+                        response.mensajeInfo = "No existe el RUC ingresado";
+                    }
+                }
+
 
                 return response;
             }
@@ -108,6 +146,8 @@ namespace DattatecPanel.Models
                 throw;
             }
         }
+
+
 
         public Datos getDatosSunat(string ruc)
         {
@@ -131,7 +171,7 @@ namespace DattatecPanel.Models
             catch (Exception ex)
             {
                 errorCode = -1;
-                errorMessage = ex.Message;
+                errorMessage = "No existe el RUC ingresado";
                 return null;
             }
         }
@@ -177,6 +217,7 @@ namespace DattatecPanel.Models
                 var convocatoria = ListarConvocatoriasPorID(id);
                 PostulanteDTO postulante = new PostulanteDTO
                 {
+                    IdConvocatoria = convocatoria.Convocatoriaid,
                     NumeroConvocatoria = convocatoria.Numero,
                     descripcionRubro = convocatoria.Rubro.Descripcion,
                     RequisitoConvocatoria = convocatoria.Requisito

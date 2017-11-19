@@ -453,6 +453,7 @@
     <Content Include="Scripts\Convocatoria\Nuevo.js" />
     <Content Include="Scripts\DetalleConvocatoria\Index.js" />
     <Content Include="Scripts\EvaluarProveedor\Index.js" />
+    <Content Include="Scripts\fileinput.js" />
     <Content Include="Scripts\fileinput.min.js" />
     <Content Include="Scripts\General.js" />
     <Content Include="Scripts\grid-0.4.3.js" />
