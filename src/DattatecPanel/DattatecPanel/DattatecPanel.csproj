@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -195,6 +195,7 @@
     <Compile Include="Controllers\ProveedorController.cs" />
     <Compile Include="Controllers\RegistroProveedorParticipanteController.cs" />
     <Compile Include="Controllers\RequerimientoCompraController.cs" />
+    <Compile Include="Models\DTO\RespuestaJsonDTO.cs" />
     <Compile Include="Datasets\dsDetalleOrdenCompra1.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -225,6 +226,7 @@
     </Compile>
     <Compile Include="Models\ConvocatoriaModel.cs" />
     <Compile Include="Models\DetalleConvocatoriaModel.cs" />
+    <Compile Include="Models\DTO\ArchivoDTO.cs" />
     <Compile Include="Models\DTO\DetalleConvocatoriaDTO.cs" />
     <Compile Include="Models\DTO\DetallePostulanteDTO.cs" />
     <Compile Include="Models\DTO\ParametroDTO.cs" />
@@ -235,6 +237,7 @@
     <Compile Include="Models\DTO\HistorialProveedorDTO.cs" />
     <Compile Include="Models\DTO\RequestEvaluarProveedor.cs" />
     <Compile Include="Models\DTO\ResponsePostulante.cs" />
+    <Compile Include="Models\DTO\ValidarPostulanteDTO.cs" />
     <Compile Include="Models\Entidades\Convocatoria.cs" />
     <Compile Include="Models\Cotizacion.cs" />
     <Compile Include="Models\DetalleTransaccionCompra.cs" />
@@ -453,7 +456,6 @@
     <Content Include="Scripts\Convocatoria\Nuevo.js" />
     <Content Include="Scripts\DetalleConvocatoria\Index.js" />
     <Content Include="Scripts\EvaluarProveedor\Index.js" />
-    <Content Include="Scripts\fileinput.js" />
     <Content Include="Scripts\fileinput.min.js" />
     <Content Include="Scripts\General.js" />
     <Content Include="Scripts\grid-0.4.3.js" />
@@ -736,7 +738,7 @@
       </FlavorProperties>
     </VisualStudio>
   </ProjectExtensions>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
+ <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
   </Target>

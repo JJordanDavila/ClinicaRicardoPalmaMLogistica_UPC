@@ -20,6 +20,5 @@ namespace DattatecPanel.Models.Entidades
 
         public ICollection<DetallePostulante> DetallePostulantes { get; set; }
 
-      
     }
 }
