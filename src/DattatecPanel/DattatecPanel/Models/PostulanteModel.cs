@@ -20,6 +20,33 @@ namespace DattatecPanel.Models
         private int errorCode;
         private string errorMessage;
 
+        public ArchivoDTO DescargarArchivo(int convocatoriaID)
+        {
+            try
+            {
+                ArchivoDTO archivo = new ArchivoDTO();
+
+                //datos del postulante
+                var convocatoria = db.DB_Convocatoria.Where(x => x.Convocatoriaid == convocatoriaID).ToList().Select(s => new
+                {
+                    s.Requisito,
+                    s.Rubro.Descripcion
+                }).FirstOrDefault();
+                if (convocatoria != null)
+                {
+                    archivo.Datos = convocatoria.Requisito;
+                    archivo.Nombre = "Requisito_" + convocatoria.Descripcion + ".pdf";
+                    archivo.Tipo = "application/pdf";
+                }
+
+                return archivo;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
         public ResponsePostulante GuardarPostulante(PostulanteDTO entidad)
         {
             try
@@ -185,7 +212,6 @@ namespace DattatecPanel.Models
                     s.Numero,
                     s.FechaInicio,
                     s.FechaFin,
-                    s.Requisito,
                     s.Estado,
                     s.Rubro.Descripcion,
                     s.Empleado.NombreCompleto

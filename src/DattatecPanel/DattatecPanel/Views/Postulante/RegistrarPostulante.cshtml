@@ -5,6 +5,13 @@
 }
 
 <h2 class="text-center">Registrar Postulante</h2>
+
+@using (Html.BeginForm("DescargarArchivo", "Postulante", FormMethod.Post))
+{
+    <input type="hidden" id="hfConvocatoriaID" name="convocatoriaID" value="@Model.IdConvocatoria" />
+    <input type="submit" id="btnDescargar" value="Descargar" style="display:none" />
+}
+
 <form id="frmRegistrarPostulante">
 
     <div class="col-md-12">
@@ -37,7 +44,7 @@
                     <div class="form-group">
                         <label class="control-label col-md-2">Requisitos</label>
                         <div class="col-md-5">
-                            <button class="btn btn-primary btn-sm" id="btnDescargarRequisitos">Descargar Requisitos</button>
+                            <button class="btn btn-primary btn-sm" id="btnDescargarRequisitos" onclick="return DescargarArchivo();">Descargar Requisitos</button>
                         </div>
                     </div>
                 </div>
@@ -124,5 +131,11 @@
             </div>
         </div>
     </div>
+    <script type="text/javascript">
+        function DescargarArchivo() {
+            $("#btnDescargar")[0].click();
+            return false;
+        };
+    </script>
 </form>
 <script src="~/Scripts/Postulante/Registro.js"></script>

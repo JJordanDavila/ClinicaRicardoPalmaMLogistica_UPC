@@ -20,6 +20,20 @@ namespace DattatecPanel.Controllers
             return View();
         }
 
+        [HttpPost]
+        public FileResult DescargarArchivo(int convocatoriaID)
+        {
+            try
+            {
+                var archivo = new PostulanteModel().DescargarArchivo(convocatoriaID);
+                return File(archivo.Datos, archivo.Tipo, archivo.Nombre);
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+
         public ActionResult RegistrarPostulante(int id)
         {
             var postulante = new PostulanteModel().MostrarDatosVistaRegistrar(id);

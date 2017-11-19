@@ -108,13 +108,6 @@
             $("#RUC").keypress(function (e) {
                 return (e.keyCode >= 48 && e.keyCode <= 57)
             });
-
-            $("#btnDescargarRequisitos").on('click', function () {
-                var data = $("#RequisitoConvocatoria").val();
-                var encodedData = window.btoa(data);
-
-                DescargarPDFPorArrayBytes(encodedData, "Requisito");
-            });
         };
 
         return RegistroPostulante;
