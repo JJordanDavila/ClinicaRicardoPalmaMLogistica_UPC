@@ -14,6 +14,12 @@ namespace DattatecPanel
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
             routes.MapRoute(
+                name: "ValidarPostulante",
+                url: "{controller}/{action}/{convocatoriaId}/{postulanteId}",
+                defaults: new { controller = "DetalleConvocatoria", action = "Validar", id = UrlParameter.Optional, idx = UrlParameter.Optional }
+            );
+
+            routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}/{idx}",
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional, idx = UrlParameter.Optional }

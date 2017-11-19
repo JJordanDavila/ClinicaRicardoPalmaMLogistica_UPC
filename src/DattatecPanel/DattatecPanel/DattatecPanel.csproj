@@ -195,6 +195,7 @@
     <Compile Include="Controllers\ProveedorController.cs" />
     <Compile Include="Controllers\RegistroProveedorParticipanteController.cs" />
     <Compile Include="Controllers\RequerimientoCompraController.cs" />
+    <Compile Include="Models\DTO\RespuestaJsonDTO.cs" />
     <Compile Include="Datasets\dsDetalleOrdenCompra1.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -225,6 +226,7 @@
     </Compile>
     <Compile Include="Models\ConvocatoriaModel.cs" />
     <Compile Include="Models\DetalleConvocatoriaModel.cs" />
+    <Compile Include="Models\DTO\ArchivoDTO.cs" />
     <Compile Include="Models\DTO\DetalleConvocatoriaDTO.cs" />
     <Compile Include="Models\DTO\DetallePostulanteDTO.cs" />
     <Compile Include="Models\DTO\ParametroDTO.cs" />
@@ -235,6 +237,7 @@
     <Compile Include="Models\DTO\HistorialProveedorDTO.cs" />
     <Compile Include="Models\DTO\RequestEvaluarProveedor.cs" />
     <Compile Include="Models\DTO\ResponsePostulante.cs" />
+    <Compile Include="Models\DTO\ValidarPostulanteDTO.cs" />
     <Compile Include="Models\Entidades\Convocatoria.cs" />
     <Compile Include="Models\Cotizacion.cs" />
     <Compile Include="Models\DetalleTransaccionCompra.cs" />
