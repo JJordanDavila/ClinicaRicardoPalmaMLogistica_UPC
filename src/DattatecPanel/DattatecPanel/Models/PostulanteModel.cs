@@ -133,6 +133,33 @@ namespace DattatecPanel.Models
         }
 
 
+        public ResponsePostulante VerificarRUC(string numeroRUC)
+        {
+            try
+            {
+                ResponsePostulante response = new ResponsePostulante { mensaje = string.Empty, mensajeInfo = string.Empty };
+
+                Datos datosSunat = getDatosSunat(numeroRUC);
+                if (errorCode == 0)
+                {
+                    response.mensaje = "1";
+                    response.mensajeInfo = datosSunat.razonSocial;
+                }
+                else
+                {
+                    response.mensaje = "0";
+                    response.mensajeInfo = "No existe el RUC ingresado";
+                }
+
+                return response;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
+
         public ResponsePostulante ValidarRuc(string numeroRUC, int convocatoriaId)
         {
             try

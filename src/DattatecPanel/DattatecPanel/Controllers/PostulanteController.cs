@@ -63,6 +63,23 @@ namespace DattatecPanel.Controllers
             }
         }
 
+
+        public ActionResult VerificarRUC(string numeroRUC)
+        {
+            try
+            {
+                var response = new PostulanteModel().VerificarRUC(numeroRUC);
+
+                return Json(new { statusCode = HttpStatusCode.OK, mensaje = response.mensaje, mensajeInfo = response.mensajeInfo },
+                    JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new { statusCode = HttpStatusCode.BadRequest }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+
         [HttpPost]
         public ActionResult Cargar(HttpPostedFileBase archivo)
         {

@@ -6,7 +6,14 @@
             RegistroPostulante.prototype.dataGrid();
             RegistroPostulante.prototype.agregarEventos();
             RegistroPostulante.prototype.NumeroValidar();
+
+            RegistroPostulante.prototype.verificarRUC();
         };
+
+
+
+
+
 
         RegistroPostulante.prototype.dataGrid = function () {
             $("#dgArchivosPostulante").datagrid({
@@ -31,8 +38,11 @@
                     return gMensajeInformacion("Solo se admiten numeros en el campo RUC.");
                 }
             }
+
+
         };
 
+        
         RegistroPostulante.prototype.Guardar = function () {
 
             var numeroRUC = $("#RUC").val();
@@ -44,7 +54,7 @@
             if (isNaN($("#RUC").val())) {
                 return gMensajeInformacion("Solo se admiten numeros en el campo RUC.");
             }
-                      
+
 
             var mensaje = ValidarPostulante(numeroRUC, nombreRazonSocial, nDireccion, nCorreo);
             if (mensaje != "") { return gMensajeInformacion(mensaje); }
@@ -84,6 +94,22 @@
             });
         };
 
+        RegistroPostulante.prototype.ValidarRUC = function () {
+            $.ajax({
+                url: globalRutaServidor + "Postulante/VerificarRUC",
+                type: 'GET',
+                data: {
+                    numeroRUC: $("#RUC").val()
+                },
+                success: function (data) {
+                    gMensajeInformacionConCallback(data.mensaje, callback);
+                },
+                error: function () {
+                    gMensajeErrorAjax();
+                }
+            });
+        }
+
         RegistroPostulante.prototype.agregarEventos = function () {
 
             $('#Correo').change(function (e) {
@@ -108,6 +134,40 @@
             $("#RUC").keypress(function (e) {
                 return (e.keyCode >= 48 && e.keyCode <= 57)
             });
+
+
+            $("#RUC").keyup(function () {
+                if ($(this).val().length > 11) {
+                    $(this).val($(this).val().substr(0, 11));
+                }
+            });
+
+            $("#RUC").change(function () {
+                $.ajax({
+                    url: globalRutaServidor + "Postulante/VerificarRUC",
+                    type: 'GET',
+                    data: {
+                        numeroRUC: $("#RUC").val()
+                    },
+                    success: function (data) {
+
+                        if (data.mensaje == 1) {
+
+                            $("#RazonSocial").val(data.mensajeInfo);
+                        }
+                        else {
+                            gMensajeInformacion(data.mensajeInfo);
+                            $("#RazonSocial").val("");
+                        }
+
+                    },
+                    error: function () {
+                        gMensajeErrorAjax();
+                    }
+                });
+            });
+
+
         };
 
         return RegistroPostulante;
