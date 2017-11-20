@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using DattatecPanel.Models.DTO;
+using DattatecPanel.Models.Entidades;
 
 namespace DattatecPanel.Controllers
 {
@@ -22,7 +24,7 @@ namespace DattatecPanel.Controllers
             Session["PostulanteView"] = postulanteView;
 
 
-            var list = (from a in db.Rubroes
+            var list = (from a in db.DB_Rubro
                         join b in db.DB_Convocatoria on a.RubroID equals b.RubroID
                         select new { a, b }).ToList();
             ViewBag.RubroID = new SelectList(list, "RubroID", "Descripcion");
@@ -64,7 +66,7 @@ namespace DattatecPanel.Controllers
 
             postulanteView = Session["PostulanteView"] as PostulanteView;
 
-            var list = (from a in db.Rubroes
+            var list = (from a in db.DB_Rubro
                         join b in db.DB_Convocatoria on a.RubroID equals b.RubroID
                         select new { a, b }).ToList();
             ViewBag.RubroID = new SelectList(list, "RubroID", "Descripcion");
@@ -92,7 +94,7 @@ namespace DattatecPanel.Controllers
 
             postulanteview.DetallePostulantes.Add(detallepostulante);
 
-            var list = (from a in db.Rubroes
+            var list = (from a in db.DB_Rubro
                         join b in db.DB_Convocatoria on a.RubroID equals b.RubroID
                         select new { a, b }).ToList();
             ViewBag.RubroID = new SelectList(list, "RubroID", "Descripcion");

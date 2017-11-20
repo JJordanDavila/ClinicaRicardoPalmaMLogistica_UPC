@@ -8,13 +8,13 @@ using System.Data.Entity;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Text;
 using System.Web.Mvc;
 
 namespace DattatecPanel.Controllers
 {
     public class DetalleConvocatoriaController : Controller
     {
-        private ClinicaDBContext db = new ClinicaDBContext();
         private MailSMTP correo = new MailSMTP();
         //
         // GET: /DetalleConvocatoria/
@@ -23,11 +23,14 @@ namespace DattatecPanel.Controllers
             return View();
         }
 
-        public ActionResult ListarDetalleConvocatoriaPostulante(string ruc, string razonSocial)
+        public ActionResult ListarDetalleConvocatoriaPostulante(string numeroConvocatoria, string ruc, string razonSocial)
         {
             try
             {
-                var lista = new DetalleConvocatoriaModel().ListarDetalleConvocatoriaPostulante(ruc,razonSocial);
+                if (!string.IsNullOrWhiteSpace(numeroConvocatoria)) numeroConvocatoria = numeroConvocatoria.Trim();
+                if (!string.IsNullOrWhiteSpace(ruc)) ruc = ruc.Trim();
+                if (!string.IsNullOrWhiteSpace(razonSocial)) razonSocial = razonSocial.Trim();
+                var lista = new DetalleConvocatoriaModel().ListarDetalleConvocatoriaPostulante(numeroConvocatoria, ruc, razonSocial);
                 var jsonresult = Json(new { rows = lista }, JsonRequestBehavior.AllowGet);
                 jsonresult.MaxJsonLength = int.MaxValue;
                 return jsonresult;
@@ -38,94 +41,25 @@ namespace DattatecPanel.Controllers
             }
         }
 
-
-        public ActionResult Validar(int id)
-        {
-            
-            var entidad = db.DB_DetalleConvocatoria.
-                Where(x => x.PostulanteId==id).
-                Select(x => new 
-                {
-                    x.Postulante.PostulanteId, x.Postulante.RUC, x.Postulante.RazonSocial, 
-                    x.Convocatoria.Rubro.Descripcion, x.Postulante.Correo
-                }).First();
-            DetalleConvocatoriaDTO detalleConvocatoria = new DetalleConvocatoriaDTO
-            {
-                RUC = entidad.RUC,
-                RazonSocial= entidad.RazonSocial,
-                Correo = entidad.Correo,
-                Rubro = entidad.Descripcion
-
-            };
-            return View("Validar", detalleConvocatoria);
-        }
-
-        ////[HttpPost]
-        ////public ActionResult Validar(Proveedor proveedor)
-        ////{
-        ////    try
-        ////    {
-        ////        var mensaje = string.Empty;               
-        ////        //var cuerpoCorreo = "Se suspendio la convocatoria con el numero : " + entidad.Numero.ToString();
-        ////        var empleado = db.DB_Empleado.Where(x => x.EmpleadoID == entidad.EmpleadoID).FirstOrDefault();
-        ////        entidad.Estado = "S";
-        ////        entidad.FechaSuspension = DateTime.Now;
-        ////        db.Entry(entidad).State = EntityState.Modified;
-        ////        db.SaveChanges();
-        ////        correo.EnviarCorreo("Clinica Ricardo Palma", empleado.Correo, "Suspension de convocatoria", cuerpoCorreo, false, null);
-        ////        mensaje = "Se suspendio con exito";
-        ////        return Json(new { statusCode = HttpStatusCode.OK, mensaje = mensaje }, JsonRequestBehavior.AllowGet);
-        ////    }
-        ////    catch (Exception ex)
-        ////    {
-        ////        return Json(new { statusCode = HttpStatusCode.BadRequest }, JsonRequestBehavior.AllowGet);
-        ////    }
-        ////}
-
-      
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Validar([Bind(Include = "ProveedorID,RazonSocial,Correo,RUC")] Proveedor proveedor)
-        {
-            if (ModelState.IsValid)
-            {
-                db.DB_Proveedor.Add(proveedor);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-
-            ////ViewBag.FormaPagoID = new SelectList(db.DB_FormaPago, "FormaPagoID", "Nombre", cotizacion.FormaPagoID);
-            ////ViewBag.ProveedorID = new SelectList(db.DB_Proveedor, "ProveedorID", "NombreComercial", cotizacion.ProveedorID);
-            ////ViewBag.RequerimientoCompraID = new SelectList(db.DB_RequerimientoCompra, "RequerimientoCompraID", "RequerimientoCompraID", cotizacion.RequerimientoCompraID);
-            return View();
-        }
-
-
-
-
-
-
-
-
-        [HttpPost]
-        public ActionResult Suspender(Convocatoria entidad)
+        public FileResult DescargarArchivo(int? postulanteId, int? detalleId)
         {
             try
             {
-                var mensaje = string.Empty;
-                //if (string.IsNullOrEmpty(entidad.ObservacionSuspension))
-                //{
-                //    return Json(new { statusCode = HttpStatusCode.OK, mensaje = "Ingrese una observación." }, JsonRequestBehavior.AllowGet);
-                //}
-                var cuerpoCorreo = "Se suspendio la convocatoria con el numero : " + entidad.Numero.ToString();
-                var empleado = db.DB_Empleado.Where(x => x.EmpleadoID == entidad.EmpleadoID).FirstOrDefault();
-                entidad.Estado = "S";
-                entidad.FechaSuspension = DateTime.Now;
-                db.Entry(entidad).State = EntityState.Modified;
-                db.SaveChanges();
-                correo.EnviarCorreo("Clinica Ricardo Palma", empleado.Correo, "Suspension de convocatoria", cuerpoCorreo, false, null);
-                mensaje = "Se suspendio con exito";
-                return Json(new { statusCode = HttpStatusCode.OK, mensaje = mensaje }, JsonRequestBehavior.AllowGet);
+                var archivo = new DetalleConvocatoriaModel().DescargarArchivo(postulanteId, detalleId);
+                return File(archivo.Datos, archivo.Tipo, archivo.Nombre);
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+
+        public ActionResult Validar(int? convocatoriaId, int? postulanteId)
+        {
+            try {
+                var datosPostulante = new DetalleConvocatoriaModel().ObtenerDatosPostulante(convocatoriaId, postulanteId);
+                return View("Validar", datosPostulante);
             }
             catch (Exception ex)
             {
@@ -133,7 +67,92 @@ namespace DattatecPanel.Controllers
             }
         }
 
+        [HttpPost]
+        public ActionResult Validar(ValidarPostulanteDTO datos)
+        {
+            try
+            {
+                RespuestaJsonDTO response = null;
+                if (!datos.FichaRuc || !datos.CartaPresentacion)
+                {
+                    response = new RespuestaJsonDTO() { codigo = HttpStatusCode.OK, mensaje = "", mensajeInfo = "Es requisito que todos los postulantes presenten su ficha RUC y su carta de presentación" };   
+                }
+                else {
+                    response = new DetalleConvocatoriaModel().ValidarPostulante(datos);
+                    if (string.IsNullOrWhiteSpace(response.mensajeInfo)) {
+                        StringBuilder body = new StringBuilder();
+                        body.Append("Estimado " + datos.RazonSocial + ":");
+                        body.Append("<br></br>");
+                        body.Append("<br></br>");
+                        body.Append("Su solicitud para ser proveedor de la Clínica Ricardo Palma ha sido aprobada.");
+                        correo.EnviarCorreo("Clinica Ricardo Palma", datos.Correo, "Aprobación de Solicitud Convocatoria N° " + datos.NumeroConvocatoria, body.ToString(), true, null);
+                    }
+                }
+                return Json(new{
+                    statusCode = response.codigo,
+                    mensaje = response.mensaje,
+                    mensajeInfo = response.mensajeInfo
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new { statusCode = HttpStatusCode.BadRequest }, JsonRequestBehavior.AllowGet);
+            }
+        }
 
+        public ActionResult Rechazar(int? convocatoriaId, int? postulanteId)
+        {
+            try
+            {
+                var datosPostulante = new DetalleConvocatoriaModel().ObtenerDatosRechazar(convocatoriaId, postulanteId);
+                return View("Rechazar", datosPostulante);
+            }
+            catch (Exception ex)
+            {
+                return Json(new { statusCode = HttpStatusCode.BadRequest }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [HttpPost]
+        public ActionResult Rechazar(RechazarPostulanteDTO datos)
+        {
+            try
+            {
+                RespuestaJsonDTO response = null;
+                if (string.IsNullOrWhiteSpace(datos.Comentario))
+                {
+                    response = new RespuestaJsonDTO() { codigo = HttpStatusCode.OK, mensaje = "", mensajeInfo = "Es requisito ingresar un comentario" };
+                }
+                else {
+                    response = new DetalleConvocatoriaModel().RechazarPostulante(datos);
+                    if (string.IsNullOrWhiteSpace(response.mensajeInfo))
+                    {
+                        StringBuilder body = new StringBuilder();
+                        body.Append("Estimado " + datos.RazonSocial + ":");
+                        body.Append("<br></br>");
+                        body.Append("<br></br>");
+                        body.Append("Su solicitud para ser proveedor de la Clínica Ricardo Palma ha sido rechazada.");
+                        body.Append("<br></br>");
+                        body.Append("<br></br>");
+                        body.Append("Comentario:");
+                        body.Append("<br></br>");
+                        body.Append("<br></br>");
+                        body.Append(datos.Comentario);
+                        correo.EnviarCorreo("Clinica Ricardo Palma", datos.Correo, "Rechazo de Solicitud Convocatoria N° " + datos.NumeroConvocatoria, body.ToString(), true, null);
+                    }
+                }
+                return Json(new
+                {
+                    statusCode = response.codigo,
+                    mensaje = response.mensaje,
+                    mensajeInfo = response.mensajeInfo
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new { statusCode = HttpStatusCode.BadRequest }, JsonRequestBehavior.AllowGet);
+            }
+        }
 
 	}
 }

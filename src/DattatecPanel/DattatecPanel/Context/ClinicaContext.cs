@@ -30,17 +30,13 @@ namespace DattatecPanel.Context
         public DbSet<Licitacion> Licitaciones { get; set; }
         public DbSet<Area> DB_Areas { get; set; }
         public DbSet<RegistroProveedorParticipante> DB_RegistroProveedorParticipante { get; set; }
-        public System.Data.Entity.DbSet<DattatecPanel.Models.Rubro> Rubroes { get; set; }
-       
+        public System.Data.Entity.DbSet<Rubro> DB_Rubro { get; set; }
         public DbSet<Convocatoria> DB_Convocatoria { get; set; }
         public DbSet<DetalleConvocatoria> DB_DetalleConvocatoria { get; set; }
-
         public DbSet<Postulante> DB_Postulante { get; set; }
         public DbSet<DetallePostulante> DB_DetallePostulante { get; set; }
-
         public DbSet<Parametro> DB_Parametro { get; set; }
         public DbSet<Criterios> DB_Criterios { get; set; }
         public DbSet<ProveedorCriterio> DB_ProveedorCriterio { get; set; }
-
     }
 }

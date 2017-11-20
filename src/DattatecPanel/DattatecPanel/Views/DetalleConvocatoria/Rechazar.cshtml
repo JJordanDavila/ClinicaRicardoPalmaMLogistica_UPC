@@ -1,0 +1,97 @@
+﻿@model DattatecPanel.Models.DTO.RechazarPostulanteDTO
+@{
+    ViewBag.Title = "Rechazar";
+}
+<h3>Rechazar postulante</h3>
+<hr />
+<form id="frmRechazarPostulante">
+    @Html.AntiForgeryToken()
+    <input type="hidden" id="hfRubroId" name="RubroID" value="@Model.RubroID" />
+    <input type="hidden" id="hfConvocatoriaId" name="ConvocatoriaId" value="@Model.ConvocatoriaId" />
+    <input type="hidden" id="hfPostulanteId" name="PostulanteId" value="@Model.PostulanteId" />
+    <input type="hidden" id="hfRazonSocial" name="RazonSocial" value="@Model.RazonSocial" />
+    <input type="hidden" id="hfCorreo" name="Correo" value="@Model.Correo" />
+    <input type="hidden" id="hfNumeroConvocatoria" name="NumeroConvocatoria" value="@Model.NumeroConvocatoria" />
+    <div class="form-horizontal">
+        <div class="form-group">
+            @Html.LabelFor(model => model.NumeroConvocatoria, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-3">
+                @Html.TextBoxFor(model => model.NumeroConvocatoria, new { @class = "form-control text-box single-line", disabled = "disabled", @readonly = "readonly" })
+            </div>
+            @Html.LabelFor(model => model.Rubro, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-3">
+                @Html.TextBoxFor(model => model.Rubro, new { @class = "form-control text-box single-line", disabled = "disabled", @readonly = "readonly" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.RUC, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-3">
+                @Html.TextBoxFor(model => model.RUC, new { @class = "form-control text-box single-line", disabled = "disabled", @readonly = "readonly" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.RazonSocial, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-3">
+                @Html.TextBoxFor(model => model.RazonSocial, new { @class = "form-control text-box single-line", disabled = "disabled", @readonly = "readonly" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Correo, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-3">
+                @Html.TextBoxFor(model => model.Correo, new { @class = "form-control text-box single-line", disabled = "disabled", @readonly = "readonly" })
+            </div>
+        </div>
+    </div>
+    <h3>Comentario</h3>
+    <br />
+    <div class="form-horizontal">
+        <div class="form-group">
+            <div class="col-md-10">
+                @Html.TextAreaFor(model => model.Comentario, new { @class = "form-control" })
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer" style="margin-top: 20px;">
+        <a href="@Url.Action("Index", "DetalleConvocatoria")" class="btn btn-primary" style="color: white;"><span class="glyphicon glyphicon-ok-sign" id="btnCancelar"></span> Cancelar</a>
+        <input type="submit" value="Rechazar" class="btn btn-primary" id="btnRechazar" onclick="return Rechazar();" />
+    </div>
+
+
+    <script type="text/javascript">
+        function Rechazar(enviarDatos) {
+            gMensajeConfirmacion("¿Está seguro de rechazar al postulante?", function () {
+                var frmData = new FormData(document.getElementById('frmRechazarPostulante'));
+                $.ajax({
+                    url: globalRutaServidor + "DetalleConvocatoria/Rechazar",
+                    type: 'POST',
+                    async: false,
+                    contentType: false,
+                    processData: false,
+                    data: frmData,
+                    success: function (data) {
+                        if (data.statusCode == 200) {
+                            if (data.mensajeInfo == "") {
+                                var callback = function () {
+                                    $("#btnCancelar").click();
+                                };
+                                gMensajeInformacionConCallback(data.mensaje, callback);
+                            } else {
+                                gMensajeInformacion(data.mensajeInfo);
+                            }
+                        } else {
+                            gMensajeInformacion('Ocurrio un error.');
+                        }
+                    },
+                    error: function () {
+                        gMensajeErrorAjax();
+                    }
+                });
+            });
+            return false;
+        }
+    </script>
+</form>
+
+@section scripts{
+    <script src="~/Scripts/General.js"></script>
+}

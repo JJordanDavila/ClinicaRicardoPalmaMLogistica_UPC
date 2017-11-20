@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace DattatecPanel.Models
+namespace DattatecPanel.Models.Entidades
 {
     [Table("GL_Postulante")]
     public class Postulante
@@ -17,9 +17,8 @@ namespace DattatecPanel.Models
         public string Correo { get; set; }
         public string RUC { get; set; }
         public bool ConstanciaRNP { get; set; }
-        //public DateTime Fecha_Registro { get; set; }
 
-        public ICollection<DetallePostulante> DetallePostulantes { set; get; }
-    
+        public ICollection<DetallePostulante> DetallePostulantes { get; set; }
+
     }
 }

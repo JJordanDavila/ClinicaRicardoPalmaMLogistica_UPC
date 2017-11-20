@@ -17,25 +17,25 @@
                 loadMsg: "Cargando...",
                 columns: [[                   
                     {
-                        field: 'FecIni', title: 'Fecha Inicio', width: 150,
+                        field: 'FecIni', title: 'Fecha Inicio', width: 100,
                         formatter: function (value, row, index) {
                             return gFormatearFechaJson(value);
                         }
                     },
                     {
-                        field: 'FecFin', title: 'Fecha Fin', width: 150,
+                        field: 'FecFin', title: 'Fecha Fin', width: 100,
                         formatter: function (value, row, index) {
                             return gFormatearFechaJson(value);
                         }
                     },
                     {
-                        field: 'Intervalo', title: 'Intervalo', width: 150
+                        field: 'Intervalo', title: 'Intervalo', width: 100
                     },
                     {
-                        field: 'UnidadMedidaIntervalo', title: 'UnidadMedidaIntervalo', width: 250
+                        field: 'UnidadMedidaIntervalo', title: 'UnidadMedidaIntervalo', width: 100
                     },
                     {
-                        field: 'FecUltPro', title: 'Fecha Ult. Proceso', width: 150,
+                        field: 'FecUltPro', title: 'Fecha Ult. Proceso', width: 100,
                          formatter: function (value, row, index) {
                              return gFormatearFechaJson(value);
                          }

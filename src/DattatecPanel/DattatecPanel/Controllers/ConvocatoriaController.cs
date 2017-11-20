@@ -101,7 +101,7 @@ namespace DattatecPanel.Controllers
 
         private void CargarCombos()
         {
-            ViewBag.Rubros = db.Rubroes.ToList();
+            ViewBag.Rubros = db.DB_Rubro.ToList();
             ViewBag.Solicitantes = db.DB_Empleado.ToList();
         }
     }

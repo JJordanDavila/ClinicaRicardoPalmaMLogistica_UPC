@@ -195,6 +195,8 @@
     <Compile Include="Controllers\ProveedorController.cs" />
     <Compile Include="Controllers\RegistroProveedorParticipanteController.cs" />
     <Compile Include="Controllers\RequerimientoCompraController.cs" />
+    <Compile Include="Models\DTO\RechazarPostulanteDTO.cs" />
+    <Compile Include="Models\DTO\RespuestaJsonDTO.cs" />
     <Compile Include="Datasets\dsDetalleOrdenCompra1.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -225,7 +227,9 @@
     </Compile>
     <Compile Include="Models\ConvocatoriaModel.cs" />
     <Compile Include="Models\DetalleConvocatoriaModel.cs" />
+    <Compile Include="Models\DTO\ArchivoDTO.cs" />
     <Compile Include="Models\DTO\DetalleConvocatoriaDTO.cs" />
+    <Compile Include="Models\DTO\DetallePostulanteDTO.cs" />
     <Compile Include="Models\DTO\ParametroDTO.cs" />
     <Compile Include="Models\DTO\PostulanteDTO.cs" />
     <Compile Include="Models\DTO\ResponseConvocatoria.cs" />
@@ -233,9 +237,10 @@
     <Compile Include="Models\DTO\EvaluarProveedorDTO.cs" />
     <Compile Include="Models\DTO\HistorialProveedorDTO.cs" />
     <Compile Include="Models\DTO\RequestEvaluarProveedor.cs" />
+    <Compile Include="Models\DTO\ResponsePostulante.cs" />
+    <Compile Include="Models\DTO\ValidarPostulanteDTO.cs" />
     <Compile Include="Models\Entidades\Convocatoria.cs" />
     <Compile Include="Models\Cotizacion.cs" />
-    <Compile Include="Models\DetallePostulante.cs" />
     <Compile Include="Models\DetalleTransaccionCompra.cs" />
     <Compile Include="Models\DTO\AdjuntoCorreo.cs" />
     <Compile Include="Models\DTO\ConvocatoriaDTO.cs" />
@@ -247,9 +252,12 @@
       <DependentUpon>configEntity.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\EmpleadoL.cs" />
+    <Compile Include="Models\Entidades\DatosSunat.cs" />
     <Compile Include="Models\Entidades\DetalleConvocatoria.cs" />
     <Compile Include="Models\Entidades\Criterios.cs" />
+    <Compile Include="Models\Entidades\DetallePostulante.cs" />
     <Compile Include="Models\Entidades\Parametro.cs" />
+    <Compile Include="Models\Entidades\Postulante.cs" />
     <Compile Include="Models\Entidades\ProveedorCriterio.cs" />
     <Compile Include="Models\EvaluarProveedorModel.cs" />
     <Compile Include="Models\FormaPago.cs" />
@@ -308,13 +316,13 @@
     <Compile Include="Models\Moneda.cs" />
     <Compile Include="Models\OrdenCompra.cs" />
     <Compile Include="Models\ParametroModel.cs" />
-    <Compile Include="Models\Postulante.cs" />
+    <Compile Include="Models\PostulanteModel.cs" />
     <Compile Include="Models\PostulanteView.cs" />
     <Compile Include="Models\Proveedor.cs" />
     <Compile Include="Models\ProveedorModel.cs" />
     <Compile Include="Models\RegistroProveedorParticipante.cs" />
     <Compile Include="Models\RequerimientoCompra.cs" />
-    <Compile Include="Models\Rubro.cs" />
+    <Compile Include="Models\Entidades\Rubro.cs" />
     <Compile Include="Models\TransaccionCompra.cs" />
     <Compile Include="Models\sysdiagrams.cs" />
     <Compile Include="Models\UnidadMedida.cs" />
@@ -448,7 +456,6 @@
     <Content Include="Scripts\Convocatoria\Index.js" />
     <Content Include="Scripts\Convocatoria\Nuevo.js" />
     <Content Include="Scripts\DetalleConvocatoria\Index.js" />
-    <Content Include="Scripts\DetalleConvocatoria\Nuevo.js" />
     <Content Include="Scripts\EvaluarProveedor\Index.js" />
     <Content Include="Scripts\fileinput.min.js" />
     <Content Include="Scripts\General.js" />
@@ -518,6 +525,8 @@
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\Parametro\Index.js" />
     <Content Include="Scripts\Parametro\Nuevo.js" />
+    <Content Include="Scripts\Postulante\Index.js" />
+    <Content Include="Scripts\Postulante\Registro.js" />
     <Content Include="Scripts\Proveedor\Index.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
@@ -681,6 +690,8 @@
     <Content Include="Views\EvaluarProveedor\Index.cshtml" />
     <Content Include="Views\Proveedor\DetalleHistorial.cshtml" />
     <Content Include="Views\Proveedor\Index.cshtml" />
+    <Content Include="Views\Postulante\Index.cshtml" />
+    <Content Include="Views\DetalleConvocatoria\Rechazar.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

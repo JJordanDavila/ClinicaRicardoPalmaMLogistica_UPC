@@ -1,7 +1,7 @@
 ﻿(function() {
     var EvaluarProveedor = (function () {
         function EvaluarProveedor() { };
-
+        var indexGlobal;
         EvaluarProveedor.prototype.loadPage = function () {
             gInputsFormatoFecha("txtFechaFin,txtFechaInicio");
             EvaluarProveedor.prototype.dataGrid();
@@ -56,7 +56,7 @@
                                 result = "<input type='checkbox' class='itemChkEstado' data-id='" + row.IdProveedor + ",CA" + "' checked disabled/> Suspendido";
                             } else {
                                 if (puedeSuspender >= 2) {
-                                    result = "<input type='checkbox' class='itemChkEstado' data-id='" + row.IdProveedor + ",SU" + "'/> Activo";
+                                    result = "<input type='checkbox' class='itemChkEstado' data-id='" + row.IdProveedor + ",SU" + "' data-obs='" + row.Observacion+"'/> Activo";
                                 } else {
                                     result = "<input type='checkbox' class='itemChkEstado' disabled/> Activo";
                                 }
@@ -65,9 +65,27 @@
                         }
                     },
                     {
-                        field: 'Observacion', title: 'Observaciones', width: 200
+                        field: 'Observacion', title: 'Observaciones', width: 200, editor: 'text'
                     }
                 ]],
+                //onClickCell: function (index, field, value) {
+                //    if (indexGlobal != undefined) {
+                //        $('#dgListaEvaluarProveedor').datagrid('refreshRow', indexGlobal);
+                //    }
+                //    if (field == "Observacion") {
+                //        $('#dgListaEvaluarProveedor').datagrid('beginEdit', index);
+                //        indexGlobal = index;
+                //    }
+                //},
+                //onBeforeEdit: function (index, row) {
+                //    $(this).datagrid('refreshRow', index);
+                //},
+                //onAfterEdit: function (index, row) {
+                //    $(this).datagrid('refreshRow', index);
+                //},
+                //onCancelEdit: function (index, row) {
+                //    $(this).datagrid('refreshRow', index);
+                //},
                 rownumbers: true,
                 width: '100%',
                 singleSelect: true
@@ -95,9 +113,19 @@
 
                     $(".itemChkEstado").on('click', function () {
                         //EvaluarProveedor.prototype.frmObservacion();
+                        //var obs = $(this).attr("data-obs");
+                        //if (obs != "" && obs != "null") {
+                        //    var data = $(this).attr("data-id");
+                        //    var params = data.split(",");
+                        //    EvaluarProveedor.prototype.ActualizarEstado(params[0], params[1], obs);
+                        //} else {
+                        //    gMensajeInformacion("Ingresar observacion para la suspensión.");
+                        //    EvaluarProveedor.prototype.buscar();
+                        //}
+                        var obs = "";
                         var data = $(this).attr("data-id");
                         var params = data.split(",");
-                        EvaluarProveedor.prototype.ActualizarEstado(params[0], params[1]);
+                        EvaluarProveedor.prototype.ActualizarEstado(params[0], params[1], obs);
                     });
                 },
                 error: function () {
@@ -111,8 +139,8 @@
                 EvaluarProveedor.prototype.buscar();
             });
         };
-        EvaluarProveedor.prototype.ActualizarEstado = function (id, estado) {            var request = {};            request.idProveedor = id;
-            request.Estado = estado;            $.ajax({
+        EvaluarProveedor.prototype.ActualizarEstado = function (id, estado, obs) {            var request = {};            request.idProveedor = id;
+            request.Estado = estado;            request.Observacion = obs;            $.ajax({
                 url: globalRutaServidor + "EvaluarProveedor/ActualizarEstadoProveedor",
                 type: 'POST',
                 data: request,
@@ -122,7 +150,6 @@
                     } else if (data.statusCode == 200) {
                         EvaluarProveedor.prototype.buscar();
                     }
-
                 },
                 error: function () {
                     gMensajeErrorAjax();

@@ -13,5 +13,6 @@ namespace DattatecPanel.Models.DTO
         public string FechaFin { get; set; }
         public int idProveedor { get; set; }
         public string Estado { get; set; }
+        public string Observacion { get; set; }
     }
 }
