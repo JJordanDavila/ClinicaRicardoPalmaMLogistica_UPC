@@ -175,7 +175,7 @@ function saveByteArray8(reportName, byte) {
 
 };
 
-var saveByteArray = (function () {
+function saveByteArray() {
     var a = document.createElement("a");
     document.body.appendChild(a);
     a.style = "display: none";
@@ -187,7 +187,7 @@ var saveByteArray = (function () {
         a.click();
         window.URL.revokeObjectURL(url);
     };
-}());
+};
 
 function saveByteArray5(reportName, byte) {
     var a = document.createElement("a");
