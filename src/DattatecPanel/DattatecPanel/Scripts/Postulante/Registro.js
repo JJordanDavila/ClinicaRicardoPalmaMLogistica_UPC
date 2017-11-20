@@ -140,22 +140,22 @@
 
                             $("#RazonSocial").val(data.mensajeInfo);
                             $("#Direccion").val(data.mensajeDireccion);
-                            $('#RazonSocial').attr("disabled", true);
-                            $('#Direccion').attr("disabled", true);
+                            //$('#RazonSocial').attr("disabled", true);
+                            //$('#Direccion').attr("disabled", true);
                         }
                         else {
                             gMensajeInformacion(data.mensajeInfo);
                             $("#RazonSocial").val("");
                             $("#Direccion").val("");
-                            $('#RazonSocial').attr("disabled", false);
-                            $('#Direccion').attr("disabled", false);
+                            //$('#RazonSocial').attr("disabled", false);
+                            //$('#Direccion').attr("disabled", false);
                         }
 
                     },
                     error: function () {
                         gMensajeErrorAjax();
-                        $('#RazonSocial').attr("disabled", false);
-                        $('#Direccion').attr("disabled", false);
+                        //$('#RazonSocial').attr("disabled", false);
+                        //$('#Direccion').attr("disabled", false);
                     }
                 });
             });
