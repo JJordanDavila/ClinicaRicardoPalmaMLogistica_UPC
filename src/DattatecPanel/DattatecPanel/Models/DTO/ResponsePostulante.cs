@@ -9,5 +9,6 @@ namespace DattatecPanel.Models.DTO
     {
         public string mensaje { get; set; }
         public string mensajeInfo { get; set; }
+        public string mensajeDireccion { get; set; }
     }
 }

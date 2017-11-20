@@ -6,15 +6,10 @@
             RegistroPostulante.prototype.dataGrid();
             RegistroPostulante.prototype.agregarEventos();
             RegistroPostulante.prototype.NumeroValidar();
-
             RegistroPostulante.prototype.verificarRUC();
         };
 
-
-
-
-
-
+        
         RegistroPostulante.prototype.dataGrid = function () {
             $("#dgArchivosPostulante").datagrid({
                 title: 'RESULTADO',
@@ -42,7 +37,7 @@
 
         };
 
-        
+
         RegistroPostulante.prototype.Guardar = function () {
 
             var numeroRUC = $("#RUC").val();
@@ -94,23 +89,13 @@
             });
         };
 
-        RegistroPostulante.prototype.ValidarRUC = function () {
-            $.ajax({
-                url: globalRutaServidor + "Postulante/VerificarRUC",
-                type: 'GET',
-                data: {
-                    numeroRUC: $("#RUC").val()
-                },
-                success: function (data) {
-                    gMensajeInformacionConCallback(data.mensaje, callback);
-                },
-                error: function () {
-                    gMensajeErrorAjax();
-                }
-            });
-        }
 
         RegistroPostulante.prototype.agregarEventos = function () {
+
+           
+            $('#Direccion').css("background", "white");
+            $('#RazonSocial').css("background", "white");
+
 
             $('#Correo').change(function (e) {
                 var emailRegex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
@@ -154,15 +139,23 @@
                         if (data.mensaje == 1) {
 
                             $("#RazonSocial").val(data.mensajeInfo);
+                            $("#Direccion").val(data.mensajeDireccion);
+                            $('#RazonSocial').attr("disabled", true);
+                            $('#Direccion').attr("disabled", true);
                         }
                         else {
                             gMensajeInformacion(data.mensajeInfo);
                             $("#RazonSocial").val("");
+                            $("#Direccion").val("");
+                            $('#RazonSocial').attr("disabled", false);
+                            $('#Direccion').attr("disabled", false);
                         }
 
                     },
                     error: function () {
                         gMensajeErrorAjax();
+                        $('#RazonSocial').attr("disabled", false);
+                        $('#Direccion').attr("disabled", false);
                     }
                 });
             });

@@ -70,7 +70,7 @@ namespace DattatecPanel.Controllers
             {
                 var response = new PostulanteModel().VerificarRUC(numeroRUC);
 
-                return Json(new { statusCode = HttpStatusCode.OK, mensaje = response.mensaje, mensajeInfo = response.mensajeInfo },
+                return Json(new { statusCode = HttpStatusCode.OK, mensaje = response.mensaje, mensajeInfo = response.mensajeInfo, mensajeDireccion = response.mensajeDireccion },
                     JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
