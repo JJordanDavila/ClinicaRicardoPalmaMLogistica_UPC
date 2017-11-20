@@ -191,7 +191,6 @@
     <Compile Include="Controllers\OrdenCompraController.cs" />
     <Compile Include="Controllers\ParametroController.cs" />
     <Compile Include="Controllers\PostulanteController.cs" />
-    <Compile Include="Controllers\PostularController.cs" />
     <Compile Include="Controllers\ProveedorController.cs" />
     <Compile Include="Controllers\RegistroProveedorParticipanteController.cs" />
     <Compile Include="Controllers\RequerimientoCompraController.cs" />
@@ -317,7 +316,6 @@
     <Compile Include="Models\OrdenCompra.cs" />
     <Compile Include="Models\ParametroModel.cs" />
     <Compile Include="Models\PostulanteModel.cs" />
-    <Compile Include="Models\PostulanteView.cs" />
     <Compile Include="Models\Proveedor.cs" />
     <Compile Include="Models\ProveedorModel.cs" />
     <Compile Include="Models\RegistroProveedorParticipante.cs" />
@@ -681,8 +679,6 @@
     <Content Include="Views\Convocatoria\Nuevo.cshtml" />
     <Content Include="Views\Convocatoria\Suspender.cshtml" />
     <Content Include="Views\Postulante\RegistrarPostulante.cshtml" />
-    <Content Include="Views\Postular\NuevoPostulante.cshtml" />
-    <Content Include="Views\Postular\AddDocumento.cshtml" />
     <Content Include="Views\Parametro\Index.cshtml" />
     <Content Include="Views\Parametro\Nuevo.cshtml" />
     <Content Include="Views\DetalleConvocatoria\Index.cshtml" />
@@ -695,6 +691,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Postular\" />
     <Folder Include="Views\RegistroProveedorParticipante\" />
     <Folder Include="Views\ValidarPostulante\" />
   </ItemGroup>

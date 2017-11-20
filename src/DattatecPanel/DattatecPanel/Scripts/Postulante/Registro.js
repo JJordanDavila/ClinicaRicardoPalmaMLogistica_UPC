@@ -9,7 +9,7 @@
             RegistroPostulante.prototype.verificarRUC();
         };
 
-        
+
         RegistroPostulante.prototype.dataGrid = function () {
             $("#dgArchivosPostulante").datagrid({
                 title: 'RESULTADO',
@@ -92,7 +92,7 @@
 
         RegistroPostulante.prototype.agregarEventos = function () {
 
-           
+
             $('#Direccion').css("background", "white");
             $('#RazonSocial').css("background", "white");
 
@@ -140,22 +140,22 @@
 
                             $("#RazonSocial").val(data.mensajeInfo);
                             $("#Direccion").val(data.mensajeDireccion);
-                            //$('#RazonSocial').attr("disabled", true);
-                            //$('#Direccion').attr("disabled", true);
+                            $("#RazonSocial").prop("readonly", true);
+                            $("#Direccion").prop("readonly", true);                     
                         }
                         else {
                             gMensajeInformacion(data.mensajeInfo);
                             $("#RazonSocial").val("");
                             $("#Direccion").val("");
-                            //$('#RazonSocial').attr("disabled", false);
-                            //$('#Direccion').attr("disabled", false);
+                            $("#RazonSocial").prop("readonly", false);
+                            $("#Direccion").prop("readonly", false);                           
                         }
 
                     },
                     error: function () {
                         gMensajeErrorAjax();
-                        //$('#RazonSocial').attr("disabled", false);
-                        //$('#Direccion').attr("disabled", false);
+                        $("#RazonSocial").prop("readonly", false);
+                        $("#Direccion").prop("readonly", false);    
                     }
                 });
             });
