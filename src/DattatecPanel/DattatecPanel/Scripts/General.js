@@ -73,13 +73,20 @@ function ValidarFechaInicio_Fin(fini, ffin, dias) {
         var fechafin = new Date(formatdate(ffin));
         var diff = fechafin - fechaini;
         if (fechaini > fechafin) {
+            //mensaje = fechaini; // fechaini;
             mensaje = "La fecha de inicio no puede ser mayor a la fecha fin.";
         }
-        if (fechafin < fechaini) {
-            mensaje = "La fecha fin no puede ser menor a la fecha de inicio.";
-        }
-        if ((diff / (1000 * 60 * 60 * 24)) < dias) {
-            mensaje = "La diferencia entre la fecha inicio y fecha fin debe ser igual o mayor a " + dias + " días.";
+        else {
+            if (fechafin < fechaini) {
+                //mensaje = fechafin;
+                mensaje = "La fecha fin no puede ser menor a la fecha de inicio.";
+            }
+            {
+                if ((diff / (1000 * 60 * 60 * 24)) < dias) {
+                    //mensaje = fechaini + " | " + fechafin;
+                    mensaje = "La diferencia entre la fecha inicio y fecha fin debe ser igual o mayor a " + dias + " días.";
+                }
+            }
         }
     }
     return mensaje;
