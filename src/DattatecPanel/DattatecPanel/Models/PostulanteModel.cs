@@ -227,7 +227,7 @@ namespace DattatecPanel.Models
         {
             try
             {
-                var lista = db.DB_Convocatoria.Where(x => x.Convocatoriaid == id).First();
+                var lista = db.DB_Convocatoria.Where(x => x.Convocatoriaid == id).Select(s => new { s.Convocatoriaid, s.Numero, s.Rubro }).FirstOrDefault();
                 return lista;
             }
             catch (Exception ex)
@@ -246,7 +246,6 @@ namespace DattatecPanel.Models
                     IdConvocatoria = convocatoria.Convocatoriaid,
                     NumeroConvocatoria = convocatoria.Numero,
                     descripcionRubro = convocatoria.Rubro.Descripcion,
-                    RequisitoConvocatoria = convocatoria.Requisito
                 };
                 return postulante;
             }
