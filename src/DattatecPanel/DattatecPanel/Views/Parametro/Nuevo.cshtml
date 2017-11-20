@@ -125,7 +125,7 @@ else
 
         <div class="form-group colFormularioHorizontal">
                 @Html.LabelFor(model => model.UrlServicio01,  new { @class = "col-sm-2 control-label obligatorio" })
-            <div class="col-md-5">
+            <div class="col-md-8">
                 @Html.EditorFor(model => model.UrlServicio01, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.UrlServicio01, "", new { @class = "text-danger" })
             </div>
@@ -134,7 +134,7 @@ else
     
         <div class="form-group colFormularioHorizontal">
             @Html.LabelFor(model => model.UrlServicio02, new { @class = "col-sm-2 control-label obligatorio" })
-            <div class="col-md-5">
+            <div class="col-md-8">
                 @Html.EditorFor(model => model.UrlServicio02, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.UrlServicio02, "", new { @class = "text-danger" })
             </div>
