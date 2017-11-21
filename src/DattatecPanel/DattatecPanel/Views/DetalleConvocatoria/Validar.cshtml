@@ -1,58 +1,137 @@
-﻿@model DattatecPanel.Models.DTO.DetalleConvocatoriaDTO
+﻿@model DattatecPanel.Models.DTO.ValidarPostulanteDTO
 @{
     ViewBag.Title = "Validar";
 }
-
-<h2>Validar</h2>
-
-<form id="frmNuevoParametro">
-        
-        <div class="form-group colFormularioHorizontal">
-            @Html.LabelFor(model => model.RUC, new { @class = "col-sm-2 control-label obligatorio" })
+<h3>Validar postulante</h3>
+<hr />
+@using (Html.BeginForm("DescargarArchivo", "DetalleConvocatoria", FormMethod.Post))
+{
+    <input type="hidden" id="hfPostulanteId" name="postulanteId" />
+    <input type="hidden" id="hfFileId" name="detalleId" />
+    <input type="submit" id="btnDescargar" value="Descargar" style="display:none" />
+}
+<form id="frmValidarPostulante">
+    @Html.AntiForgeryToken()
+    <input type="hidden" id="hfRubroId" name="RubroID" value="@Model.RubroID" />
+    <input type="hidden" id="hfPostulanteId" name="PostulanteId" value="@Model.PostulanteId" />
+    <input type="hidden" id="hfRazonSocial" name="RazonSocial" value="@Model.RazonSocial" />
+    <input type="hidden" id="hfCorreo" name="Correo" value="@Model.Correo" />
+    <input type="hidden" id="hfNumeroConvocatoria" name="NumeroConvocatoria" value="@Model.NumeroConvocatoria" />
+    <div class="form-horizontal">
+        <div class="form-group">
+            @Html.LabelFor(model => model.NumeroConvocatoria, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-3">
-                @Html.EditorFor(model => model.RUC, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.RUC, "", new { @class = "text-danger" })
+                @Html.TextBoxFor(model => model.NumeroConvocatoria, new { @class = "form-control text-box single-line", disabled = "disabled", @readonly = "readonly" })
             </div>
-            <div class="col-sm-12"></div>
-        </div>
-        <div class="form-group colFormularioHorizontal">
-            @Html.LabelFor(model => model.RazonSocial, new { @class = "col-sm-2 control-label obligatorio" })
+            @Html.LabelFor(model => model.Rubro, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-3">
-                @Html.EditorFor(model => model.RazonSocial, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.RazonSocial, "", new { @class = "text-danger" })
+                @Html.TextBoxFor(model => model.Rubro, new { @class = "form-control text-box single-line", disabled = "disabled", @readonly = "readonly" })
             </div>
-            <div class="col-sm-12"></div>
         </div>
-    <div class="form-group colFormularioHorizontal">
-        @Html.LabelFor(model => model.Correo, new { @class = "col-sm-2 control-label obligatorio" })
-        <div class="col-md-3">
-            @Html.EditorFor(model => model.Correo, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.Correo, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.RUC, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-3">
+                @Html.TextBoxFor(model => model.RUC, new { @class = "form-control text-box single-line", disabled = "disabled", @readonly = "readonly" })
+            </div>
         </div>
-        <div class="col-sm-12"></div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.RazonSocial, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-3">
+                @Html.TextBoxFor(model => model.RazonSocial, new { @class = "form-control text-box single-line", disabled = "disabled", @readonly = "readonly" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Correo, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-3">
+                @Html.TextBoxFor(model => model.Correo, new { @class = "form-control text-box single-line", disabled = "disabled", @readonly = "readonly" })
+            </div>
+        </div>
+    </div>
+    <h3>Documentos presentados:</h3>
+    <br />
+    <table class="table">
+        <tr>
+            <th>N°</th>
+            <th>Nombre</th>
+            <th>Archivo</th>
+        </tr>
+        @foreach (var item in Model.ListaArchivosPresentados)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nombre)
+                </td>
+                <td>
+                    <a href="javascript:;" onclick="DescargarArchivo(@item.PostulanteId, @item.Id)">Descargar</a>
+                </td>
+            </tr>
+        }
+    </table>
+    <h3>Validar documentación:</h3>
+    <br />
+    <div class="form-horizontal">
+        <div class="form-group">
+            @Html.LabelFor(model => model.FichaRuc, htmlAttributes: new { @class = "control-label col-md-3" })
+            <div class="col-md-3">
+                @Html.EditorFor(model => model.FichaRuc)
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.CartaPresentacion, htmlAttributes: new { @class = "control-label col-md-3" })
+            <div class="col-md-3">
+                @Html.EditorFor(model => model.CartaPresentacion)
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer" style="margin-top: 20px;">
+        <a href="@Url.Action("Index", "DetalleConvocatoria")" class="btn btn-primary" style="color: white;"><span class="glyphicon glyphicon-ok-sign" id="btnCancelar"></span> Cancelar</a>
+        <input type="submit" value="Validar" class="btn btn-primary" id="btnValidar" onclick="return Validar();" />
     </div>
 
-        <div class="form-group colFormularioHorizontal">
-            @Html.LabelFor(model => model.Rubro,  new { @class = "col-sm-2 control-label obligatorio" })
-            <div class="col-md-5">
-                @Html.EditorFor(model => model.Rubro, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Rubro, "", new { @class = "text-danger" })
-            </div>
-            <div class="col-sm-12"></div>
-        </div>
 
-    <div class="col-sm-12">
-        <div class="modal-footer" style="margin-top: 20px;">
-            <a href="@Url.Action("Index", "DetalleConvocatoria")" class="btn btn-primary" style="color: white;"><span class="glyphicon glyphicon-ok-sign" id="btnCancelar"></span> Cancelar</a>
-            <button type="button" class="btn btn-primary" id="btnGuardar">Validar</button>
-        </div>
-    </div>
-</form>
-@section scripts{
-    <script>
-        var suspender = false;
-        var postulante = $("#PostulanteId").val();
-             
+    <script type="text/javascript">
+        function DescargarArchivo(postulanteId, detalleId) {
+            $("#hfPostulanteId").val(postulanteId);
+            $("#hfFileId").val(detalleId);
+            $("#btnDescargar")[0].click();
+        };
+        function Validar(enviarDatos) {
+            gMensajeConfirmacion("¿Está seguro de que la información del postulante es válida para convertirlo en proveedor?", function () {
+                var frmData = new FormData(document.getElementById('frmValidarPostulante'));
+                $.ajax({
+                    url: globalRutaServidor + "DetalleConvocatoria/Validar",
+                    type: 'POST',
+                    async: false,
+                    contentType: false,
+                    processData: false,
+                    data: frmData,
+                    success: function (data) {
+                        if (data.statusCode == 200) {
+                            if (data.mensajeInfo == "") {
+                                var callback = function () {
+                                    $("#btnCancelar").click();
+                                };
+                                gMensajeInformacionConCallback(data.mensaje, callback);
+                            } else {
+                                gMensajeInformacion(data.mensajeInfo);
+                            }
+                        } else {
+                            gMensajeInformacion('Ocurrio un error.');
+                        }
+                    },
+                    error: function () {
+                        gMensajeErrorAjax();
+                    }
+                });
+            });
+            return false;
+        }
     </script>
-    <script src="~/Scripts/DetalleConvocatoria/Nuevo.js"></script>
+</form>
+
+@section scripts{
+    <script src="~/Scripts/General.js"></script>
 }
