@@ -74,7 +74,7 @@ namespace DattatecPanel.Controllers
                     FecIni = entidad.FecIni,
                     FecFin = entidad.FecFin,
                     Intervalo = entidad.Intervalo,
-                    UnidadMedidaIntervalo = entidad.UnidadMedidaIntervalo,
+                    UnidadMedidaIntervalo = entidad.UnidadMedidaIntervalo,                    
                     FecUltPro = entidad.FecUltPro,
                     UrlServicio01 = entidad.UrlServicio01,
                     UrlServicio02 = entidad.UrlServicio02
@@ -108,12 +108,12 @@ namespace DattatecPanel.Controllers
 
 
 
-        public ActionResult Actualizar(int id)
-        {
-            var entidad = db.DB_Parametro.Where(x => x.ParametroId == id).First();
-            //CargarCombos();
-            return View("Nuevo", entidad);
-        }
+        ////public ActionResult Actualizar(int id)
+        ////{
+        ////    var entidad = db.DB_Parametro.Where(x => x.ParametroId == id).First();
+        ////    //CargarCombos();
+        ////    return View("Nuevo", entidad);
+        ////}
 
         public ActionResult Suspender(int id)
         {
@@ -121,6 +121,109 @@ namespace DattatecPanel.Controllers
             //CargarCombos();
             return View("Suspender", entidad);
         }
+
+        [HttpPost]
+        public ActionResult Suspender(Parametro entidad)
+        {
+            try
+            {
+                var mensaje = string.Empty;
+                //if (string.IsNullOrEmpty(entidad.ObservacionSuspension))
+                //{
+                //    return Json(new { statusCode = HttpStatusCode.OK, mensaje = "Ingrese una observación." }, JsonRequestBehavior.AllowGet);
+                //}
+                ////var cuerpoCorreo = "Se suspendio la convocatoria con el numero : " + entidad.Numero.ToString();
+                //////var empleado = db.DB_Empleado.Where(x => x.EmpleadoID == entidad.EmpleadoID).FirstOrDefault();
+
+                var parametro = db.DB_Parametro.Where(x => x.ParametroId == entidad.ParametroId).FirstOrDefault();
+                parametro.FecIni = entidad.FecIni;
+                parametro.FecFin = entidad.FecFin;
+                parametro.Intervalo = entidad.Intervalo;
+                parametro.UnidadMedidaIntervalo = entidad.UnidadMedidaIntervalo;
+                parametro.FecUltPro = entidad.FecUltPro;
+                parametro.UrlServicio01 = entidad.UrlServicio01;
+                parametro.UrlServicio02 = entidad.UrlServicio02;
+                          
+                db.Entry(parametro).State = EntityState.Modified;
+                db.SaveChanges();
+                ////correo.EnviarCorreo("Clinica Ricardo Palma", empleado.Correo, "Suspension de convocatoria", cuerpoCorreo, false, null);
+                mensaje = "Los datos se modificaron correctamente";
+                return Json(new { statusCode = HttpStatusCode.OK, mensaje = mensaje }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new { statusCode = HttpStatusCode.BadRequest }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+
+      
+        public ActionResult Eliminar(int id)
+        {
+            //Parametro parametro = db.DB_Parametro.Find(id);
+            ////db.DB_Parametro.Remove(parametro);
+            ////db.SaveChanges();
+            ////return RedirectToAction("Index");
+            var entidad = db.DB_Parametro.Where(x => x.ParametroId == id).First();
+            return View("Nuevo", entidad);
+        }
+
+        [HttpPost]
+        public ActionResult Eliminar(Parametro entidad)
+        {
+            try
+            {
+                var mensaje = string.Empty;
+                Parametro parametro = db.DB_Parametro.Find(entidad.ParametroId);
+                db.DB_Parametro.Remove(parametro);
+                db.SaveChanges();
+             
+               mensaje = "Los datos se eliminaron correctamente";
+                return Json(new { statusCode = HttpStatusCode.OK, mensaje = mensaje }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new { statusCode = HttpStatusCode.BadRequest }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        
+        //////////////////////////////////
+        public ActionResult Actualizar(int id)
+        {
+            var entidad = db.DB_Parametro.Where(x => x.ParametroId == id).First();
+            //CargarCombos();
+            return View("Nuevo", entidad);
+        }
+
+        [HttpPost]
+        public ActionResult Actualizar(Parametro entidad)
+        {
+            try
+            {
+                var mensaje = string.Empty;
+                var parametro = db.DB_Parametro.Where(x => x.ParametroId == entidad.ParametroId).FirstOrDefault();
+                parametro.FecIni = entidad.FecIni;
+                parametro.FecFin = entidad.FecFin;
+                parametro.Intervalo = entidad.Intervalo;
+                parametro.UnidadMedidaIntervalo = entidad.UnidadMedidaIntervalo;
+                parametro.FecUltPro = entidad.FecUltPro;
+                parametro.UrlServicio01 = entidad.UrlServicio01;
+                parametro.UrlServicio02 = entidad.UrlServicio02;
+
+                db.Entry(parametro).State = EntityState.Modified;
+                db.SaveChanges();
+                ////correo.EnviarCorreo("Clinica Ricardo Palma", empleado.Correo, "Suspension de convocatoria", cuerpoCorreo, false, null);
+                mensaje = "Los datos se modificaron correctamente";
+                return Json(new { statusCode = HttpStatusCode.OK, mensaje = mensaje }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new { statusCode = HttpStatusCode.BadRequest }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+
 
 	}
 }

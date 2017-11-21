@@ -17,10 +17,14 @@ namespace DattatecPanel.Models.Entidades
         public DateTime FecFin { get; set; }
 
         [Display(Name = "Intervalo")]
-        public int Intervalo { get; set; }
+         public int Intervalo { get; set; }
 
         [Display(Name = "Unidad Medida Intervalo")]
         public string UnidadMedidaIntervalo { get; set; }
+
+        //// [Display(Name = "Unidad Medida Intervalo")]
+        ////public virtual UnidadMedida UnidadMedidaIntervalo { get; set; }
+
 
         [Display(Name = "Fecha Ultimo Proceso")]
         public DateTime FecUltPro { get; set; }

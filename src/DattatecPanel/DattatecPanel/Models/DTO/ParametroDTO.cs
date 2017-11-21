@@ -12,6 +12,8 @@ namespace DattatecPanel.Models.DTO
         public DateTime FecFin { get; set; }
         public int Intervalo { get; set; }
         public string UnidadMedidaIntervalo { get; set; }
+
+        ////public virtual UnidadMedida UnidadMedidaIntervalo { get; set; }
         public DateTime FecUltPro { get; set; }
         public string UrlServicio01 { get; set; }
         public string UrlServicio02 { get; set; }

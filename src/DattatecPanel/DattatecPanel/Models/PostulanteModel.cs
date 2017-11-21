@@ -51,7 +51,7 @@ namespace DattatecPanel.Models
         {
             try
             {
-                ResponsePostulante response = new ResponsePostulante { mensaje = string.Empty, mensajeInfo = string.Empty };
+                ResponsePostulante response = new ResponsePostulante { mensaje = string.Empty, mensajeInfo = string.Empty, mensajeDireccion = string.Empty };
 
 
                 Postulante postulante = new Postulante
@@ -124,6 +124,35 @@ namespace DattatecPanel.Models
                 correo.EnviarCorreo("Clinica Ricardo Palma", entidad.Correo, "Registro de Postulante", cuerpoCorreoPostulante, true, null);
 
                 response.mensaje = "Se registro con exito";
+                return response;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
+
+        public ResponsePostulante VerificarRUC(string numeroRUC)
+        {
+            try
+            {
+                ResponsePostulante response = new ResponsePostulante { mensaje = string.Empty, mensajeInfo = string.Empty, mensajeDireccion = string.Empty };
+
+                Datos datosSunat = getDatosSunat(numeroRUC);
+                if (errorCode == 0)
+                {
+                    response.mensaje = "1";
+                    response.mensajeInfo = datosSunat.razonSocial;
+                    response.mensajeDireccion = datosSunat.tipoVia + " " + datosSunat.nombreVia + " " + datosSunat.codigoZona + " " + datosSunat.tipoZona;
+                }
+                else
+                {
+                    response.mensaje = "0";
+                    response.mensajeInfo = "No existe el RUC ingresado";
+                    response.mensajeDireccion = String.Empty;
+                }
+
                 return response;
             }
             catch (Exception ex)

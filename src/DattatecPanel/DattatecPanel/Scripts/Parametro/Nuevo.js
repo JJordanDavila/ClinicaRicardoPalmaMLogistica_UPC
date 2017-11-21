@@ -4,7 +4,7 @@
         NuevaParametro.prototype.loadPage = function () {
             var s = suspender == undefined ? false : suspender;
             if (!s || s == undefined) {
-                gInputsFormatoFecha("FecIni,FecFin,FecIniIndex,FecFinIndex");
+                gInputsFormatoFecha("FecIni,FecFin,FecIniIndex,FecFinIndex, FecUltPro, FecUltProIndex");
             }
             NuevaParametro.prototype.agregarEventos();
         };
@@ -15,14 +15,14 @@
             var mensaje = ValidarFechaInicio_Fin(fini, ffin, 30);
             if (mensaje != "") { return gMensajeInformacion(mensaje); }
 
-            gMensajeConfirmacion("¿Esta seguro de registrar?", function () {
+            gMensajeConfirmacion("¿Esta seguro de registrar los cambios?", function () {
                 NuevaParametro.prototype.GuardarParametro();
             });
             return false;
         };
 
         NuevaParametro.prototype.GuardarParametro = function () {
-            var frmData = new FormData(document.getElementById('frmNuevoParametro'));
+            var frmData = new FormData(document.getElementById('frmSuspension'));
             $.ajax({
                 url: globalRutaServidor + "Parametro/Nuevo",
                 type: 'POST',
@@ -55,7 +55,7 @@
             var obs = $("#ObservacionSuspension").val();
             if (obs == "") { return gMensajeInformacion("Ingrese una observación."); }
 
-            gMensajeConfirmacion("¿Esta seguro de suspender?", function () {
+            gMensajeConfirmacion("¿Esta seguro de modificar?", function () {
                 var Parametro = $('#frmSuspension').serializeFormJSON();
                 $.ajax({
                     url: globalRutaServidor + "Parametro/Suspender",
@@ -80,12 +80,80 @@
             return false;
         };
 
+        NuevaParametro.prototype.Actualizar= function () {
+
+            var obs = $("#ObservacionSuspension").val();
+            if (obs == "") { return gMensajeInformacion("Ingrese una observación."); }
+
+            gMensajeConfirmacion("¿Esta seguro de modificar?", function () {
+                var Parametro = $('#frmSuspension').serializeFormJSON();
+                $.ajax({
+                    url: globalRutaServidor + "Parametro/Actualizar",
+                    type: 'POST',
+                    async: false,
+                    data: { entidad: Parametro },
+                    success: function (data) {
+                        if (data.statusCode == 200) {
+                            var callback = function () {
+                                $("#btnCancelar").click();
+                            };
+                            gMensajeInformacionConCallback(data.mensaje, callback);
+                        } else {
+                            gMensajeInformacion('Ocurrio un error.');
+                        }
+                    },
+                    error: function () {
+                        gMensajeErrorAjax();
+                    }
+                });
+            });
+            return false;
+        };
+
+        NuevaParametro.prototype.Eliminar = function () {
+
+            var obs = $("#ObservacionSuspension").val();
+            if (obs == "") { return gMensajeInformacion("Ingrese una observación."); }
+
+            gMensajeConfirmacion("¿Esta seguro de eliminar?", function () {
+                var Parametro = $('#frmSuspension').serializeFormJSON();
+                $.ajax({
+                    url: globalRutaServidor + "Parametro/Eliminar",
+                    type: 'POST',
+                    async: false,
+                    data: { entidad: Parametro },
+                    success: function (data) {
+                        if (data.statusCode == 200) {
+                            var callback = function () {
+                                $("#btnCancelar").click();
+                            };
+                            gMensajeInformacionConCallback(data.mensaje, callback);
+                        } else {
+                            gMensajeInformacion('Ocurrio un error.');
+                        }
+                    },
+                    error: function () {
+                        gMensajeErrorAjax();
+                    }
+                });
+            });
+            return false;
+        };
+
+
+        
         NuevaParametro.prototype.agregarEventos = function () {
             $("#btnGuardar").on('click', function () {
                 NuevaParametro.prototype.Guardar();
             });
             $("#btnSuspender").on('click', function () {
                 NuevaParametro.prototype.GuardarSuspension();
+            });
+            $("#btnActualizar").on('click', function () {
+                NuevaParametro.prototype.Actualizar();
+            });
+            $("#btnEliminar").on('click', function () {
+                NuevaParametro.prototype.Eliminar();
             });
         };
         return NuevaParametro;

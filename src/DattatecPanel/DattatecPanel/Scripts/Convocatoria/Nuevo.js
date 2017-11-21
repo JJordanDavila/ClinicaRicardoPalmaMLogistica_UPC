@@ -52,8 +52,8 @@
 
         NuevaConvocatoria.prototype.GuardarSuspension = function () {
 
-            var obs = $("#ObservacionSuspension").val();
-            if (obs == "") { return gMensajeInformacion("Ingrese una observación."); }
+            ////var obs = $("#ObservacionSuspension").val();
+            ////if (obs == "") { return gMensajeInformacion("Ingrese una observación."); }
 
             gMensajeConfirmacion("¿Esta seguro de suspender?", function () {
                 var convocatoria = $('#frmSuspension').serializeFormJSON();

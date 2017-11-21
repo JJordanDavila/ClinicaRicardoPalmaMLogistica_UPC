@@ -56,7 +56,7 @@
                         field: 'action', title: 'Opciones', width: 100, align: 'center',
                         formatter: function (value, row, index) {
                             var a = '<a href="' + globalRutaServidor + 'Parametro/Actualizar/' + row.ParametroId + '" ><span class="glyphicon glyphicon-pencil opciones" title="Modificar"></span></a>';
-                            var b = '<a href="' + globalRutaServidor + 'Parametro/Suspender/' + row.ParametroId + '" ><span class="glyphicon glyphicon-remove opciones" title="Suspender"></span></a>';
+                            var b = '<a href="' + globalRutaServidor + 'Parametro/Eliminar/' + row.ParametroId + '" ><span class="glyphicon glyphicon-remove opciones" title="Eliminar"></span></a>';
                             return a + b;
                         }
                     }

@@ -6,8 +6,10 @@
             RegistroPostulante.prototype.dataGrid();
             RegistroPostulante.prototype.agregarEventos();
             RegistroPostulante.prototype.NumeroValidar();
+            RegistroPostulante.prototype.verificarRUC();
         };
 
+        
         RegistroPostulante.prototype.dataGrid = function () {
             $("#dgArchivosPostulante").datagrid({
                 title: 'RESULTADO',
@@ -31,7 +33,10 @@
                     return gMensajeInformacion("Solo se admiten numeros en el campo RUC.");
                 }
             }
+
+
         };
+
 
         RegistroPostulante.prototype.Guardar = function () {
 
@@ -44,7 +49,7 @@
             if (isNaN($("#RUC").val())) {
                 return gMensajeInformacion("Solo se admiten numeros en el campo RUC.");
             }
-                      
+
 
             var mensaje = ValidarPostulante(numeroRUC, nombreRazonSocial, nDireccion, nCorreo);
             if (mensaje != "") { return gMensajeInformacion(mensaje); }
@@ -84,7 +89,13 @@
             });
         };
 
+
         RegistroPostulante.prototype.agregarEventos = function () {
+
+           
+            $('#Direccion').css("background", "white");
+            $('#RazonSocial').css("background", "white");
+
 
             $('#Correo').change(function (e) {
                 var emailRegex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
@@ -108,6 +119,48 @@
             $("#RUC").keypress(function (e) {
                 return (e.keyCode >= 48 && e.keyCode <= 57)
             });
+
+
+            $("#RUC").keyup(function () {
+                if ($(this).val().length > 11) {
+                    $(this).val($(this).val().substr(0, 11));
+                }
+            });
+
+            $("#RUC").change(function () {
+                $.ajax({
+                    url: globalRutaServidor + "Postulante/VerificarRUC",
+                    type: 'GET',
+                    data: {
+                        numeroRUC: $("#RUC").val()
+                    },
+                    success: function (data) {
+
+                        if (data.mensaje == 1) {
+
+                            $("#RazonSocial").val(data.mensajeInfo);
+                            $("#Direccion").val(data.mensajeDireccion);
+                            $('#RazonSocial').attr("disabled", true);
+                            $('#Direccion').attr("disabled", true);
+                        }
+                        else {
+                            gMensajeInformacion(data.mensajeInfo);
+                            $("#RazonSocial").val("");
+                            $("#Direccion").val("");
+                            $('#RazonSocial').attr("disabled", false);
+                            $('#Direccion').attr("disabled", false);
+                        }
+
+                    },
+                    error: function () {
+                        gMensajeErrorAjax();
+                        $('#RazonSocial').attr("disabled", false);
+                        $('#Direccion').attr("disabled", false);
+                    }
+                });
+            });
+
+
         };
 
         return RegistroPostulante;
