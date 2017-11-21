@@ -15,6 +15,7 @@ namespace DattatecPanel.Controllers
 {
     public class DetalleConvocatoriaController : Controller
     {
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private MailSMTP correo = new MailSMTP();
         //
         // GET: /DetalleConvocatoria/
@@ -37,6 +38,7 @@ namespace DattatecPanel.Controllers
             }
             catch (Exception ex)
             {
+                log.Error(ex.Message);
                 return Json(new { statusCode = HttpStatusCode.BadRequest }, JsonRequestBehavior.AllowGet);
             }
         }
@@ -51,6 +53,7 @@ namespace DattatecPanel.Controllers
             }
             catch (Exception ex)
             {
+                log.Error(ex.Message);
                 return null;
             }
         }
@@ -63,6 +66,7 @@ namespace DattatecPanel.Controllers
             }
             catch (Exception ex)
             {
+                log.Error(ex.Message);
                 return Json(new { statusCode = HttpStatusCode.BadRequest }, JsonRequestBehavior.AllowGet);
             }
         }
@@ -96,6 +100,7 @@ namespace DattatecPanel.Controllers
             }
             catch (Exception ex)
             {
+                log.Error(ex.Message);
                 return Json(new { statusCode = HttpStatusCode.BadRequest }, JsonRequestBehavior.AllowGet);
             }
         }
@@ -109,6 +114,7 @@ namespace DattatecPanel.Controllers
             }
             catch (Exception ex)
             {
+                log.Error(ex.Message);
                 return Json(new { statusCode = HttpStatusCode.BadRequest }, JsonRequestBehavior.AllowGet);
             }
         }
@@ -150,6 +156,7 @@ namespace DattatecPanel.Controllers
             }
             catch (Exception ex)
             {
+                log.Error(ex.Message);
                 return Json(new { statusCode = HttpStatusCode.BadRequest }, JsonRequestBehavior.AllowGet);
             }
         }
