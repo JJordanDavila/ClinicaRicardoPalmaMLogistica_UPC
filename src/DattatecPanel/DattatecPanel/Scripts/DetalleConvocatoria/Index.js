@@ -20,13 +20,13 @@
                         field: 'RUC', title: 'Ruc', align: 'center', width: 150
                     },
                     {
-                        field: 'RazonSocial', title: 'Razón Social', align: 'center', width: 300
+                        field: 'RazonSocial', title: 'Razón Social', align: 'left', width: 300
                     },
                     {
                         field: 'Descripcion', title: 'Rubro', align: 'center', width: 200
                     },
                     {
-                        field: 'Fecha_Registro', title: 'Fecha de Registro', width: 150,
+                        field: 'Fecha_Registro', title: 'Fecha de Registro', align: 'center', width: 150,
                         formatter: function (value, row, index) {
                             return gFormatearFechaJson(value);
                         }

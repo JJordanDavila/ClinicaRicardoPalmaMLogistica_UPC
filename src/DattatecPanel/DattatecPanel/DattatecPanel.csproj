@@ -198,6 +198,7 @@
     <Compile Include="Controllers\ProveedorController.cs" />
     <Compile Include="Controllers\RegistroProveedorParticipanteController.cs" />
     <Compile Include="Controllers\RequerimientoCompraController.cs" />
+    <Compile Include="Models\DTO\PostulanteConvocatoriaDTO.cs" />
     <Compile Include="Models\DTO\RechazarPostulanteDTO.cs" />
     <Compile Include="Models\DTO\RespuestaJsonDTO.cs" />
     <Compile Include="Datasets\dsDetalleOrdenCompra1.Designer.cs">
