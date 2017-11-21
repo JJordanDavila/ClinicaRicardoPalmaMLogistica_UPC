@@ -29,7 +29,6 @@ namespace DattatecPanel.Models
                    s.Numero,
                    s.FechaInicio,
                    s.FechaFin,
-                   s.Requisito,
                    s.Estado,
                    s.Rubro.Descripcion,
                    s.Empleado.NombreCompleto
