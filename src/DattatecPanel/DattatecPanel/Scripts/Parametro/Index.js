@@ -91,6 +91,10 @@
             });
         }
 
+
+
+
+
         Parametro.prototype.agregarEventos = function () {
             $("#btnConsultar").on('click', function () {
                 Parametro.prototype.buscar();

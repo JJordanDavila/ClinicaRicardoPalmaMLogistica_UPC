@@ -2,6 +2,43 @@
     var NuevaParametro = (function () {
         function NuevaParametro() { };
         NuevaParametro.prototype.loadPage = function () {
+
+            var UnidadMedidaIntervalo = $("#UnidadMedidaIntervalo").val();
+            var lista = [];
+            var obj = {
+                id: 'mm',
+                descripcion: 'mm'
+            };
+            lista.push(obj);
+            obj = {
+                id: 'hh',
+                descripcion: 'hh'
+            };
+            lista.push(obj);
+            obj = {
+                id: 'dd',
+                descripcion: 'dd'
+            };
+            lista.push(obj);
+            obj = {
+                id: 'mi',
+                descripcion: 'mi'
+            };
+            lista.push(obj);
+            var opciones = $("#UnidadMedidaIntervalo"); //$("#UnidadMedidaIntervalo").val()
+            $.each(lista, function (a, b) {
+                opciones.append($("<option />").val(b.id).text(b.descripcion));
+            });
+            var cbxintervals = $("#cbxMedidasIntervalos"); //$("#UnidadMedidaIntervalo").val()
+            $.each(lista, function (a, b) {
+                if (UnidadMedidaIntervalo != "") {
+                    if (UnidadMedidaIntervalo == b.id) {
+                        cbxintervals.append($("<option selected/>").val(b.id).text(b.descripcion));
+                    } else {
+                        cbxintervals.append($("<option/>").val(b.id).text(b.descripcion));
+                    }
+                }
+            });
             var s = suspender == undefined ? false : suspender;
             if (!s || s == undefined) {
                 gInputsFormatoFecha("FecIni,FecFin,FecIniIndex,FecFinIndex, FecUltPro, FecUltProIndex");
@@ -41,7 +78,7 @@
                             gMensajeInformacion(data.mensajeInfo);
                         }
                     } else {
-                        gMensajeInformacion('Ocurrio un error.');
+                        gMensajeInformacion('Ocurrio un error de sistema.');
                     }
                 },
                 error: function () {

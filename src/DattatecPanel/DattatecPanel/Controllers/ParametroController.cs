@@ -57,6 +57,7 @@ namespace DattatecPanel.Controllers
             ////}
             ////ViewBag.NuevoNumeroParametro = numerogenerado;
             ////CargarCombos();
+            ViewBag.Accion = "Nuevo";
             return View();
         }
 
@@ -64,8 +65,7 @@ namespace DattatecPanel.Controllers
         public ActionResult Nuevo(ParametroDTO entidad)
         {
             try
-            {
-               
+            {               
                 var mensaje = string.Empty;
                
                 Parametro Parametro = new Parametro
@@ -81,11 +81,8 @@ namespace DattatecPanel.Controllers
                 };
                 if (entidad.ParametroId <= 0)
                 {
-                    ////var empleado = db.DB_Empleado.Where(x => x.EmpleadoID == Parametro.EmpleadoID).FirstOrDefault();
-                    ////var cuerpoCorreo = "Se registro la Parametro con el numero : " + Parametro.Numero.ToString();
                     db.DB_Parametro.Add(Parametro);
                     db.SaveChanges();
-                    ////correo.EnviarCorreo("Clinica Ricardo Palma", empleado.Correo, "Creación de Parametro", cuerpoCorreo, false, null);
                     mensaje = "Se registro con exito";
                 }
                 else
@@ -164,6 +161,8 @@ namespace DattatecPanel.Controllers
             ////db.DB_Parametro.Remove(parametro);
             ////db.SaveChanges();
             ////return RedirectToAction("Index");
+
+            ViewBag.Accion = "Eliminar";
             var entidad = db.DB_Parametro.Where(x => x.ParametroId == id).First();
             return View("Nuevo", entidad);
         }
@@ -193,6 +192,7 @@ namespace DattatecPanel.Controllers
         {
             var entidad = db.DB_Parametro.Where(x => x.ParametroId == id).First();
             //CargarCombos();
+            ViewBag.Accion = "Actualizar";
             return View("Nuevo", entidad);
         }
 
@@ -206,7 +206,7 @@ namespace DattatecPanel.Controllers
                 parametro.FecIni = entidad.FecIni;
                 parametro.FecFin = entidad.FecFin;
                 parametro.Intervalo = entidad.Intervalo;
-                parametro.UnidadMedidaIntervalo = entidad.UnidadMedidaIntervalo;
+                parametro.UnidadMedidaIntervalo = entidad.cbxMedidasIntervalos;
                 parametro.FecUltPro = entidad.FecUltPro;
                 parametro.UrlServicio01 = entidad.UrlServicio01;
                 parametro.UrlServicio02 = entidad.UrlServicio02;

@@ -16,6 +16,8 @@ namespace DattatecPanel.Models.Entidades
         [Display(Name = "Fecha Final")]
         public DateTime FecFin { get; set; }
 
+        [Range(0, 30, ErrorMessage = "Debe tener un rango entre 0 y 30 ")]
+        [MaxLength(3, ErrorMessage = "La propiedad {0} no puede tener más de {1} elementos")]
         [Display(Name = "Intervalo")]
          public int Intervalo { get; set; }
 
@@ -34,6 +36,9 @@ namespace DattatecPanel.Models.Entidades
 
         [Display(Name = "URL OSCE")]
         public string UrlServicio02 { get; set; }
+
+        [NotMapped]
+        public string cbxMedidasIntervalos { get; set; }
     }
 
     }
