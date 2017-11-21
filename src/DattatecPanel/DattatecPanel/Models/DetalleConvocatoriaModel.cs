@@ -116,8 +116,10 @@ namespace DattatecPanel.Models
                 query.AppendLine("Inner Join GL_Postulante P On P.PostulanteId = D.PostulanteId");
                 query.AppendLine("Inner Join GL_Convocatoria C on C.ConvocatoriaId = D.ConvocatoriaId");
                 query.AppendLine("Inner Join GL_Rubro R on R.RubroID = C.RubroID");
-                query.AppendLine("Where C.Estado='E' And P.RUC Not In (Select Ruc From GL_Proveedor);");
-
+                query.AppendLine("Where C.Estado='E' And P.RUC Not In (Select Ruc From GL_Proveedor)");
+                if (!string.IsNullOrWhiteSpace(numeroConvocatoria)) query.AppendLine(string.Format(" And C.Numero Like '{0}%'", numeroConvocatoria));
+                if (!string.IsNullOrWhiteSpace(ruc)) query.AppendLine(string.Format(" And P.Ruc Like '{0}%'", ruc));
+                if (!string.IsNullOrWhiteSpace(razonSocial)) query.AppendLine(string.Format(" And P.RazonSocial Like '{0}%'", razonSocial));
                 var lista = db.Database.SqlQuery<PostulanteConvocatoriaDTO>(query.ToString()).ToList();
                 //foreach (var item in lista)
                 //{
