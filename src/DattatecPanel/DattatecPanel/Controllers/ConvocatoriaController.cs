@@ -14,6 +14,7 @@ namespace DattatecPanel.Controllers
 {
     public class ConvocatoriaController : Controller
     {
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private ClinicaDBContext db = new ClinicaDBContext();
         private MailSMTP correo = new MailSMTP();
         // GET: Convocatoria
@@ -33,6 +34,7 @@ namespace DattatecPanel.Controllers
             }
             catch(Exception ex)
             {
+                log.Error(ex.Message);
                 return Json(new { statusCode = HttpStatusCode.BadRequest }, JsonRequestBehavior.AllowGet);
             }
         }
@@ -55,6 +57,7 @@ namespace DattatecPanel.Controllers
             }
             catch (Exception ex)
             {
+                log.Error(ex.Message);
                 return Json(new { statusCode = HttpStatusCode.BadRequest }, JsonRequestBehavior.AllowGet);
             }
         }
@@ -95,6 +98,7 @@ namespace DattatecPanel.Controllers
             }
             catch (Exception ex)
             {
+                log.Error(ex.Message);
                 return Json(new { statusCode = HttpStatusCode.BadRequest }, JsonRequestBehavior.AllowGet);
             }
         }

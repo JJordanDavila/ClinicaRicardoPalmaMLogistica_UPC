@@ -11,6 +11,7 @@ namespace DattatecPanel.Models
 {
     public class DetalleConvocatoriaModel
     {
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private ClinicaDBContext db = new ClinicaDBContext();
 
         public RespuestaJsonDTO RechazarPostulante(RechazarPostulanteDTO datos) {
@@ -35,9 +36,10 @@ namespace DattatecPanel.Models
                             mensaje.mensaje = "El rechazo fue satisfactorio";
                             mensaje.mensajeInfo = string.Empty;
                         }
-                        catch (Exception)
+                        catch (Exception ex)
                         {
                             dbContextTransaction.Rollback();
+                            log.Error(ex.Message);
                             throw;
                         }
                     }
@@ -53,6 +55,7 @@ namespace DattatecPanel.Models
             }
             catch (Exception ex)
             {
+                log.Error(ex.Message);
                 throw;
             }
         }
@@ -95,6 +98,7 @@ namespace DattatecPanel.Models
             }
             catch (Exception ex)
             {
+                log.Error(ex.Message);
                 throw;
             }
         }
@@ -117,6 +121,7 @@ namespace DattatecPanel.Models
             }
             catch (Exception ex)
             {
+                log.Error(ex.Message);
                 throw;
             }
         }
@@ -145,6 +150,7 @@ namespace DattatecPanel.Models
             }
             catch (Exception ex)
             {
+                log.Error(ex.Message);
                 throw;
             }
         }
@@ -188,6 +194,7 @@ namespace DattatecPanel.Models
             }
             catch (Exception ex)
             {
+                log.Error(ex.Message);
                 throw;
             }
         }
@@ -226,6 +233,7 @@ namespace DattatecPanel.Models
             }
             catch (Exception ex)
             {
+                log.Error(ex.Message);
                 throw;
             }
         }
