@@ -151,7 +151,7 @@ function gMensajeInformacionConCallback(mensaje, callback) {
         callback();
     });
 };
-
+/*
 function base64ToArrayBuffer(base64) {
     var binaryString = window.atob(base64);
     var binaryLen = binaryString.length;
@@ -162,7 +162,8 @@ function base64ToArrayBuffer(base64) {
     }
     return bytes;
 }
-
+*/
+/*
 function saveByteArray8(reportName, byte) {
     var link = document.createElement('a');
     document.body.appendChild(link);
@@ -181,7 +182,8 @@ function saveByteArray8(reportName, byte) {
 
 
 };
-
+*/
+/*
 var saveByteArray = (function () {
     var a = document.createElement("a");
     document.body.appendChild(a);
@@ -195,7 +197,8 @@ var saveByteArray = (function () {
         window.URL.revokeObjectURL(url);
     };
 }());
-
+*/
+/*
 function saveByteArray5(reportName, byte) {
     var a = document.createElement("a");
     document.body.appendChild(a);
@@ -218,15 +221,13 @@ function saveByteArray5(reportName, byte) {
         window.URL.revokeObjectURL(file);
     }
 };
-
-
-
-
+*/
+/*
 function DescargarPDFPorArrayBytes(arrayBytes, name) {
     var bytes = base64ToArrayBuffer(arrayBytes);
     saveByteArray(name, bytes);
 };
-
+*/
 
 function ValidarPostulante(nuevoRUC, nuevaRazonSocial, nuevaDireccion, nuevoCorreo) {
 

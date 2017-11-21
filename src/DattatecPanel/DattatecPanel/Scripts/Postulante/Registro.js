@@ -6,7 +6,6 @@
             RegistroPostulante.prototype.dataGrid();
             RegistroPostulante.prototype.agregarEventos();
             RegistroPostulante.prototype.NumeroValidar();
-            RegistroPostulante.prototype.verificarRUC();
         };
 
 

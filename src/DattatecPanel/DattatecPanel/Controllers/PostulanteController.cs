@@ -17,6 +17,7 @@ namespace DattatecPanel.Controllers
         // GET: Postulante
         public ActionResult Index()
         {
+            Session["listaAdjuntos"] = null;
             return View();
         }
 
@@ -27,6 +28,38 @@ namespace DattatecPanel.Controllers
             {
                 var archivo = new PostulanteModel().DescargarArchivo(convocatoriaID);
                 return File(archivo.Datos, archivo.Tipo, archivo.Nombre);
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+
+        [HttpPost]
+        public FileResult DescargarArchivoSesion(int archivoID)
+        {
+            try
+            {
+                ArchivoDTO archivo = ((List<ArchivoDTO>)Session["listaAdjuntos"]).Find(x => x.Id == archivoID);
+                return File(archivo.Datos, archivo.Tipo, archivo.Nombre);
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+
+        [HttpPost]
+        public ActionResult EliminarArchivoSesion(int archivoIDE, int convocatoriaIDE)
+        {
+            try
+            {
+                var postulante = new PostulanteModel().MostrarDatosVistaRegistrar(convocatoriaIDE);
+                List<ArchivoDTO> lista = (List<ArchivoDTO>)Session["listaAdjuntos"];
+                ArchivoDTO archivo = lista.Find(x => x.Id == archivoIDE);
+                lista.Remove(archivo);
+                postulante.ListaAdjuntos = lista;
+                return View("RegistrarPostulante", postulante);
             }
             catch (Exception ex)
             {
@@ -49,6 +82,7 @@ namespace DattatecPanel.Controllers
 
                 if (response.mensaje.Equals("1"))
                 {
+                    entidadPostulanteDTO.ListaAdjuntos = (List<ArchivoDTO>)Session["listaAdjuntos"];
                     response = new PostulanteModel().GuardarPostulante(entidadPostulanteDTO);
                 }
 
@@ -81,45 +115,28 @@ namespace DattatecPanel.Controllers
 
 
         [HttpPost]
-        public ActionResult Cargar(HttpPostedFileBase archivo)
+        public ActionResult Cargar(HttpPostedFileBase postedFile, int convocatoriaIDU)
         {
-            var productId = ViewBag.ConvocatoriaId;
-            DetallePostulante detallepostulante;
-            var entidadPostulante = Session["entidadPostulante"] as Postulante;
-            var s_detallePostulante = Session["detallePostulante"] as DetallePostulante;
-
-            if (!archivo.FileName.EndsWith("pdf"))
+            int id;
+            var postulante = new PostulanteModel().MostrarDatosVistaRegistrar(convocatoriaIDU);
+            byte[] bytes;
+            using (BinaryReader br = new BinaryReader(postedFile.InputStream))
             {
-                ViewBag.MessageAdvEditLC = true;
-                ViewBag.MessageAdvertenciaLC = "Solo adjuntar archivo en formato PDF.";
-                return View("RegistrarPostulante", entidadPostulante);
+                bytes = br.ReadBytes(postedFile.ContentLength);
             }
-
-            byte[] data = null;
-            if (archivo != null)
-            {
-                using (Stream inputStream = archivo.InputStream)
-                {
-                    MemoryStream memoryStream = inputStream as MemoryStream;
-                    if (memoryStream == null)
-                    {
-                        memoryStream = new MemoryStream();
-                        inputStream.CopyTo(memoryStream);
-                    }
-                    data = memoryStream.ToArray();
-                }
-            }
-
-            detallepostulante = new DetallePostulante
-            {
-                NombreArchivo = archivo.FileName.ToString(),
-                Archivo = data
-            };
-
-            Session["detallePostulante"] = detallepostulante;
-            entidadPostulante.DetallePostulantes.Add(detallepostulante);
-
-            return View("RegistrarPostulante", entidadPostulante);
+            List<ArchivoDTO> lista;
+            if (Session["listaAdjuntos"] == null)
+                lista = new List<ArchivoDTO>();
+            else
+                lista = (List<ArchivoDTO>)Session["listaAdjuntos"];
+            if (lista.Count == 0)
+                id = 1;
+            else
+                id = (lista[lista.Count - 1].Id + 1);
+            lista.Add(new ArchivoDTO() { Id = id, Datos = bytes, Nombre = postedFile.FileName, Tipo = "application/pdf" });
+            Session["listaAdjuntos"] = lista;
+            postulante.ListaAdjuntos = lista;
+            return View("RegistrarPostulante", postulante);
         }
 
         public ActionResult ListarConvocatorias()

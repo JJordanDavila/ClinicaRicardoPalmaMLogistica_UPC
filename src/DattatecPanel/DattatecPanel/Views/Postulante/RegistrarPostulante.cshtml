@@ -1,59 +1,104 @@
 ﻿@model DattatecPanel.Models.DTO.PostulanteDTO
-
 @{
     ViewBag.Title = "Registrar Postulante";
 }
-
 <h2 class="text-center">Registrar Postulante</h2>
-
 @using (Html.BeginForm("DescargarArchivo", "Postulante", FormMethod.Post))
 {
     <input type="hidden" id="hfConvocatoriaID" name="convocatoriaID" value="@Model.IdConvocatoria" />
     <input type="submit" id="btnDescargar" value="Descargar" style="display:none" />
 }
-
-<form id="frmRegistrarPostulante">
-
-    <div class="col-md-12">
-        <div class="panel panel-primary">
-            <br />
-            <div class="panel-heading">CONVOCATORIA</div>
-            <div class="panel-body" style="padding-top:10px; padding-bottom:10px">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        @Html.HiddenFor(model => model.IdConvocatoria)
-                        @Html.HiddenFor(model => model.RequisitoConvocatoria)
-                        @*@Html.HiddenFor(model => model.RazonSocial)
-                        @Html.HiddenFor(model => model.Direccion)*@
-                        @Html.LabelFor(model => model.NumeroConvocatoria, new { @class = "control-label col-md-2" })
-                        <div class="col-md-6">
-                            @Html.EditorFor(model => model.NumeroConvocatoria, new { htmlAttributes = new { @class = "form-control input-sm", @readonly = "readonly" } })
-                            @Html.ValidationMessageFor(model => model.NumeroConvocatoria, "", new { @class = "text-danger" })
-                        </div>
+@using (Html.BeginForm("DescargarArchivoSesion", "Postulante", FormMethod.Post))
+{
+    <input type="hidden" id="hfArchivoID" name="archivoID" />
+    <input type="submit" id="btnDescargarSesion" value="DescargarSesion" style="display:none" />
+}
+@using (Html.BeginForm("EliminarArchivoSesion", "Postulante", FormMethod.Post))
+{
+    <input type="hidden" id="hfConvocatoriaID" name="convocatoriaIDE" value="@Model.IdConvocatoria" />
+    <input type="hidden" id="hfArchivoIDE" name="archivoIDE" />
+    <input type="submit" id="btnEliminarSesion" value="EliminarSesion" style="display:none" />
+}
+<div class="col-md-12">
+    <div class="panel panel-primary">
+        <br />
+        <div class="panel-heading">CONVOCATORIA</div>
+        <div class="panel-body" style="padding-top:10px; padding-bottom:10px">
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.NumeroConvocatoria, new { @class = "control-label col-md-2" })
+                    <div class="col-md-6">
+                        @Html.EditorFor(model => model.NumeroConvocatoria, new { htmlAttributes = new { @class = "form-control input-sm", @readonly = "readonly" } })
+                        @Html.ValidationMessageFor(model => model.NumeroConvocatoria, "", new { @class = "text-danger" })
                     </div>
                 </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.descripcionRubro, new { @class = "control-label col-md-3" })
-                        <div class="col-md-6">
-                            @*@Html.DropDownListFor(model => model.idRubro, new SelectList(ViewBag.Rubros, "RubroID", "Descripcion"), new { @data_width = "100%", @class = "form-control input-sm" })*@
-                            @Html.EditorFor(model => model.descripcionRubro, new { htmlAttributes = new { @class = "form-control input-sm", @readonly = "readonly" } })
-                            @Html.ValidationMessageFor(model => model.descripcionRubro, "", new { @class = "text-danger" })
-                        </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.descripcionRubro, new { @class = "control-label col-md-3" })
+                    <div class="col-md-6">
+                        @Html.EditorFor(model => model.descripcionRubro, new { htmlAttributes = new { @class = "form-control input-sm", @readonly = "readonly" } })
+                        @Html.ValidationMessageFor(model => model.descripcionRubro, "", new { @class = "text-danger" })
                     </div>
                 </div>
-                <div class="col-md-6" style="padding-top:10px; padding-bottom:10px">
-                    <div class="form-group">
-                        <label class="control-label col-md-2">Requisitos</label>
-                        <div class="col-md-5">
-                            <button class="btn btn-primary btn-sm" id="btnDescargarRequisitos" onclick="return DescargarArchivo();">Descargar Requisitos</button>
-                        </div>
+            </div>
+            <div class="col-md-6" style="padding-top:10px; padding-bottom:10px">
+                <div class="form-group">
+                    <label class="control-label col-md-2">Requisitos</label>
+                    <div class="col-md-5">
+                        <button class="btn btn-primary btn-sm" id="btnDescargarRequisitos" onclick="return DescargarArchivo();">Descargar Requisitos</button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <br />
+</div>
+<br />
+<div class="col-md-12">
+    <div class="panel panel-primary">
+        <br />
+        <div class="panel-heading">SUBIR ARCHIVOS</div>
+        <div class="panel-body" style="padding-top:10px; padding-bottom:10px">
+
+            <div class="col-md-8">
+                @using (Html.BeginForm("Cargar", "Postulante", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                {
+                    <input type="hidden" id="hfConvocatoriaIDU" name="convocatoriaIDU" value="@Model.IdConvocatoria" />
+                    <input type="file" name="postedFile" class="file input-sm" />
+                }
+            </div>
+
+
+            <div class="col-md-8">
+                <table class="table">
+                    <tr>
+                        <th>N°</th>
+                        <th>Nombre</th>
+                        <th>Archivo</th>
+                    </tr>
+                    @foreach (var item in Model.ListaAdjuntos)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Id)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Nombre)
+                            </td>
+                            <td>
+                                <a href="javascript:;" onclick="DescargarArchivoSesion(@item.Id)">Descargar</a> | <a href="javascript:;" onclick="EliminarArchivoSesion(@item.Id)">Eliminar</a>
+                            </td>
+                        </tr>
+                    }
+                </table>
+            </div>
+
+        </div>
+    </div>
+</div>
+<br />
+<form id="frmRegistrarPostulante">
+    @Html.HiddenFor(model => model.IdConvocatoria)
     <div class="col-md-12" style="padding-top:10px; padding-bottom:10px">
         <div class="panel panel-success">
             <div class="panel-heading">DATOS</div>
@@ -109,16 +154,6 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-12" style="padding-top:10px; padding-bottom:10px">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            @Html.LabelFor(model => model.Archivo, new { @class = "control-label col-md-3" })
-                            <div class="col-md-9">
-                                <input type="file" class="file input-sm" id="ArchivoFile" name="ArchivoFile" />
-                            </div>
-                        </div>
-                    </div>
-                </div>
                 <br />
                 <div class="col-md-12" style="padding-top:10px; padding-bottom:10px">
                     <article>
@@ -136,6 +171,16 @@
     <script type="text/javascript">
         function DescargarArchivo() {
             $("#btnDescargar")[0].click();
+            return false;
+        };
+        function DescargarArchivoSesion(id) {
+            $("#hfArchivoID").val(id);
+            $("#btnDescargarSesion")[0].click();
+            return false;
+        };
+        function EliminarArchivoSesion(id) {
+            $("#hfArchivoIDE").val(id);
+            $("#btnEliminarSesion")[0].click();
             return false;
         };
     </script>

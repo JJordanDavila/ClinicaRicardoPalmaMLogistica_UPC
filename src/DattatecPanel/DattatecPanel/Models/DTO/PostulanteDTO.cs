@@ -9,7 +9,7 @@ namespace DattatecPanel.Models.DTO
 {
     public class PostulanteDTO
     {
-        [Display(Name ="Número")]
+        [Display(Name = "Número")]
         public string NumeroConvocatoria { get; set; }
         [Display(Name = "RUC")]
         public string RUC { get; set; }
@@ -29,5 +29,13 @@ namespace DattatecPanel.Models.DTO
         public byte[] RequisitoConvocatoria { get; set; }
 
         public int IdConvocatoria { get; set; }
+
+        public List<ArchivoDTO> ListaAdjuntos { get; set; }
+
+        public PostulanteDTO()
+        {
+            ListaAdjuntos = new List<ArchivoDTO>();
+        }
+
     }
 }
