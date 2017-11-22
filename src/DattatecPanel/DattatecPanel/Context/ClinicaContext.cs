@@ -1,6 +1,7 @@
 ﻿using DattatecPanel.Models;
 using DattatecPanel.Models.Entidades;
 using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 using System.Data.Entity.ModelConfiguration.Conventions;
 
 namespace DattatecPanel.Context
@@ -8,7 +9,11 @@ namespace DattatecPanel.Context
     public class ClinicaDBContext : DbContext
     {
         public ClinicaDBContext(): base("ClinicaDBContext")
-        { }
+        {
+            //var adapter = (IObjectContextAdapter)this;
+            //var objectContext = adapter.ObjectContext;
+            //jectContext.CommandTimeout = 1 * 10;
+        }
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();

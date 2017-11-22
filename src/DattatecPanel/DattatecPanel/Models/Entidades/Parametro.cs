@@ -29,7 +29,7 @@ namespace DattatecPanel.Models.Entidades
 
 
         [Display(Name = "Fecha Ultimo Proceso")]
-        public DateTime FecUltPro { get; set; }
+        public DateTime? FecUltPro { get; set; }
 
         [Display(Name = "URL Sunat")]
         public string UrlServicio01 { get; set; }
