@@ -13,7 +13,10 @@ namespace DattatecPanel.Models.DTO
         public virtual Postulante Postulante { get; set; }       
         public DateTime? Fecha_Registro { get; set; }
         public virtual Convocatoria Convocatoria { get; set; }
-        public string Correo { get; set; }  
+        public string Correo { get; set; }
+        public string RUC { get; set; }
+        public string RazonSocial { get; set; }
+        public string Rubro { get; set; }
 
     }
 }

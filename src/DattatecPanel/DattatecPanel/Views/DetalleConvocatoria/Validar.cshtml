@@ -1,19 +1,15 @@
 ﻿@model DattatecPanel.Models.DTO.ValidarPostulanteDTO
-
 @{
     ViewBag.Title = "Validar";
 }
-
 <h3>Validar postulante</h3>
 <hr />
-
 @using (Html.BeginForm("DescargarArchivo", "DetalleConvocatoria", FormMethod.Post))
 {
     <input type="hidden" id="hfPostulanteId" name="postulanteId" />
     <input type="hidden" id="hfFileId" name="detalleId" />
     <input type="submit" id="btnDescargar" value="Descargar" style="display:none" />
 }
-
 <form id="frmValidarPostulante">
     @Html.AntiForgeryToken()
     <input type="hidden" id="hfRubroId" name="RubroID" value="@Model.RubroID" />
@@ -94,7 +90,7 @@
         <a href="@Url.Action("Index", "DetalleConvocatoria")" class="btn btn-primary" style="color: white;"><span class="glyphicon glyphicon-ok-sign" id="btnCancelar"></span> Cancelar</a>
         <input type="submit" value="Validar" class="btn btn-primary" id="btnValidar" onclick="return Validar();" />
     </div>
-    
+
 
     <script type="text/javascript">
         function DescargarArchivo(postulanteId, detalleId) {
@@ -136,6 +132,6 @@
     </script>
 </form>
 
-    @section scripts{
-        <script src="~/Scripts/General.js"></script>
-    }
+@section scripts{
+    <script src="~/Scripts/General.js"></script>
+}

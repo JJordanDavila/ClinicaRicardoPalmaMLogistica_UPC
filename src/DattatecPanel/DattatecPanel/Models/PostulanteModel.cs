@@ -15,6 +15,7 @@ namespace DattatecPanel.Models
 {
     public class PostulanteModel
     {
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private ClinicaDBContext db = new ClinicaDBContext();
         private MailSMTP correo = new MailSMTP();
         private int errorCode;
@@ -43,6 +44,7 @@ namespace DattatecPanel.Models
             }
             catch (Exception ex)
             {
+                log.Error(ex.Message);
                 throw;
             }
         }
@@ -53,81 +55,88 @@ namespace DattatecPanel.Models
             {
                 ResponsePostulante response = new ResponsePostulante { mensaje = string.Empty, mensajeInfo = string.Empty, mensajeDireccion = string.Empty };
 
-
-                Postulante postulante = new Postulante
+                using (var dbContextTransaction = db.Database.BeginTransaction())
                 {
-                    RazonSocial = entidad.RazonSocial,
-                    Direccion = entidad.Direccion,
-                    Correo = entidad.Correo,
-                    RUC = entidad.RUC,
-                    ConstanciaRNP = entidad.flagConstanciaRNP
-                };
+                    try {
+                        Postulante postulante = new Postulante
+                        {
+                            RazonSocial = entidad.RazonSocial,
+                            Direccion = entidad.Direccion,
+                            Correo = entidad.Correo,
+                            RUC = entidad.RUC,
+                            ConstanciaRNP = entidad.flagConstanciaRNP,
+                            FechaRegistro = DateTime.Now
+                        };
+                        
+                        db.DB_Postulante.Add(postulante);
+                        db.SaveChanges();
 
-                db.DB_Postulante.Add(postulante);
-                db.SaveChanges();
+                        int lastPostulante = db.DB_Postulante.ToList().Select(a => a.PostulanteId).Max();
+                        DetalleConvocatoria detalleConvocatoria = new DetalleConvocatoria
+                        {
+                            PostulanteId = lastPostulante,
+                            ConvocatoriaId = entidad.IdConvocatoria,
+                            Fecha_Registro = DateTime.Now
+                        };
+                        
+                        db.DB_DetalleConvocatoria.Add(detalleConvocatoria);
+                        db.SaveChanges();
 
-                int lastPostulante = db.DB_Postulante.ToList().Select(a => a.PostulanteId).Max();
+                        foreach (var item in entidad.ListaAdjuntos)
+                        {
+                            var doc = new DetallePostulante
+                            {
+                                DetalleId = item.Id,
+                                PostulanteId = lastPostulante,
+                                NombreArchivo = item.Nombre,
+                                Archivo = item.Datos
+                            };
 
-                DetalleConvocatoria detalleConvocatoria = new DetalleConvocatoria
-                {
-                    PostulanteId = lastPostulante,
-                    ConvocatoriaId = entidad.IdConvocatoria,
-                    Fecha_Registro = DateTime.Now
-                };
+                            db.DB_DetallePostulante.Add(doc);
+                            db.SaveChanges();
+                        }
+                        dbContextTransaction.Commit();
 
-                db.DB_DetalleConvocatoria.Add(detalleConvocatoria);
-                db.SaveChanges();
+                        var list = (from a in db.DB_Convocatoria
+                                    join b in db.DB_DetalleConvocatoria on a.Convocatoriaid equals b.ConvocatoriaId
+                                    select new { a, b }).FirstOrDefault();
 
-                //foreach (var item in entidad.DetallePostulantes)
-                //{
-                //    var doc = new DetallePostulante
-                //    {
-                //        DetalleId = item.DetalleId,
-                //        PostulanteId = lastPostulante,
-                //        NombreArchivo = item.NombreArchivo,
-                //        Archivo = item.Archivo
-                //    };
+                        var empleado = db.DB_Empleado.Where(x => x.EmpleadoID == list.a.EmpleadoID).FirstOrDefault();
 
-                //    db.DB_DetallePostulante.Add(doc);
-                //}
-
-                ////if (entidad.DetallePostulantes.Count > 0)
-                ////{
-                //db.SaveChanges();
-
-
-                //}
-
-
-                var list = (from a in db.DB_Convocatoria
-                            join b in db.DB_DetalleConvocatoria on a.Convocatoriaid equals b.ConvocatoriaId
-                            select new { a, b }).FirstOrDefault();
-
-                var empleado = db.DB_Empleado.Where(x => x.EmpleadoID == list.a.EmpleadoID).FirstOrDefault();
-
-                // enviar correo al empleado
-                var cuerpoCorreoEmpleado = "<html><body>" +
-                      "<p><b>Se ha registrado el Postulante: </b>" + entidad.RazonSocial + "</p>" +
-                      "<p><b>RUC: </b>" + entidad.RUC + "</p>" +
-                      "<p><b>Convocatoria Nro: </b>" + entidad.NumeroConvocatoria + "</p>" +
-                      "<p><b>Rubro:  </b>" + list.a.Rubro.Descripcion + "</p>" +
-                      "</body> </html> ";
-                correo.EnviarCorreo("Clinica Ricardo Palma", empleado.Correo, "Registro de Postulante", cuerpoCorreoEmpleado, true, null);
+                        // enviar correo al empleado
+                        var cuerpoCorreoEmpleado = "<html><body>" +
+                              "<p><b>Se ha registrado el Postulante: </b>" + entidad.RazonSocial + "</p>" +
+                              "<p><b>RUC: </b>" + entidad.RUC + "</p>" +
+                              "<p><b>Convocatoria Nro: </b>" + entidad.NumeroConvocatoria + "</p>" +
+                              "<p><b>Rubro:  </b>" + list.a.Rubro.Descripcion + "</p>" +
+                              "</body> </html> ";
+                        correo.EnviarCorreo("Clinica Ricardo Palma", empleado.Correo, "Registro de Postulante", cuerpoCorreoEmpleado, true, null);
 
 
-                // enviar correo al que postuló
-                var cuerpoCorreoPostulante = "<html><body>" +
-                    "<p><b>Gracias por postular </b></p> " + entidad.RazonSocial +
-                    "<p><b>a la convocatoria Nro: </b>" + entidad.NumeroConvocatoria + "</p>" +
-                    "<p><b>Rubro:  </b>" + list.a.Rubro.Descripcion + "</p>" +
-                    "</body> </html> ";
-                correo.EnviarCorreo("Clinica Ricardo Palma", entidad.Correo, "Registro de Postulante", cuerpoCorreoPostulante, true, null);
+                        // enviar correo al que postuló
+                        var cuerpoCorreoPostulante = "<html><body>" +
+                            "<p><b>Gracias por postular </b></p> " + entidad.RazonSocial +
+                            "<p><b>a la convocatoria Nro: </b>" + entidad.NumeroConvocatoria + "</p>" +
+                            "<p><b>Rubro:  </b>" + list.a.Rubro.Descripcion + "</p>" +
+                            "</body> </html> ";
+                        correo.EnviarCorreo("Clinica Ricardo Palma", entidad.Correo, "Registro de Postulante", cuerpoCorreoPostulante, true, null);
 
-                response.mensaje = "Se registro con exito";
-                return response;
+                        response.mensaje = "Se registro con exito";
+                        return response;
+                    }
+                    catch (Exception ex)
+                    {
+                        dbContextTransaction.Rollback();
+                        log.Error(ex.Message);
+                        throw;
+                    } 
+                    
+                }
+
             }
             catch (Exception ex)
             {
+                log.Error(ex.Message);
                 throw;
             }
         }
@@ -157,6 +166,7 @@ namespace DattatecPanel.Models
             }
             catch (Exception ex)
             {
+                log.Error(ex.Message);
                 throw;
             }
         }
@@ -199,6 +209,7 @@ namespace DattatecPanel.Models
             }
             catch (Exception ex)
             {
+                log.Error(ex.Message);
                 throw;
             }
         }
@@ -249,6 +260,7 @@ namespace DattatecPanel.Models
             }
             catch (Exception ex)
             {
+                log.Error(ex.Message);
                 throw;
             }
         }
@@ -261,6 +273,7 @@ namespace DattatecPanel.Models
             }
             catch (Exception ex)
             {
+                log.Error(ex.Message);
                 throw;
             }
         }
@@ -280,6 +293,7 @@ namespace DattatecPanel.Models
             }
             catch (Exception ex)
             {
+                log.Error(ex.Message);
                 throw;
             }
         }

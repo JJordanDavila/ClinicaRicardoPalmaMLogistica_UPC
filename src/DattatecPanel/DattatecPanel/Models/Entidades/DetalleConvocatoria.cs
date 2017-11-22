@@ -19,10 +19,20 @@ namespace DattatecPanel.Models.Entidades
         [Display(Name = "Fecha Registro")]
         public DateTime? Fecha_Registro { get; set; }
 
-       
-        [ForeignKey("ConvocatoriaId")]
+       [ForeignKey("ConvocatoriaId")]
         public virtual Convocatoria Convocatoria { get; set; }
 
+        [NotMapped]
+        public string RUC { get; set; }
 
+        [NotMapped]
+        public string RazonSocial { get; set; }
+
+        [NotMapped]
+        public string Correo { get; set; }
+
+        [NotMapped]
+        public string Rubro { get; set; }
+        
      }
 }

@@ -17,6 +17,7 @@ namespace DattatecPanel.Models.Entidades
         public string Correo { get; set; }
         public string RUC { get; set; }
         public bool ConstanciaRNP { get; set; }
+        public DateTime FechaRegistro { get; set; }
 
         public ICollection<DetallePostulante> DetallePostulantes { get; set; }
 

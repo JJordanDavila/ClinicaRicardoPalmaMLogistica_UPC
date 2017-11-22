@@ -14,13 +14,19 @@ namespace DattatecPanel.Models.Entidades
         public DateTime FecIni { get; set; }
 
         [Display(Name = "Fecha Final")]
-        public DateTime FecFin { get; set; }
+        public DateTime? FecFin { get; set; }
 
+        [Range(0, 30, ErrorMessage = "Debe tener un rango entre 0 y 30 ")]
+        //[MaxLength(3, ErrorMessage = "La propiedad {0} no puede tener más de {1} elementos")]
         [Display(Name = "Intervalo")]
-        public int Intervalo { get; set; }
+         public int Intervalo { get; set; }
 
         [Display(Name = "Unidad Medida Intervalo")]
         public string UnidadMedidaIntervalo { get; set; }
+
+        //// [Display(Name = "Unidad Medida Intervalo")]
+        ////public virtual UnidadMedida UnidadMedidaIntervalo { get; set; }
+
 
         [Display(Name = "Fecha Ultimo Proceso")]
         public DateTime FecUltPro { get; set; }
@@ -30,6 +36,9 @@ namespace DattatecPanel.Models.Entidades
 
         [Display(Name = "URL OSCE")]
         public string UrlServicio02 { get; set; }
+
+        [NotMapped]
+        public string cbxMedidasIntervalos { get; set; }
     }
 
     }

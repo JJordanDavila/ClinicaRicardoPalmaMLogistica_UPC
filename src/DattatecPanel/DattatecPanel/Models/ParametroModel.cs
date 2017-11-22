@@ -85,5 +85,10 @@ namespace DattatecPanel.Models
             }
         }
 
+        public void CargarCombos()
+        {
+                
+        }
+
     }
 }

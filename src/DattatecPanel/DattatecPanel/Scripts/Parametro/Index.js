@@ -17,25 +17,25 @@
                 loadMsg: "Cargando...",
                 columns: [[                   
                     {
-                        field: 'FecIni', title: 'Fecha Inicio', width: 150,
+                        field: 'FecIni', title: 'Fecha Inicio', width: 100,
                         formatter: function (value, row, index) {
                             return gFormatearFechaJson(value);
                         }
                     },
                     {
-                        field: 'FecFin', title: 'Fecha Fin', width: 150,
+                        field: 'FecFin', title: 'Fecha Fin', width: 100,
                         formatter: function (value, row, index) {
                             return gFormatearFechaJson(value);
                         }
                     },
                     {
-                        field: 'Intervalo', title: 'Intervalo', width: 150
+                        field: 'Intervalo', title: 'Intervalo', width: 100
                     },
                     {
-                        field: 'UnidadMedidaIntervalo', title: 'UnidadMedidaIntervalo', width: 250
+                        field: 'UnidadMedidaIntervalo', title: 'UnidadMedidaIntervalo', width: 100
                     },
                     {
-                        field: 'FecUltPro', title: 'Fecha Ult. Proceso', width: 150,
+                        field: 'FecUltPro', title: 'Fecha Ult. Proceso', width: 100,
                          formatter: function (value, row, index) {
                              return gFormatearFechaJson(value);
                          }
@@ -56,7 +56,7 @@
                         field: 'action', title: 'Opciones', width: 100, align: 'center',
                         formatter: function (value, row, index) {
                             var a = '<a href="' + globalRutaServidor + 'Parametro/Actualizar/' + row.ParametroId + '" ><span class="glyphicon glyphicon-pencil opciones" title="Modificar"></span></a>';
-                            var b = '<a href="' + globalRutaServidor + 'Parametro/Suspender/' + row.ParametroId + '" ><span class="glyphicon glyphicon-remove opciones" title="Suspender"></span></a>';
+                            var b = '<a href="' + globalRutaServidor + 'Parametro/Eliminar/' + row.ParametroId + '" ><span class="glyphicon glyphicon-remove opciones" title="Eliminar"></span></a>';
                             return a + b;
                         }
                     }
@@ -90,6 +90,10 @@
                 }
             });
         }
+
+
+
+
 
         Parametro.prototype.agregarEventos = function () {
             $("#btnConsultar").on('click', function () {
