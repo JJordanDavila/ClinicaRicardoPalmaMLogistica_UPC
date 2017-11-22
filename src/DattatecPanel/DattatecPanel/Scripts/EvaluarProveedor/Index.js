@@ -1,7 +1,7 @@
 ﻿(function() {
     var EvaluarProveedor = (function () {
         function EvaluarProveedor() { };
-        var indexGlobal;
+        var indexGlobal, txtObs;
         EvaluarProveedor.prototype.loadPage = function () {
             gInputsFormatoFecha("txtFechaFin,txtFechaInicio");
             EvaluarProveedor.prototype.dataGrid();
@@ -53,7 +53,7 @@
                             }
                             var result = "";
                             if (value == "SU") {
-                                result = "<input type='checkbox' class='itemChkEstado' data-id='" + row.IdProveedor + ",CA" + "' checked disabled/> Suspendido";
+                                result = "<input type='checkbox' class='itemChkEstado' data-id='" + row.IdProveedor + ",AC" + "' checked disabled/> Suspendido";
                             } else {
                                 if (puedeSuspender >= 2) {
                                     result = "<input type='checkbox' class='itemChkEstado' data-id='" + row.IdProveedor + ",SU" + "' data-obs='" + row.Observacion+"'/> Activo";
@@ -64,8 +64,38 @@
                             return result;
                         }
                     },
+                    //{
+                    //    field: 'Observacion', title: 'Observaciones', width: 200, editor: 'text'
+                    //},
                     {
-                        field: 'Observacion', title: 'Observaciones', width: 200, editor: 'text'
+                        field: 'Observacion', title: 'Observaciones', width: 200,
+                        formatter: function (value, row, index) {
+                            var valor = value == null ? "" : value;
+                            var puedeSuspender = 0;
+                            if (row.C1 <= 3) {
+                                puedeSuspender = puedeSuspender + 1;
+                            }
+                            if (row.C2 <= 3) {
+                                puedeSuspender = puedeSuspender + 1;
+                            }
+                            if (row.C3 <= 3) {
+                                puedeSuspender = puedeSuspender + 1;
+                            }
+                            if (row.C4 <= 3) {
+                                puedeSuspender = puedeSuspender + 1;
+                            }
+                            if (row.Estado == 'AC') {
+                                if (puedeSuspender >= 2) {
+                                    var a = "<input type='text' id='txtDgObservacion' class='txtDgObservacion' value='" + valor + "'/>";
+                                } else {
+                                    var a = "<input type='text' id='txtDgObservacion' class='txtDgObservacion' value='" + valor + "' disabled/>";
+                                }
+                            }
+                            if (row.Estado == 'SU') {
+                                var a = "<input type='text' id='txtDgObservacion' class='txtDgObservacion' value='" + valor + "' disabled/>";
+                            }
+                            return a;
+                        }
                     }
                 ]],
                 //onClickCell: function (index, field, value) {
@@ -111,21 +141,18 @@
                 success: function (data) {
                     gMostrarResultadoBusqueda(data.rows, "#dgListaEvaluarProveedor");
 
-                    $(".itemChkEstado").on('click', function () {
-                        //EvaluarProveedor.prototype.frmObservacion();
-                        //var obs = $(this).attr("data-obs");
-                        //if (obs != "" && obs != "null") {
-                        //    var data = $(this).attr("data-id");
-                        //    var params = data.split(",");
-                        //    EvaluarProveedor.prototype.ActualizarEstado(params[0], params[1], obs);
-                        //} else {
-                        //    gMensajeInformacion("Ingresar observacion para la suspensión.");
-                        //    EvaluarProveedor.prototype.buscar();
-                        //}
-                        var obs = "";
+                    $(".txtDgObservacion").keyup(function (e) {
+                        txtObs = e.currentTarget.value;
+                        return (e.keyCode != 13);
+                    });
+
+                    $(".itemChkEstado").on('click', function (a,b,c) {
+                        var obs = txtObs;//$(this).attr("data-obs");
                         var data = $(this).attr("data-id");
-                        var params = data.split(",");
-                        EvaluarProveedor.prototype.ActualizarEstado(params[0], params[1], obs);
+                        if (data != undefined) {
+                            var params = data.split(",");
+                            EvaluarProveedor.prototype.ActualizarEstado(params[0], params[1], obs);
+                        }
                     });
                 },
                 error: function () {
@@ -138,6 +165,7 @@
             $("#btnConsultar").on('click', function () {
                 EvaluarProveedor.prototype.buscar();
             });
+            
         };
         EvaluarProveedor.prototype.ActualizarEstado = function (id, estado, obs) {            var request = {};            request.idProveedor = id;
             request.Estado = estado;            request.Observacion = obs;            $.ajax({
