@@ -57,7 +57,8 @@ namespace DattatecPanel.Models
 
                 using (var dbContextTransaction = db.Database.BeginTransaction())
                 {
-                    try {
+                    try
+                    {
                         Postulante postulante = new Postulante
                         {
                             RazonSocial = entidad.RazonSocial,
@@ -67,7 +68,7 @@ namespace DattatecPanel.Models
                             ConstanciaRNP = entidad.flagConstanciaRNP,
                             FechaRegistro = DateTime.Now
                         };
-                        
+
                         db.DB_Postulante.Add(postulante);
                         db.SaveChanges();
 
@@ -78,7 +79,7 @@ namespace DattatecPanel.Models
                             ConvocatoriaId = entidad.IdConvocatoria,
                             Fecha_Registro = DateTime.Now
                         };
-                        
+
                         db.DB_DetalleConvocatoria.Add(detalleConvocatoria);
                         db.SaveChanges();
 
@@ -129,8 +130,8 @@ namespace DattatecPanel.Models
                         dbContextTransaction.Rollback();
                         log.Error(ex.Message);
                         throw;
-                    } 
-                    
+                    }
+
                 }
 
             }
@@ -246,7 +247,7 @@ namespace DattatecPanel.Models
         {
             try
             {
-                var lista = db.DB_Convocatoria.ToList().Select(s => new
+                var lista = db.DB_Convocatoria.Where(a => a.Estado.Equals("E")).ToList().Select(s => new
                 {
                     s.Convocatoriaid,
                     s.Numero,
