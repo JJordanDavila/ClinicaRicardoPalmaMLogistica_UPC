@@ -183,6 +183,17 @@
             $("#btnEliminarSesion")[0].click();
             return false;
         };
+
+        function getMensaje(mensaje) {
+        bootbox.alert(mensaje);
+        };
+
+        $(function () {
+            var x = "@ViewBag.ValidarMensaje";
+            if (x == "True") {
+                getMensaje("@ViewBag.MostrarMensajeArchivo");
+            }
+        });
     </script>
 </form>
 <script src="~/Scripts/Postulante/Registro.js"></script>

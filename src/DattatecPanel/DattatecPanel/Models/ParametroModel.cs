@@ -21,17 +21,20 @@ namespace DattatecPanel.Models
                 //var dfini = string.IsNullOrEmpty(fini) ? DateTime.MinValue : Convert.ToDateTime(fini);
                 //var dffin = string.IsNullOrEmpty(ffin) ? DateTime.MaxValue : Convert.ToDateTime(ffin);
                 var lista = db.DB_Parametro.ToList().Select(s => new
-               {
-                   s.ParametroId,
-                   s.FecIni,
-                   s.FecFin,
-                   s.Intervalo,
-                   s.UnidadMedidaIntervalo,
-                   s.FecUltPro,
-                   s.UrlServicio01,
-                   s.UrlServicio02
-               }).ToList();
+                {
+                    s.ParametroId,
+                    s.FecIni,
+                    s.FecFin,
+                    s.Intervalo,
+                    s.UnidadMedidaIntervalo,
+                    s.FecUltPro,
+                    s.UrlServicio01,
+                    s.UrlServicio02
+                }).ToList();
+
                 return lista;
+
+
             }
             catch (Exception ex)
             {
@@ -44,7 +47,7 @@ namespace DattatecPanel.Models
             try
             {
                 ResponseParametro response = new ResponseParametro { mensaje = string.Empty, mensajeInfo = string.Empty };
-                     
+
 
                 //entidad.Estado = "E";
                 Parametro parametro = new Parametro
@@ -57,7 +60,7 @@ namespace DattatecPanel.Models
                     FecUltPro = entidad.FecUltPro,
                     UrlServicio01 = entidad.UrlServicio01,
                     UrlServicio02 = entidad.UrlServicio02
-                    
+
                 };
                 if (entidad.ParametroId <= 0)
                 {
@@ -87,7 +90,7 @@ namespace DattatecPanel.Models
 
         public void CargarCombos()
         {
-                
+
         }
 
     }

@@ -119,6 +119,22 @@ namespace DattatecPanel.Controllers
         {
             int id;
             var postulante = new PostulanteModel().MostrarDatosVistaRegistrar(convocatoriaIDU);
+            
+
+            if (!postedFile.FileName.EndsWith("pdf"))
+            {
+                ViewBag.ValidarMensaje = true;
+                ViewBag.MostrarMensajeArchivo = "Solo se permite subir archivos en formato PDF";
+                return View("RegistrarPostulante", postulante);
+            }
+
+            if (postedFile.ContentLength > 5000000)
+            {
+                ViewBag.ValidarMensaje = true;
+                ViewBag.MostrarMensajeArchivo = "El archivo no debe exceder de 5 MB";
+                return View("RegistrarPostulante", postulante);
+            }
+
             byte[] bytes;
             using (BinaryReader br = new BinaryReader(postedFile.InputStream))
             {

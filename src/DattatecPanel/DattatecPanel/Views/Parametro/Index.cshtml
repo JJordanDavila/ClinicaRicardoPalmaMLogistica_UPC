@@ -6,20 +6,36 @@
 </h3>
 <br />
 <form>
-     
+
     <div class="form-group row">
         <div class="col-sm-2">
             <a href="@Url.Action("Nuevo", "Parametro")" class="btn btn-primary" style="color: white;"><span class="glyphicon glyphicon-save" id="btnNuevo"></span> Nuevo</a>
         </div>
     </div>
+
+    <div id="nuevo"></div>
     <article>
         <table id="dgParametros"></table>
     </article>
+
+
+
+    <script type="text/javascript">
+
+        alert(dgParametros.Rows);
+
+        if (dgParametros.Rows == undefined) {
+            $('a').attr("disabled", false);
+            $('#btnNuevo').attr("disabled", false);
+        }
+        else {
+            $('a').attr("disabled", true);
+            $('#btnNuevo').attr("disabled", true);
+        }
+
+    </script>
+
 </form>
-@section scripts{
-    @*<script>
-            var suspender = false;
-        </script>*@
-    <script src="~/Scripts/Parametro/Index.js"></script>
-}
+
+<script src="~/Scripts/Parametro/Index.js"></script>
 

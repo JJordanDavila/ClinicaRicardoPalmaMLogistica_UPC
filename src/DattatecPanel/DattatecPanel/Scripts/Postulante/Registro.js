@@ -6,8 +6,14 @@
             RegistroPostulante.prototype.dataGrid();
             RegistroPostulante.prototype.agregarEventos();
             RegistroPostulante.prototype.NumeroValidar();
+            RegistroPostulante.prototype.ValidarCopyPaste();
         };
 
+        RegistroPostulante.prototype.ValidarCopyPaste = function () {
+            $(document).on("cut copy paste", "#RUC", function (e) {
+                e.preventDefault();
+            });
+        };
 
         RegistroPostulante.prototype.dataGrid = function () {
             $("#dgArchivosPostulante").datagrid({

@@ -1,0 +1,2 @@
+2017-11-21 19:01:19,710 ERROR DattatecPanel.Models.PostulanteModel - Referencia a objeto no establecida como instancia de un objeto.
+2017-11-21 19:01:41,277 ERROR DattatecPanel.Models.PostulanteModel - Referencia a objeto no establecida como instancia de un objeto.

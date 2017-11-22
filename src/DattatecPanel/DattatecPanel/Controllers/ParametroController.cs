@@ -27,8 +27,16 @@ namespace DattatecPanel.Controllers
             try
             {
                 var lista = new ParametroModel().ListarParametros();
+
+                //if (lista.Count.Equals(0))
+                //{
+               
+                //}
+
                 var jsonresult = Json(new { rows = lista }, JsonRequestBehavior.AllowGet);
                 jsonresult.MaxJsonLength = int.MaxValue;
+
+               // ViewBag.ContadorParametro = "0";
                 return jsonresult;
             }
             catch (Exception ex)
@@ -65,16 +73,16 @@ namespace DattatecPanel.Controllers
         public ActionResult Nuevo(ParametroDTO entidad)
         {
             try
-            {               
+            {
                 var mensaje = string.Empty;
-               
+
                 Parametro Parametro = new Parametro
                 {
                     ParametroId = entidad.ParametroId,
                     FecIni = entidad.FecIni,
                     FecFin = entidad.FecFin,
                     Intervalo = entidad.Intervalo,
-                    UnidadMedidaIntervalo = entidad.UnidadMedidaIntervalo,                    
+                    UnidadMedidaIntervalo = entidad.UnidadMedidaIntervalo,
                     FecUltPro = entidad.FecUltPro,
                     UrlServicio01 = entidad.UrlServicio01,
                     UrlServicio02 = entidad.UrlServicio02
@@ -140,7 +148,7 @@ namespace DattatecPanel.Controllers
                 parametro.FecUltPro = entidad.FecUltPro;
                 parametro.UrlServicio01 = entidad.UrlServicio01;
                 parametro.UrlServicio02 = entidad.UrlServicio02;
-                          
+
                 db.Entry(parametro).State = EntityState.Modified;
                 db.SaveChanges();
                 ////correo.EnviarCorreo("Clinica Ricardo Palma", empleado.Correo, "Suspension de convocatoria", cuerpoCorreo, false, null);
@@ -154,7 +162,7 @@ namespace DattatecPanel.Controllers
         }
 
 
-      
+
         public ActionResult Eliminar(int id)
         {
             //Parametro parametro = db.DB_Parametro.Find(id);
@@ -176,8 +184,8 @@ namespace DattatecPanel.Controllers
                 Parametro parametro = db.DB_Parametro.Find(entidad.ParametroId);
                 db.DB_Parametro.Remove(parametro);
                 db.SaveChanges();
-             
-               mensaje = "Los datos se eliminaron correctamente";
+
+                mensaje = "Los datos se eliminaron correctamente";
                 return Json(new { statusCode = HttpStatusCode.OK, mensaje = mensaje }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
@@ -186,7 +194,7 @@ namespace DattatecPanel.Controllers
             }
         }
 
-        
+
         //////////////////////////////////
         public ActionResult Actualizar(int id)
         {
@@ -225,5 +233,5 @@ namespace DattatecPanel.Controllers
 
 
 
-	}
+    }
 }
