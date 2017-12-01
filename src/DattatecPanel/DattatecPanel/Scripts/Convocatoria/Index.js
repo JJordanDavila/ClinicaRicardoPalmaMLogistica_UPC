@@ -53,11 +53,29 @@
                     }
                 ]],
                 width: '100%',
-                singleSelect: true
+                singleSelect: true,
+                pagination: true
+            });
+
+            var pager = $('#dgConvocatoriaProveedores').datagrid('getPager');
+            $(pager).pagination({
+                pageSize: 10,
+                showPageList: true,
+                pageList: [10, 20, 30, 40, 50],
+                beforePageText: 'Página',
+                afterPageText: 'de {pages}',
+                displayMsg: 'Mostrando del {from} al {to} de los {total} resultados',
+                onSelectPage: function (pageNumber, pageSize) {
+                    Convocatoria.prototype.buscar();
+                }
             });
         }
 
         Convocatoria.prototype.buscar = function () {
+
+            var pageNumber_ = $('#dgConvocatoriaProveedores').datagrid('getPager').pagination('options').pageNumber;
+            var pageSize_ = $('#dgConvocatoriaProveedores').datagrid('getPager').pagination('options').pageSize;
+
             var nroConvocatoria = $("#nroConvocatoria").val();
             if (nroConvocatoria != undefined && nroConvocatoria.trim() != "") {
                 if (isNaN(nroConvocatoria.trim())) {
@@ -75,6 +93,13 @@
                 },
                 success: function (data) {
                     gMostrarResultadoBusqueda(data.rows, "#dgConvocatoriaProveedores");
+
+                    $('#dgConvocatoriaProveedores').datagrid('getPager').pagination({
+                        total: data.total == 0 ? 1 : data.total,
+                        pageSize: pageSize_,
+                        pageNumber: pageNumber_
+                    });
+
                 },
                 error: function () {
                     gMensajeErrorAjax();
