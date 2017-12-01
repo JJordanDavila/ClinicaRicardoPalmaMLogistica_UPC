@@ -64,10 +64,14 @@
                     data: { entidad: convocatoria },
                     success: function (data) {
                         if (data.statusCode == 200) {
-                            var callback = function () {
-                                $("#btnCancelar").click();
-                            };
-                            gMensajeInformacionConCallback(data.mensaje, callback);
+                            if (data.mensajeInfo == "") {
+                                var callback = function () {
+                                    $("#btnCancelar").click();
+                                };
+                                gMensajeInformacionConCallback(data.mensaje, callback);
+                            } else {
+                                gMensajeInformacion(data.mensajeInfo);
+                            }
                         } else {
                             gMensajeInformacion('Ocurrio un error.');
                         }

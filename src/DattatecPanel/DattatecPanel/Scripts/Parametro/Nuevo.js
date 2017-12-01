@@ -47,6 +47,20 @@
         };
 
         NuevaParametro.prototype.Guardar = function () {
+            var valIntervalo = $("#Intervalo").val();
+            if (valIntervalo == "") { return gMensajeInformacion("Intervalo no válido."); }
+            if (valIntervalo == "0") { return gMensajeInformacion("Intervalo no válido."); }
+
+            var cbo = $("#UnidadMedidaIntervalo").val();
+            if (cbo == "") { return gMensajeInformacion("Seleccione una unidad de intervalo válido."); }
+
+            var url1 = $("#UrlServicio01").val();
+            if (url1 == "") { return gMensajeInformacion("Debe ingresar el Servicio Web Sunat Correctamente "); }
+
+            var url2 = $("#UrlServicio02").val();
+            if (url2 == "") { return gMensajeInformacion("Debe ingresar el Servicio Web Osce Correctamente "); }
+
+
             var fini = $("#FecIni").val();
             var ffin = $("#FecFin").val();
             var mensaje = ValidarFechaInicio_Fin(fini, ffin, 30);
@@ -122,6 +136,19 @@
             var obs = $("#ObservacionSuspension").val();
             if (obs == "") { return gMensajeInformacion("Ingrese una observación."); }
 
+            var valIntervalo = $("#Intervalo").val();
+            if (valIntervalo == "") { return gMensajeInformacion("Intervalo no válido."); }
+            if (valIntervalo == "0") { return gMensajeInformacion("Intervalo no válido."); }
+
+            var cbo = $("#cbxMedidasIntervalos").val();
+            if (cbo == "") { return gMensajeInformacion("Ingrese un intervalo válido."); }
+
+            var url1 = $("#UrlServicio01").val();
+            if (url1 == "") { return gMensajeInformacion("Debe ingresar el Servicio Web Sunat Correctamente "); }
+
+            var url2 = $("#UrlServicio02").val();
+            if (url2 == "") { return gMensajeInformacion("Debe ingresar el Servicio Web Osce Correctamente "); }
+
             gMensajeConfirmacion("¿Esta seguro de modificar?", function () {
                 var Parametro = $('#frmSuspension').serializeFormJSON();
                 $.ajax({
@@ -191,6 +218,10 @@
             });
             $("#btnEliminar").on('click', function () {
                 NuevaParametro.prototype.Eliminar();
+            });
+
+            $("#Intervalo").keypress(function (e) {
+                return (e.keyCode >= 48 && e.keyCode <= 57)
             });
         };
         return NuevaParametro;

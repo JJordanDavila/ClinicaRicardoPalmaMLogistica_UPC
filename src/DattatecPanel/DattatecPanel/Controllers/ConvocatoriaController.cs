@@ -82,10 +82,10 @@ namespace DattatecPanel.Controllers
             try
             {
                 var mensaje = string.Empty;
-                //if (string.IsNullOrEmpty(entidad.ObservacionSuspension))
-                //{
-                //    return Json(new { statusCode = HttpStatusCode.OK, mensaje = "Ingrese una observación." }, JsonRequestBehavior.AllowGet);
-                //}
+                if (string.IsNullOrEmpty(entidad.ObservacionSuspension))
+                {
+                    return Json(new { statusCode = HttpStatusCode.OK, mensaje = "", mensajeInfo = "Ingrese una observación" }, JsonRequestBehavior.AllowGet);
+                }
                 var cuerpoCorreo = "Se suspendio la convocatoria con el numero : " + entidad.Numero.ToString();
                 var empleado = db.DB_Empleado.Where(x => x.EmpleadoID == entidad.EmpleadoID).FirstOrDefault();
                 entidad.Estado = "S";
@@ -94,7 +94,7 @@ namespace DattatecPanel.Controllers
                 db.SaveChanges();
                 correo.EnviarCorreo("Clinica Ricardo Palma", empleado.Correo, "Suspension de convocatoria", cuerpoCorreo, false, null);
                 mensaje = "Se suspendio con exito";
-                return Json(new { statusCode = HttpStatusCode.OK, mensaje = mensaje }, JsonRequestBehavior.AllowGet);
+                return Json(new { statusCode = HttpStatusCode.OK, mensaje = mensaje, mensajeInfo = "" }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {

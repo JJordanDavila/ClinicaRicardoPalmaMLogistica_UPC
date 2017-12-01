@@ -14,6 +14,7 @@ namespace DattatecPanel.Controllers
 {
     public class ParametroController : Controller
     {
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private ClinicaDBContext db = new ClinicaDBContext();
         //
         // GET: /Parametro/
@@ -27,16 +28,8 @@ namespace DattatecPanel.Controllers
             try
             {
                 var lista = new ParametroModel().ListarParametros();
-
-                //if (lista.Count.Equals(0))
-                //{
-               
-                //}
-
                 var jsonresult = Json(new { rows = lista }, JsonRequestBehavior.AllowGet);
                 jsonresult.MaxJsonLength = int.MaxValue;
-
-               // ViewBag.ContadorParametro = "0";
                 return jsonresult;
             }
             catch (Exception ex)
@@ -76,37 +69,35 @@ namespace DattatecPanel.Controllers
             {
                 var mensaje = string.Empty;
 
-                Parametro Parametro = new Parametro
-                {
-                    ParametroId = entidad.ParametroId,
-                    FecIni = entidad.FecIni,
-                    FecFin = entidad.FecFin,
-                    Intervalo = entidad.Intervalo,
-                    UnidadMedidaIntervalo = entidad.UnidadMedidaIntervalo,
-                    FecUltPro = entidad.FecUltPro,
-                    UrlServicio01 = entidad.UrlServicio01,
-                    UrlServicio02 = entidad.UrlServicio02
-                };
-                if (entidad.ParametroId <= 0)
-                {
-                    db.DB_Parametro.Add(Parametro);
-                    db.SaveChanges();
-                    mensaje = "Se registro con exito";
-                }
-                else
-                {
-                    //////var empleado = db.DB_Empleado.Where(x => x.EmpleadoID == Parametro.EmpleadoID).FirstOrDefault();
-                    //////var cuerpoCorreo = "Se actualizo la Parametro con el numero : " + Parametro.Numero.ToString();
-                    //////db.Entry(Parametro).State = EntityState.Modified;
-                    //////db.SaveChanges();
-                    //////correo.EnviarCorreo("Clinica Ricardo Palma", empleado.Correo, "Actualizacion de Parametro", cuerpoCorreo, false, null);
-                    //////mensaje = "Se actualizo con exito";
-                }
-                return Json(new { statusCode = HttpStatusCode.OK, mensaje = mensaje, mensajeInfo = "" },
+                //////Parametro Parametro = new Parametro
+                //////{
+                //////    ParametroId = entidad.ParametroId,
+                //////    FecIni = entidad.FecIni,
+                //////    FecFin = entidad.FecFin,
+                //////    Intervalo = entidad.Intervalo,
+                //////    UnidadMedidaIntervalo = entidad.UnidadMedidaIntervalo,
+                //////    FecUltPro = entidad.FecUltPro,
+                //////    UrlServicio01 = entidad.UrlServicio01,
+                //////    UrlServicio02 = entidad.UrlServicio02
+                //////};
+                //////if (entidad.ParametroId <= 0)
+                //////{
+                //////    db.DB_Parametro.Add(Parametro);
+                //////    db.SaveChanges();
+                //////    mensaje = "Se registro con exito";
+                //////}
+                //////else
+                //////{
+       
+                //////}
+
+                var response = new ParametroModel().GuardarParametro(entidad);
+                return Json(new { statusCode = HttpStatusCode.OK, mensaje = response.mensaje, mensajeInfo = response.mensajeInfo },
                     JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
+                log.Error(ex.Message);
                 return Json(new { statusCode = HttpStatusCode.BadRequest }, JsonRequestBehavior.AllowGet);
             }
         }
