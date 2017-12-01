@@ -12,7 +12,6 @@ namespace DattatecPanel.Controllers
 {
     public class EvaluarProveedorController : Controller
     {
-        private ClinicaDBContext db = new ClinicaDBContext();
         // GET: EvaluarProveedor
         public ActionResult Index()
         {

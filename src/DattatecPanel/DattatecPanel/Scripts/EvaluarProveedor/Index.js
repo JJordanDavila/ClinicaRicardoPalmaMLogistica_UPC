@@ -165,7 +165,10 @@
             $("#btnConsultar").on('click', function () {
                 EvaluarProveedor.prototype.buscar();
             });
-            
+
+            $("#txtRUC").keypress(function (e) {
+                return (e.keyCode >= 48 && e.keyCode <= 57)
+            });
         };
         EvaluarProveedor.prototype.ActualizarEstado = function (id, estado, obs) {            var request = {};            request.idProveedor = id;
             request.Estado = estado;            request.Observacion = obs;            $.ajax({
