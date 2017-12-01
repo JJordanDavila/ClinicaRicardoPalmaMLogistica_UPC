@@ -89,7 +89,9 @@
                 data: {
                     numero: $("#nroConvocatoria").val(),
                     fini: $("#fechaInicioIndex").val(),
-                    ffin: $("#FechaFinIndex").val()
+                    ffin: $("#FechaFinIndex").val(),
+                    page: pageNumber_,
+                    pageSize: pageSize_
                 },
                 success: function (data) {
                     gMostrarResultadoBusqueda(data.rows, "#dgConvocatoriaProveedores");

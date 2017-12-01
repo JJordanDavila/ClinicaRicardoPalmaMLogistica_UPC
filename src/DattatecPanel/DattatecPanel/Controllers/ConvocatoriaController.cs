@@ -23,7 +23,7 @@ namespace DattatecPanel.Controllers
             return View();
         }
 
-        public ActionResult ListarConvocatoriaProveedores(string numero, string fini, string ffin)
+        public ActionResult ListarConvocatoriaProveedores(int page, int pageSize, string numero, string fini, string ffin)
         {
             try
             {
