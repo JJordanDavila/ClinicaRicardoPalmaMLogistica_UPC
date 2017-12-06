@@ -17,5 +17,7 @@ namespace DattatecPanel.Models.DTO
         public DateTime FecUltPro { get; set; }
         public string UrlServicio01 { get; set; }
         public string UrlServicio02 { get; set; }
+        public string EstadoServicioSUNAT { get; set; }
+        public string EstadoServicioOSCE { get; set; }
     }
 }

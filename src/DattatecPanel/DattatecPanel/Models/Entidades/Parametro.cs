@@ -37,6 +37,13 @@ namespace DattatecPanel.Models.Entidades
         [Display(Name = "URL OSCE")]
         public string UrlServicio02 { get; set; }
 
+        [Display(Name = "Estado URL Sunat")]
+        public string EstadoServicioSUNAT { get; set; }
+
+        [Display(Name = "Estado URL OSCE")]
+        public string EstadoServicioOSCE { get; set; }
+
+
         [NotMapped]
         public string cbxMedidasIntervalos { get; set; }
     }

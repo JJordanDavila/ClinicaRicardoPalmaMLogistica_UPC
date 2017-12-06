@@ -7,15 +7,26 @@
 <br />
 <form>
 
-    <div class="form-group row">
-        <div class="col-sm-2">
-            <a href="@Url.Action("Nuevo", "Parametro")" class="btn btn-primary" style="color: white;"><span class="glyphicon glyphicon-save" id="btnNuevo"></span> Nuevo</a>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="col-md-4" style="padding: 0px 0px 5px 0px">
+                <a href="@Url.Action("Nuevo", "Parametro")" class="btn btn-primary" style="color: white;"><span class="glyphicon glyphicon-save" id="btnNuevo"></span> Nuevo</a>
+            </div>
+            <div class="col-md-4"></div>
+            <div class="col-md-4">
+                <a href="@Url.Action("Historial", "Parametro")" class="btn btn-primary" style="color: white;"><span class="glyphicon glyphicon-save" id="btnNuevo"></span> Historial</a>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <table id="dgParametros"></table>
         </div>
     </div>
 
     <div id="nuevo"></div>
     <article>
-        <table id="dgParametros"></table>
+        
     </article>
 
 

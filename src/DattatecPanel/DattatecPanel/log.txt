@@ -1,2 +1,12 @@
 2017-11-21 19:01:19,710 ERROR DattatecPanel.Models.PostulanteModel - Referencia a objeto no establecida como instancia de un objeto.
 2017-11-21 19:01:41,277 ERROR DattatecPanel.Models.PostulanteModel - Referencia a objeto no establecida como instancia de un objeto.
+2017-11-30 23:38:51,480 ERROR DattatecPanel.Controllers.DetalleConvocatoriaController - El valor no puede ser nulo.
+Nombre del parámetro: fileContents
+2017-12-05 15:05:24,480 ERROR DattatecPanel.Models.PostulanteModel - Error al actualizar las entradas. Vea la excepción interna para obtener detalles.
+2017-12-05 15:05:24,499 ERROR DattatecPanel.Models.PostulanteModel - Error al actualizar las entradas. Vea la excepción interna para obtener detalles.
+2017-12-05 15:06:30,909 ERROR DattatecPanel.Models.PostulanteModel - Error al actualizar las entradas. Vea la excepción interna para obtener detalles.
+2017-12-05 15:06:30,923 ERROR DattatecPanel.Models.PostulanteModel - Error al actualizar las entradas. Vea la excepción interna para obtener detalles.
+2017-12-05 15:06:38,364 ERROR DattatecPanel.Models.PostulanteModel - Error al actualizar las entradas. Vea la excepción interna para obtener detalles.
+2017-12-05 15:06:38,376 ERROR DattatecPanel.Models.PostulanteModel - Error al actualizar las entradas. Vea la excepción interna para obtener detalles.
+2017-12-05 15:06:59,361 ERROR DattatecPanel.Models.PostulanteModel - Error al actualizar las entradas. Vea la excepción interna para obtener detalles.
+2017-12-05 15:06:59,373 ERROR DattatecPanel.Models.PostulanteModel - Error al actualizar las entradas. Vea la excepción interna para obtener detalles.
