@@ -23,7 +23,13 @@ namespace DattatecPanel.Models
                 RUC.Value = request.RUC??"";
                 var RazonSocial = new SqlParameter("@RazonSocial", SqlDbType.VarChar);
                 RazonSocial.Value = request.RazonSocial??"";
-                var lista = db.Database.SqlQuery<EvaluarProveedorDTO>("PA_Listar_EvaluarProveedores @RUC, @RazonSocial", RUC, RazonSocial).ToList<EvaluarProveedorDTO>();
+                var FechaInicio = new SqlParameter("@FechaInicio", SqlDbType.DateTime);
+                FechaInicio.Value = Convert.ToDateTime(request.FechaInicio);
+                var FechaFin = new SqlParameter("@FechaFin", SqlDbType.DateTime);
+                FechaFin.Value = Convert.ToDateTime(request.FechaFin);
+                var lista = db.Database.SqlQuery<EvaluarProveedorDTO>(
+                    "PA_Listar_EvaluarProveedores @RUC, @RazonSocial, @FechaInicio, @FechaFin", 
+                    RUC, RazonSocial, FechaInicio, FechaFin).ToList<EvaluarProveedorDTO>();
                 return lista;
             }
             catch (Exception ex)

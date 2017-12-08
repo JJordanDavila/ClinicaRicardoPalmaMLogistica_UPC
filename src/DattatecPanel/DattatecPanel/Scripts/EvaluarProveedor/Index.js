@@ -3,7 +3,8 @@
         function EvaluarProveedor() { };
         var indexGlobal, txtObs;
         EvaluarProveedor.prototype.loadPage = function () {
-            gInputsFormatoFecha("txtFechaFin,txtFechaInicio");
+            EvaluarProveedor.prototype.setearFechas();
+            gInputsFormatoFecha("txtFechaInicio");
             EvaluarProveedor.prototype.dataGrid();
             EvaluarProveedor.prototype.buscar();
             EvaluarProveedor.prototype.agregarEventos();
@@ -86,52 +87,54 @@
                             }
                             if (row.Estado == 'AC') {
                                 if (puedeSuspender >= 2) {
-                                    var a = "<input type='text' id='txtDgObservacion' class='txtDgObservacion' value='" + valor + "'/>";
+                                    var a = "<input type='text' id='txtDgObservacion' class='txtDgObservacion' value='" + valor + "' style='width: 100%'/>";
                                 } else {
-                                    var a = "<input type='text' id='txtDgObservacion' class='txtDgObservacion' value='" + valor + "' disabled/>";
+                                    var a = "<input type='text' id='txtDgObservacion' class='txtDgObservacion' value='" + valor + "' disabled style='width: 100%'/>";
                                 }
                             }
                             if (row.Estado == 'SU') {
-                                var a = "<input type='text' id='txtDgObservacion' class='txtDgObservacion' value='" + valor + "' disabled/>";
+                                var a = "<input type='text' id='txtDgObservacion' class='txtDgObservacion' value='" + valor + "' disabled style='width: 100%'/>";
                             }
                             return a;
                         }
                     }
                 ]],
-                //onClickCell: function (index, field, value) {
-                //    if (indexGlobal != undefined) {
-                //        $('#dgListaEvaluarProveedor').datagrid('refreshRow', indexGlobal);
-                //    }
-                //    if (field == "Observacion") {
-                //        $('#dgListaEvaluarProveedor').datagrid('beginEdit', index);
-                //        indexGlobal = index;
-                //    }
-                //},
-                //onBeforeEdit: function (index, row) {
-                //    $(this).datagrid('refreshRow', index);
-                //},
-                //onAfterEdit: function (index, row) {
-                //    $(this).datagrid('refreshRow', index);
-                //},
-                //onCancelEdit: function (index, row) {
-                //    $(this).datagrid('refreshRow', index);
-                //},
                 rownumbers: true,
                 width: '100%',
-                singleSelect: true
+                singleSelect: true,
+                pagination: true
+            });
+
+            var pager = $('#dgListaEvaluarProveedor').datagrid('getPager');
+            $(pager).pagination({
+                pageSize: 10,
+                showPageList: true,
+                pageList: [10, 20, 30, 40, 50],
+                beforePageText: 'Página',
+                afterPageText: 'de {pages}',
+                displayMsg: 'Mostrando del {from} al {to} de los {total} resultados',
+                onSelectPage: function (pageNumber, pageSize) {
+                    EvaluarProveedor.prototype.buscar();
+                }
             });
         };
 
         EvaluarProveedor.prototype.buscar = function () {
 
+            var pageNumber_ = $('#dgListaEvaluarProveedor').datagrid('getPager').pagination('options').pageNumber;
+            var pageSize_ = $('#dgListaEvaluarProveedor').datagrid('getPager').pagination('options').pageSize;
+
             var fini = $("#txtFechaInicio").val();
             var ffin = $("#txtFechaFin").val();
-            var mensaje = ValidarFechaInicio_Fin(fini, ffin, 60);
+            var mensaje = gValidarFechaInicio_Fin(fini, ffin, 60);
             if (mensaje != "") { return gMensajeInformacion(mensaje); }
 
-            var request = {};
-            request.RUC = $("#txtRUC").val();
-            request.RazonSocial = $("#txtRazonSocial").val();
+            var request = {
+                RUC: $("#txtRUC").val(),
+                RazonSocial: $("#txtRazonSocial").val(),
+                FechaInicio: $("#txtFechaInicio").val(),
+                FechaFin: $("#txtFechaFin").val()
+            };
 
             $.ajax({
                 url: globalRutaServidor + "EvaluarProveedor/ListarProveedores",
@@ -140,6 +143,12 @@
                 data: request,
                 success: function (data) {
                     gMostrarResultadoBusqueda(data.rows, "#dgListaEvaluarProveedor");
+
+                    $('#dgListaEvaluarProveedor').datagrid('getPager').pagination({
+                        total: data.total == 0 ? 1 : data.total,
+                        pageSize: pageSize_,
+                        pageNumber: pageNumber_
+                    });
 
                     $(".txtDgObservacion").keyup(function (e) {
                         txtObs = e.currentTarget.value;
@@ -229,6 +238,10 @@
             });
 
             return false;
+        };        EvaluarProveedor.prototype.setearFechas = function () {            $("#txtFechaFin").val($.datepicker.formatDate('dd/mm/yy', new Date()));
+            $('#txtFechaInicio').val($.datepicker.formatDate('dd/mm/yy', new Date(
+                new Date().setDate(new Date().getDate() - 60)
+            )));
         };
         return EvaluarProveedor;
     }());

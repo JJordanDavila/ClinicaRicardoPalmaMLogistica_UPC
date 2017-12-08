@@ -66,7 +66,7 @@ function trim(value) {
 };
 
 //Validar si la fecha Inicio es mayor a la fecha fin o viveversa
-function ValidarFechaInicio_Fin(fini, ffin, dias) {
+function gValidarFechaInicio_Fin(fini, ffin, dias) {
     var mensaje = "";
     if (fini != "" && ffin != "") {
         var fechaini = new Date(formatdate(fini));
