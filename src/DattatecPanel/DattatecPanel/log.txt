@@ -10,3 +10,6 @@ Nombre del parámetro: fileContents
 2017-12-05 15:06:38,376 ERROR DattatecPanel.Models.PostulanteModel - Error al actualizar las entradas. Vea la excepción interna para obtener detalles.
 2017-12-05 15:06:59,361 ERROR DattatecPanel.Models.PostulanteModel - Error al actualizar las entradas. Vea la excepción interna para obtener detalles.
 2017-12-05 15:06:59,373 ERROR DattatecPanel.Models.PostulanteModel - Error al actualizar las entradas. Vea la excepción interna para obtener detalles.
+2017-12-08 17:04:30,733 ERROR DattatecPanel.Controllers.ConvocatoriaController - The underlying provider failed on Open.
+2017-12-08 17:04:30,733 ERROR DattatecPanel.Controllers.ConvocatoriaController - The underlying provider failed on Open.
+2017-12-08 17:05:31,504 ERROR DattatecPanel.Controllers.ConvocatoriaController - The underlying provider failed on Open.

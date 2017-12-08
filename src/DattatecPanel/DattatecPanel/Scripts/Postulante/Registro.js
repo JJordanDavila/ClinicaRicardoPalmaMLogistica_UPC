@@ -21,11 +21,11 @@
                 loadMsg: "Cargando...",
                 columns: [[
                     {
-                        field: 'Archivo', title: 'Archivo', width: 600
+                        field: 'Archivo', title: 'Archivo', width: 500
                     }
                 ]],
                 rownumbers: true,
-                width: '100%',
+                width: '1070px',
                 singleSelect: true
             });
         };

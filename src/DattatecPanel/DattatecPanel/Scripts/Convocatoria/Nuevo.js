@@ -63,8 +63,9 @@
                     async: false,
                     data: { entidad: convocatoria },
                     success: function (data) {
+                        debugger;
                         if (data.statusCode == 200) {
-                            if (data.mensajeInfo == "") {
+                            if (data.mensajeInfo == "" || data.mensajeInfo == null) {
                                 var callback = function () {
                                     $("#btnCancelar").click();
                                 };
@@ -73,7 +74,7 @@
                                 gMensajeInformacion(data.mensajeInfo);
                             }
                         } else {
-                            gMensajeInformacion('Ocurrio un error.');
+                            gMensajeErrorAjax();
                         }
                     },
                     error: function () {
