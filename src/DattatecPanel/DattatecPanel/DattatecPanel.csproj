@@ -260,6 +260,7 @@
     <Compile Include="Models\Entidades\DetalleConvocatoria.cs" />
     <Compile Include="Models\Entidades\Criterios.cs" />
     <Compile Include="Models\Entidades\DetallePostulante.cs" />
+    <Compile Include="Models\Entidades\Evidencia.cs" />
     <Compile Include="Models\Entidades\Parametro.cs" />
     <Compile Include="Models\Entidades\Postulante.cs" />
     <Compile Include="Models\Entidades\ProveedorCriterio.cs" />
@@ -457,6 +458,7 @@
     <Content Include="Datasets\dsDetalleOrdenCompra.xss">
       <DependentUpon>dsDetalleOrdenCompra.xsd</DependentUpon>
     </Content>
+    <None Include="Properties\PublishProfiles\Clinica.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\Convocatoria\Index.js" />
     <Content Include="Scripts\Convocatoria\Nuevo.js" />
@@ -533,6 +535,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\jqueryuiDatetimepicker.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Scripts\Parametro\Historial.js" />
     <Content Include="Scripts\Parametro\Index.js" />
     <Content Include="Scripts\Parametro\Nuevo.js" />
     <Content Include="Scripts\Postulante\Index.js" />
@@ -700,6 +703,7 @@
     <Content Include="Views\Proveedor\Index.cshtml" />
     <Content Include="Views\Postulante\Index.cshtml" />
     <Content Include="Views\DetalleConvocatoria\Rechazar.cshtml" />
+    <Content Include="Views\Parametro\Historial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Browsers\" />

@@ -15,36 +15,43 @@
             $("#dgParametros").datagrid({
                 title: 'RESULTADO',
                 loadMsg: "Cargando...",
-                columns: [[                   
+                columns: [[
                     {
-                        field: 'FecIni', title: 'Fecha Inicio', width: 100,
+                        field: 'FecIni', title: 'Fecha Inicio', width: 90,
                         formatter: function (value, row, index) {
                             return gFormatearFechaJson(value);
                         }
                     },
                     {
-                        field: 'FecFin', title: 'Fecha Fin', width: 100,
+                        field: 'FecFin', title: 'Fecha Fin', width: 90,
                         formatter: function (value, row, index) {
                             return gFormatearFechaJson(value);
                         }
                     },
                     {
-                        field: 'Intervalo', title: 'Intervalo', width: 100
+                        field: 'Intervalo', title: 'Intervalo', width: 80
                     },
                     {
                         field: 'UnidadMedidaIntervalo', title: 'UnidadMedidaIntervalo', width: 100
                     },
                     {
                         field: 'FecUltPro', title: 'Fecha Ult. Proceso', width: 100,
-                         formatter: function (value, row, index) {
-                             return gFormatearFechaJson(value);
-                         }
+                        formatter: function (value, row, index) {
+                            return gFormatearFechaJson(value);
+                        }
                     },
                     {
                         field: 'UrlServicio01', title: 'Servicio Sunat', width: 250
                     },
                     {
                         field: 'UrlServicio02', title: 'Servicio Osce', width: 250
+                    },
+
+                    {
+                        field: 'EstadoServicioSUNAT', title: 'Servicio SUNAT', width: 100
+                    },
+                    {
+                        field: 'EstadoServicioOSCE', title: 'Servicio OSCE', width: 100
                     },
                     //{
                     //    field: 'Estado', title: 'Estado', align: 'center', width: 100,
@@ -53,7 +60,7 @@
                     //    }
                     //},
                     {
-                        field: 'action', title: 'Opciones', width: 100, align: 'center',
+                        field: 'action', title: 'Opciones', width: 90, align: 'center',
                         formatter: function (value, row, index) {
                             var a = '<a href="' + globalRutaServidor + 'Parametro/Actualizar/' + row.ParametroId + '" ><span class="glyphicon glyphicon-pencil opciones" title="Modificar"></span></a>';
                             var b = '<a href="' + globalRutaServidor + 'Parametro/Eliminar/' + row.ParametroId + '" ><span class="glyphicon glyphicon-remove opciones" title="Eliminar"></span></a>';
@@ -64,7 +71,7 @@
                 width: '100%',
                 singleSelect: true
             });
-        }
+        };
 
         Parametro.prototype.buscar = function () {
             ////var nroParametro = $("#nroParametro").val();

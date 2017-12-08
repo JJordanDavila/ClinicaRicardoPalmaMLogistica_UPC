@@ -88,7 +88,7 @@ namespace DattatecPanel.Controllers
                 //////}
                 //////else
                 //////{
-       
+
                 //////}
 
                 var response = new ParametroModel().GuardarParametro(entidad);
@@ -222,7 +222,22 @@ namespace DattatecPanel.Controllers
             }
         }
 
+        public ActionResult Historial()
+        {
+            return View("Historial");
+        }
 
-
+        public ActionResult ListarHistorial(int page, int pageSize)
+        {
+            try
+            {
+                var lista = new ParametroModel().ListarHistorial();
+                return Json(new { statusCode = HttpStatusCode.OK, rows = lista, total = lista }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new { statusCode = HttpStatusCode.BadRequest, mensaje = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
     }
 }

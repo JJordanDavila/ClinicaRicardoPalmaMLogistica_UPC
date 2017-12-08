@@ -1,11 +1,9 @@
 ﻿using DattatecPanel.Context;
-using System;
-using System.Linq;
 using DattatecPanel.Models.DTO;
 using DattatecPanel.Models.Entidades;
-using DattatecPanel.Models.Util;
+using System;
 using System.Data.Entity;
-using System.IO;
+using System.Linq;
 
 
 namespace DattatecPanel.Models
@@ -29,7 +27,9 @@ namespace DattatecPanel.Models
                     s.UnidadMedidaIntervalo,
                     s.FecUltPro,
                     s.UrlServicio01,
-                    s.UrlServicio02
+                    s.UrlServicio02,
+                    s.EstadoServicioSUNAT,
+                    s.EstadoServicioOSCE
                 }).ToList();
 
                 return lista;
@@ -91,6 +91,16 @@ namespace DattatecPanel.Models
         public void CargarCombos()
         {
 
+        }
+
+        public dynamic ListarHistorial()
+        {
+            var lista =  db.DB_Evidencia.ToList().Select(x => new { 
+                x.EvidenciaId,
+                x.Descripcion,
+                x.Fecha
+            }).ToList();
+            return lista;
         }
 
     }
