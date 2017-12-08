@@ -368,6 +368,9 @@
     <Content Include="Content\images\ui-icons_cc0000_256x240.png" />
     <Content Include="Content\images\ui-icons_ffffff_256x240.png" />
     <Content Include="Content\images\validatebox_warning.png" />
+    <Content Include="Content\img\ajax-loader.gif" />
+    <Content Include="Content\jquery-ui-1.12.0.css" />
+    <Content Include="Content\jquery-ui.combobox.css" />
     <Content Include="Content\jquery-ui.css" />
     <Content Include="Content\jquery.jqGrid\ellipsis-xbl.xml" />
     <Content Include="Content\jquery.jqGrid\ui.jqgrid.css" />
@@ -442,7 +445,6 @@
     <Content Include="Models\configEntity.edmx.diagram">
       <DependentUpon>configEntity.edmx</DependentUpon>
     </Content>
-    <Content Include="App_Browsers\qt.browser" />
     <Content Include="Datasets\dsDetalleOrdenCompra.xsc">
       <DependentUpon>dsDetalleOrdenCompra.xsd</DependentUpon>
     </Content>
@@ -458,7 +460,9 @@
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\Convocatoria\Index.js" />
     <Content Include="Scripts\Convocatoria\Nuevo.js" />
+    <Content Include="Scripts\datagrid-detailview.js" />
     <Content Include="Scripts\DetalleConvocatoria\Index.js" />
+    <Content Include="Scripts\easyui-lang-en.js" />
     <Content Include="Scripts\EvaluarProveedor\Index.js" />
     <Content Include="Scripts\fileinput.min.js" />
     <Content Include="Scripts\General.js" />
@@ -508,12 +512,15 @@
     <Content Include="Scripts\i18n\grid.locale-tw.js" />
     <Content Include="Scripts\i18n\grid.locale-ua.js" />
     <Content Include="Scripts\i18n\grid.locale-vi.js" />
+    <Content Include="Scripts\jquery-1.10.2.min.js" />
     <Content Include="Scripts\jquery-2.1.4.js" />
     <Content Include="Scripts\jquery-2.1.4.min.js" />
     <Content Include="Scripts\jquery-2.1.4.min.map" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery-ui-1.11.4.js" />
     <Content Include="Scripts\jquery-ui-1.11.4.min.js" />
+    <Content Include="Scripts\jquery-ui-1.12.0.js" />
+    <Content Include="Scripts\jquery-ui.combobox.js" />
     <Content Include="Scripts\jquery-ui.js" />
     <Content Include="Scripts\jquery.easyui.min.js" />
     <Content Include="Scripts\jquery.jqGrid.js" />
@@ -695,6 +702,7 @@
     <Content Include="Views\DetalleConvocatoria\Rechazar.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="App_Browsers\" />
     <Folder Include="App_Data\" />
     <Folder Include="Views\Postular\" />
     <Folder Include="Views\RegistroProveedorParticipante\" />

@@ -13,7 +13,7 @@
 
         Convocatoria.prototype.dataGrid = function () {
             $("#dgConvocatoriaProveedores").datagrid({
-                title: 'RESULTADO',
+                title: 'Convocatorias',
                 loadMsg: "Cargando...",
                 columns: [[
                     {

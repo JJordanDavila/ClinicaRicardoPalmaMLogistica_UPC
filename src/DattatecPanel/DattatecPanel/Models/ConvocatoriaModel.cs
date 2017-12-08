@@ -135,5 +135,45 @@ namespace DattatecPanel.Models
                 throw;
             }
         }
+
+        public dynamic ListarRubros()
+        {
+            return db.DB_Rubro.ToList();
+        }
+
+        public dynamic ListarEmpleados()
+        {
+            return db.DB_Empleado.ToList();
+        }
+
+        public dynamic ObtenerConvocatoriaPorID(int id)
+        {
+            return db.DB_Convocatoria.Where(x => x.Convocatoriaid == id).First();
+        }
+
+        public ResponseConvocatoria GuardarSuspension(Convocatoria entidad)
+        {
+            ResponseConvocatoria response = new ResponseConvocatoria();
+            if (string.IsNullOrEmpty(entidad.ObservacionSuspension))
+            {
+                response.mensaje = string.Empty;
+                response.mensajeInfo = "Ingrese una observación";
+                return response;
+            }
+            var cuerpoCorreo = "Se suspendio la convocatoria con el número : " + entidad.Numero.ToString();
+            var empleado = ObtenerEmpleadoPorID(entidad.EmpleadoID);
+            entidad.Estado = "S";
+            entidad.FechaSuspension = DateTime.Now;
+            db.Entry(entidad).State = EntityState.Modified;
+            db.SaveChanges();
+            correo.EnviarCorreo("Clinica Ricardo Palma", empleado.Correo, "Suspension de convocatoria", cuerpoCorreo, false, null);
+            response.mensaje = "Se suspendio con exito";
+            return response;
+        }
+
+        public dynamic ObtenerEmpleadoPorID(int id)
+        {
+            return db.DB_Empleado.Where(x => x.EmpleadoID == id).FirstOrDefault();
+        }
     }
 }

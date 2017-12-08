@@ -12,81 +12,156 @@ else
 }
 
 <form id="frmNuevoConvocatoria">
-    @Html.HiddenFor(model => model.Convocatoriaid, new { htmlAttributes = new { @class = "form-control" } })
-    
-    <div class="form-group">
-        @Html.LabelFor(model => model.Numero, new { @class = "col-sm-4 control-label" })
-        <div class="col-sm-7">
-            @Html.EditorFor(model => model.Numero, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-            @Html.ValidationMessageFor(model => model.Numero, "", new { @class = "text-danger" })
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="col-sm-6" style="padding: 0px 0px 5px 0px">
+                <div class="col-sm-12">
+                    <div class="col-sm-4" style="padding: 0px">
+                        @Html.HiddenFor(model => model.Convocatoriaid, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.LabelFor(model => model.Numero, new { @class = "control-label" })
+                    </div>
+                    <div class="col-sm-8">
+                        @Html.EditorFor(model => model.Numero, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                        @Html.ValidationMessageFor(model => model.Numero, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-    <div class="form-group">
-        @Html.LabelFor(model => model.FechaInicio, new { @class = "col-sm-4 control-label" })
-        <div class="col-sm-7">
-            @Html.EditorFor(model => model.FechaInicio, new { htmlAttributes = new { @class = "form-control date" } })
-            @Html.ValidationMessageFor(model => model.FechaInicio, "", new { @class = "text-danger" })
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="col-sm-6" style="padding: 0px 0px 5px 0px">
+                <div class="col-sm-12">
+                    <div class="col-sm-4" style="padding: 0px">
+                        @Html.LabelFor(model => model.FechaInicio, new { @class = "control-label" })
+                    </div>
+                    <div class="col-sm-8">
+                        <div class="input-group">
+                            @Html.EditorFor(model => model.FechaInicio, new { htmlAttributes = new { @class = "form-control date" } })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.FechaInicio, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-    <div class="form-group">
-        @Html.LabelFor(model => model.FechaFin, new { @class = "col-sm-4 control-label" })
-        <div class="col-sm-7">
-            @Html.EditorFor(model => model.FechaFin, new { htmlAttributes = new { @class = "form-control date" } })
-            @Html.ValidationMessageFor(model => model.FechaFin, "", new { @class = "text-danger" })
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="col-sm-6" style="padding: 0px 0px 5px 0px">
+                <div class="col-sm-12">
+                    <div class="col-sm-4" style="padding: 0px">
+                        @Html.LabelFor(model => model.FechaFin, new { @class = "control-label" })
+                    </div>
+                    <div class="col-sm-8">
+                        <div class="input-group">
+                            @Html.EditorFor(model => model.FechaFin, new { htmlAttributes = new { @class = "form-control date" } })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.FechaFin, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     @if (Model == null)
     {
-        <div class="form-group colFormularioHorizontal">
-            @Html.LabelFor(model => model.RubroID, new { @class = "col-sm-4 control-label obligatorio" })
-            <div class="col-sm-7">
-                @Html.DropDownListFor(model => model.RubroID, new SelectList(ViewBag.Rubros, "RubroID", "Descripcion"), new { @data_width = "100%", @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.RubroID, "", new { @class = "text-danger" })
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="col-sm-6" style="padding: 0px 0px 5px 0px">
+                    <div class="col-sm-12">
+                        <div class="col-sm-4" style="padding: 0px">
+                            @Html.LabelFor(model => model.RubroID, new { @class = "control-label obligatorio" })
+                        </div>
+                        <div class="col-sm-8">
+                            @Html.DropDownListFor(model => model.RubroID, new SelectList(ViewBag.Rubros, "RubroID", "Descripcion"), new { @data_width = "100%", @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.RubroID, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="form-group colFormularioHorizontal">
-            @Html.LabelFor(model => model.EmpleadoID, new { @class = "col-sm-4 control-label obligatorio" })
-            <div class="col-sm-7">
-                @Html.DropDownListFor(model => model.EmpleadoID, new SelectList(ViewBag.Solicitantes, "EmpleadoID", "NombreCompleto"), new { @data_width = "100%", @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.EmpleadoID, "", new { @class = "text-danger" })
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="col-sm-6" style="padding: 0px 0px 5px 0px">
+                    <div class="col-sm-12">
+                        <div class="col-sm-4" style="padding: 0px">
+                            @Html.LabelFor(model => model.EmpleadoID, new { @class = "control-label obligatorio" })
+                        </div>
+                        <div class="col-sm-8">
+                            @Html.DropDownListFor(model => model.EmpleadoID, new SelectList(ViewBag.Solicitantes, "EmpleadoID", "NombreCompleto"), new { @data_width = "100%", @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.EmpleadoID, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="col-sm-6" style="padding: 0px 0px 5px 0px">
+                    <div class="col-sm-12">
+                        <div class="col-sm-4" style="padding: 0px">
+                            @Html.LabelFor(model => model.Requisito, new { @class = "control-label" })
+                        </div>
+                        <div class="col-sm-8">
+                            <input type="file" id="RequisitoFile" name="RequisitoFile" class="file" />
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     }
     else
     {
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="col-sm-6" style="padding: 0px 0px 5px 0px">
+                    <div class="col-sm-12">
+                        <div class="col-sm-4" style="padding: 0px">
+                            @Html.LabelFor(model => model.RubroID, new { @class = "control-label obligatorio" })
+                        </div>
+                        <div class="col-sm-8">
+                            @Html.DropDownListFor(model => model.RubroID, new SelectList(ViewBag.Rubros, "RubroID", "Descripcion"), new { @data_width = "100%", @class = "form-control", @readonly = "readonly" })
+                            @Html.ValidationMessageFor(model => model.RubroID, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="col-sm-6" style="padding: 0px 0px 5px 0px">
+                    <div class="col-sm-12">
+                        <div class="col-sm-4" style="padding: 0px">
+                            @Html.LabelFor(model => model.EmpleadoID, new { @class = "control-label obligatorio" })
+                        </div>
+                        <div class="col-sm-8">
+                            @Html.DropDownListFor(model => model.EmpleadoID, new SelectList(ViewBag.Solicitantes, "EmpleadoID", "NombreCompleto"), new { @data_width = "100%", @class = "form-control", @readonly = "readonly" })
+                            @Html.ValidationMessageFor(model => model.EmpleadoID, "", new { @class = "text-danger" })
+                            @Html.HiddenFor(model => model.Requisito, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
 
-        <div class="form-group colFormularioHorizontal">
-            @Html.LabelFor(model => model.RubroID, new { @class = "col-sm-4 control-label obligatorio" })
-            <div class="col-sm-7">
-                @Html.DropDownListFor(model => model.RubroID, new SelectList(ViewBag.Rubros, "RubroID", "Descripcion"), new { @data_width = "100%", @class = "form-control", @readonly = "readonly" })
-                @Html.ValidationMessageFor(model => model.RubroID, "", new { @class = "text-danger" })
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="col-sm-4" style="padding: 0px 0px 5px 0px">
             </div>
-        </div>
-        <div class="form-group colFormularioHorizontal">
-            @Html.LabelFor(model => model.EmpleadoID, new { @class = "col-sm-4 control-label obligatorio" })
-            <div class="col-sm-7">
-                @Html.DropDownListFor(model => model.EmpleadoID, new SelectList(ViewBag.Solicitantes, "EmpleadoID", "NombreCompleto"), new { @data_width = "100%", @class = "form-control", @readonly = "readonly" })
-                @Html.ValidationMessageFor(model => model.EmpleadoID, "", new { @class = "text-danger" })
+            <div class="col-sm-4" style="padding: 0px 0px 5px 0px">
             </div>
-        </div>
-    }
-    @if (Model == null)
-    {
-        <div class="form-group">
-            @Html.LabelFor(model => model.Requisito, new { @class = "col-sm-4 control-label" })
-            <div class="col-sm-7">
-                <input type="file" id="RequisitoFile" name="RequisitoFile" />
+            <div class="col-sm-4" style="padding: 0px 0px 5px 0px">
+                <div class="col-sm-12">
+                    <div class="col-sm-4" style="padding: 0px">
+                        <a href="@Url.Action("Index", "Convocatoria" )" class="btn btn-primary" style="color: white;"><span class="glyphicon glyphicon-circle-arrow-left" id="btnCancelar"></span> Cancelar</a>
+                    </div>
+                    <div class="col-sm-4">
+                        <button type="button" class="btn btn-primary" id="btnGuardar">Guardar</button>
+                    </div>
+                </div>
             </div>
-        </div>
-    }
-    else
-    {
-        @Html.HiddenFor(model => model.Requisito, new { htmlAttributes = new { @class = "form-control" } })
-    }
 
-    <div class="modal-footer" style="margin-top: 20px;">
-        <a href="@Url.Action("Index", "Convocatoria")" class="btn btn-primary" style="color: white;"><span class="glyphicon glyphicon-ok-sign" id="btnCancelar"></span> Cancelar</a>
-        <button type="button" class="btn btn-primary" id="btnGuardar">Guardar</button>
+        </div>
     </div>
 </form>
 @section scripts{
