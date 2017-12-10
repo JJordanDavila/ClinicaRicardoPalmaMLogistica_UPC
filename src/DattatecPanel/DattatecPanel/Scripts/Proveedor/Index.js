@@ -39,9 +39,24 @@
                     }
                 ]],
                 width: '100%',
-                singleSelect: true
+                singleSelect: true,
+                rownumbers: true,
+                pagination: true
             });
-        }
+
+            var pager = $('#dgProveedores').datagrid('getPager');
+            $(pager).pagination({
+                pageSize: 10,
+                showPageList: true,
+                pageList: [10, 20, 30, 40, 50],
+                beforePageText: 'Página',
+                afterPageText: 'de {pages}',
+                displayMsg: 'Mostrando del {from} al {to} de los {total} resultados',
+                onSelectPage: function (pageNumber, pageSize) {
+                    Proveedor.prototype.buscar();
+                }
+            });
+        };
 
         Proveedor.prototype.buscar = function () {
             var ruc = $("#rucIndex").val();
@@ -50,6 +65,9 @@
                     return gMensajeInformacion("Solo se admiten numeros en el campo número de proveedor.");
                 }
             }
+
+            var pageNumber_ = $('#dgProveedores').datagrid('getPager').pagination('options').pageNumber;
+            var pageSize_ = $('#dgProveedores').datagrid('getPager').pagination('options').pageSize;
 
             $.ajax({
                 url: globalRutaServidor + "Proveedor/ListarProveedor",
@@ -60,6 +78,12 @@
                 },
                 success: function (data) {
                     gMostrarResultadoBusqueda(data.rows, "#dgProveedores");
+
+                    $('#dgProveedores').datagrid('getPager').pagination({
+                        total: data.total == 0 ? 1 : data.total,
+                        pageSize: pageSize_,
+                        pageNumber: pageNumber_
+                    });
                 },
                 error: function () {
                     gMensajeErrorAjax();

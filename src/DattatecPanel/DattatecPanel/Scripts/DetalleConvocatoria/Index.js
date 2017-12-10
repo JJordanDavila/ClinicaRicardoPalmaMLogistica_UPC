@@ -31,7 +31,6 @@
                             return gFormatearFechaJson(value);
                         }
                     },
-                  
                     {
                         field: 'action', title: 'Opciones', width: 100, align: 'center',
                         formatter: function (value, row, index) {
@@ -42,11 +41,29 @@
                     }
                 ]],
                 width: '100%',
-                singleSelect: true
+                singleSelect: true,
+                rownumbers: true,
+                pagination: true
             });
-        }
+
+            var pager = $('#dgDetalleConvocatoriaPostulantes').datagrid('getPager');
+            $(pager).pagination({
+                pageSize: 10,
+                showPageList: true,
+                pageList: [10, 20, 30, 40, 50],
+                beforePageText: 'Página',
+                afterPageText: 'de {pages}',
+                displayMsg: 'Mostrando del {from} al {to} de los {total} resultados',
+                onSelectPage: function (pageNumber, pageSize) {
+                    DetalleConvocatoria.prototype.buscar();
+                }
+            });
+        };
 
         DetalleConvocatoria.prototype.buscar = function () {
+
+            var pageNumber_ = $('#dgDetalleConvocatoriaPostulantes').datagrid('getPager').pagination('options').pageNumber;
+            var pageSize_ = $('#dgDetalleConvocatoriaPostulantes').datagrid('getPager').pagination('options').pageSize;
 
             $.ajax({
                 url: globalRutaServidor + "DetalleConvocatoria/ListarDetalleConvocatoriaPostulante",
@@ -58,6 +75,12 @@
                 },
                 success: function (data) {
                     gMostrarResultadoBusqueda(data.rows, "#dgDetalleConvocatoriaPostulantes");
+
+                    $('#dgDetalleConvocatoriaPostulantes').datagrid('getPager').pagination({
+                        total: data.total == 0 ? 1 : data.total,
+                        pageSize: pageSize_,
+                        pageNumber: pageNumber_
+                    });
                 },
                 error: function () {
                     gMensajeErrorAjax();

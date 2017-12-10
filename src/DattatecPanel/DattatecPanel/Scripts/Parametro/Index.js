@@ -69,17 +69,29 @@
                     }
                 ]],
                 width: '100%',
-                singleSelect: true
+                singleSelect: true,
+                rownumbers: true,
+                pagination: true
+            });
+
+            var pager = $('#dgParametros').datagrid('getPager');
+            $(pager).pagination({
+                pageSize: 10,
+                showPageList: true,
+                pageList: [10, 20, 30, 40, 50],
+                beforePageText: 'Página',
+                afterPageText: 'de {pages}',
+                displayMsg: 'Mostrando del {from} al {to} de los {total} resultados',
+                onSelectPage: function (pageNumber, pageSize) {
+                    Parametro.prototype.buscar();
+                }
             });
         };
 
         Parametro.prototype.buscar = function () {
-            ////var nroParametro = $("#nroParametro").val();
-            ////if (nroParametro != undefined && nroParametro.trim() != "") {
-            ////    if (isNaN(nroParametro.trim())) {
-            ////        return gMensajeInformacion("Solo se admiten numeros en el campo número de Parametro.");
-            ////    }
-            ////}
+
+            var pageNumber_ = $('#dgParametros').datagrid('getPager').pagination('options').pageNumber;
+            var pageSize_ = $('#dgParametros').datagrid('getPager').pagination('options').pageSize;
 
             $.ajax({
                 url: globalRutaServidor + "Parametro/ListarParametros",
@@ -91,16 +103,18 @@
                 },
                 success: function (data) {
                     gMostrarResultadoBusqueda(data.rows, "#dgParametros");
+
+                    $('#dgParametros').datagrid('getPager').pagination({
+                        total: data.total == 0 ? 1 : data.total,
+                        pageSize: pageSize_,
+                        pageNumber: pageNumber_
+                    });
                 },
                 error: function () {
                     gMensajeErrorAjax();
                 }
             });
-        }
-
-
-
-
+        };
 
         Parametro.prototype.agregarEventos = function () {
             $("#btnConsultar").on('click', function () {

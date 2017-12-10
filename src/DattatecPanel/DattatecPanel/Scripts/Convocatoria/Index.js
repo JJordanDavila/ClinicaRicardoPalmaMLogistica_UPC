@@ -54,6 +54,7 @@
                 ]],
                 width: '100%',
                 singleSelect: true,
+                rownumbers: true,
                 pagination: true
             });
 
