@@ -23,8 +23,8 @@ namespace DattatecPanel.Controllers
         {
             try
             {
-                var lista = new ConvocatoriaModel().ListarConvocatoriaProveedores(numero, fini, ffin);
-                var jsonresult = Json(new { rows = lista }, JsonRequestBehavior.AllowGet);
+                var lista = new ConvocatoriaModel().ListarConvocatoriaProveedores(numero, fini, ffin, page, pageSize);
+                var jsonresult = Json(new { rows = lista.lista, total = lista.total }, JsonRequestBehavior.AllowGet);
                 jsonresult.MaxJsonLength = int.MaxValue;
                 return jsonresult;
             }

@@ -2,10 +2,8 @@
 using DattatecPanel.Models;
 using DattatecPanel.Models.DTO;
 using DattatecPanel.Models.Entidades;
-using DattatecPanel.Models.Util;
 using System;
 using System.Data.Entity;
-using System.IO;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
@@ -23,12 +21,12 @@ namespace DattatecPanel.Controllers
             return View();
         }
 
-        public ActionResult ListarParametros()
+        public ActionResult ListarParametros(int page, int pageSize)
         {
             try
             {
-                var lista = new ParametroModel().ListarParametros();
-                var jsonresult = Json(new { rows = lista }, JsonRequestBehavior.AllowGet);
+                var lista = new ParametroModel().ListarParametros(page, pageSize);
+                var jsonresult = Json(new { rows = lista.lista, total = lista.total }, JsonRequestBehavior.AllowGet);
                 jsonresult.MaxJsonLength = int.MaxValue;
                 return jsonresult;
             }
@@ -37,7 +35,6 @@ namespace DattatecPanel.Controllers
                 return Json(new { statusCode = HttpStatusCode.BadRequest }, JsonRequestBehavior.AllowGet);
             }
         }
-
 
         public ActionResult Nuevo()
         {
@@ -102,8 +99,6 @@ namespace DattatecPanel.Controllers
             }
         }
 
-
-
         ////public ActionResult Actualizar(int id)
         ////{
         ////    var entidad = db.DB_Parametro.Where(x => x.ParametroId == id).First();
@@ -152,8 +147,6 @@ namespace DattatecPanel.Controllers
             }
         }
 
-
-
         public ActionResult Eliminar(int id)
         {
             //Parametro parametro = db.DB_Parametro.Find(id);
@@ -184,7 +177,6 @@ namespace DattatecPanel.Controllers
                 return Json(new { statusCode = HttpStatusCode.BadRequest }, JsonRequestBehavior.AllowGet);
             }
         }
-
 
         //////////////////////////////////
         public ActionResult Actualizar(int id)
@@ -231,8 +223,8 @@ namespace DattatecPanel.Controllers
         {
             try
             {
-                var lista = new ParametroModel().ListarHistorial();
-                return Json(new { statusCode = HttpStatusCode.OK, rows = lista, total = lista }, JsonRequestBehavior.AllowGet);
+                var lista = new ParametroModel().ListarHistorial(page, pageSize);
+                return Json(new { statusCode = HttpStatusCode.OK, rows = lista.lista, total = lista.total }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {

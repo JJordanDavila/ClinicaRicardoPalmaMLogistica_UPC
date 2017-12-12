@@ -73,7 +73,10 @@
             $.ajax({
                 url: globalRutaServidor + "Postulante/ListarConvocatorias",
                 type: 'GET',
-                data: null,
+                data: {
+                    page: pageNumber_,
+                    pageSize: pageSize_
+                },
                 success: function (data) {
                     gMostrarResultadoBusqueda(data.rows, "#dgListadoConvocatorias");
 

@@ -71,7 +71,9 @@
                 data: {
                     numeroConvocatoria: $("#numeroConvocatoria").val(),
                     ruc: $("#RUC").val(),
-                    razonSocial: $("#razonSocial").val()
+                    razonSocial: $("#razonSocial").val(),
+                    page: pageNumber_,
+                    pageSize: pageSize_
                 },
                 success: function (data) {
                     gMostrarResultadoBusqueda(data.rows, "#dgDetalleConvocatoriaPostulantes");

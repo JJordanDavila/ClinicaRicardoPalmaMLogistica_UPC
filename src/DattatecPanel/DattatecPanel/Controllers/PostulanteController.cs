@@ -155,12 +155,12 @@ namespace DattatecPanel.Controllers
             return View("RegistrarPostulante", postulante);
         }
 
-        public ActionResult ListarConvocatorias()
+        public ActionResult ListarConvocatorias(int page, int pageSize)
         {
             try
             {
-                var lista = new PostulanteModel().ListarConvocatorias();
-                var jsonresult = Json(new { rows = lista }, JsonRequestBehavior.AllowGet);
+                var lista = new PostulanteModel().ListarConvocatorias(page, pageSize);
+                var jsonresult = Json(new { rows = lista.lista, total = lista.total }, JsonRequestBehavior.AllowGet);
                 jsonresult.MaxJsonLength = int.MaxValue;
                 return jsonresult;
             }

@@ -3,12 +3,10 @@ using DattatecPanel.Models.DTO;
 using DattatecPanel.Models.Entidades;
 using DattatecPanel.Models.Util;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
-using System.Web;
 using System.Web.Script.Serialization;
 
 namespace DattatecPanel.Models
@@ -142,7 +140,6 @@ namespace DattatecPanel.Models
             }
         }
 
-
         public ResponsePostulante VerificarRUC(string numeroRUC)
         {
             try
@@ -171,7 +168,6 @@ namespace DattatecPanel.Models
                 throw;
             }
         }
-
 
         public ResponsePostulante ValidarRuc(string numeroRUC, int convocatoriaId)
         {
@@ -215,8 +211,6 @@ namespace DattatecPanel.Models
             }
         }
 
-
-
         public Datos getDatosSunat(string ruc)
         {
             try
@@ -243,10 +237,12 @@ namespace DattatecPanel.Models
                 return null;
             }
         }
-        public dynamic ListarConvocatorias()
+
+        public ListarDTO ListarConvocatorias(int page, int pageSize)
         {
             try
             {
+                ListarDTO response = new ListarDTO();
                 var lista = db.DB_Convocatoria.Where(a => a.Estado.Equals("E")).ToList().Select(s => new
                 {
                     s.Convocatoriaid,
@@ -257,7 +253,9 @@ namespace DattatecPanel.Models
                     s.Rubro.Descripcion,
                     s.Empleado.NombreCompleto
                 }).ToList();
-                return lista;
+                response.total = lista.Count();
+                response.lista = lista.Skip((page - 1) * pageSize).Take(pageSize);
+                return response;
             }
             catch (Exception ex)
             {
@@ -265,6 +263,7 @@ namespace DattatecPanel.Models
                 throw;
             }
         }
+
         public dynamic ListarConvocatoriasPorID(int id)
         {
             try

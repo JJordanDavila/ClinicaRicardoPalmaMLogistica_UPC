@@ -133,7 +133,9 @@
                 RUC: $("#txtRUC").val(),
                 RazonSocial: $("#txtRazonSocial").val(),
                 FechaInicio: $("#txtFechaInicio").val(),
-                FechaFin: $("#txtFechaFin").val()
+                FechaFin: $("#txtFechaFin").val(),
+                page: pageNumber_,
+                pageSize: pageSize_
             };
 
             $.ajax({

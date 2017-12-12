@@ -3,6 +3,7 @@ using DattatecPanel.Models.DTO;
 using DattatecPanel.Models.Entidades;
 using DattatecPanel.Models.Util;
 using System;
+using System.Data;
 using System.Data.Entity;
 using System.IO;
 using System.Linq;
@@ -14,10 +15,12 @@ namespace DattatecPanel.Models
         private ClinicaDBContext db = new ClinicaDBContext();
         private MailSMTP correo = new MailSMTP();
 
-        public dynamic ListarConvocatoriaProveedores(string numero, string fini, string ffin)
+        public ListarDTO ListarConvocatoriaProveedores(string numero, string fini, string ffin, int page, int pageSize)
         {
             try
             {
+                ListarDTO response = new ListarDTO();
+
                 var dfini = string.IsNullOrEmpty(fini) ? DateTime.MinValue : Convert.ToDateTime(fini);
                 var dffin = string.IsNullOrEmpty(ffin) ? DateTime.MaxValue : Convert.ToDateTime(ffin);
                 var lista = db.DB_Convocatoria.Where(x => x.Numero.Contains(numero)
@@ -33,7 +36,9 @@ namespace DattatecPanel.Models
                    s.Rubro.Descripcion,
                    s.Empleado.NombreCompleto
                }).ToList();
-                return lista;
+                response.total = lista.Count();
+                response.lista = lista.Skip((page - 1) * pageSize).Take(pageSize);
+                return response;
             }
             catch (Exception ex)
             {

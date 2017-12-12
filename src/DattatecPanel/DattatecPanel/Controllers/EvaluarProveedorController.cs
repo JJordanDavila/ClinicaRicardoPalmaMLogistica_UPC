@@ -23,7 +23,7 @@ namespace DattatecPanel.Controllers
             try
             {
                 var lista = new EvaluarProveedorModel().ListarProveedores(request);
-                var jsonresult = Json(new { rows = lista }, JsonRequestBehavior.AllowGet);
+                var jsonresult = Json(new { rows = lista.lista, total = lista.total }, JsonRequestBehavior.AllowGet);
                 jsonresult.MaxJsonLength = int.MaxValue;
                 return jsonresult;
             }

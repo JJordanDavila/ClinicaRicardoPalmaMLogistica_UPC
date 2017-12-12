@@ -74,7 +74,9 @@
                 type: 'GET',
                 data: {
                     ruc: $("#rucIndex").val(),
-                    razonSocial: $("#razonSocialIndex").val()
+                    razonSocial: $("#razonSocialIndex").val(),
+                    page: pageNumber_,
+                    pageSize: pageSize_
                 },
                 success: function (data) {
                     gMostrarResultadoBusqueda(data.rows, "#dgProveedores");

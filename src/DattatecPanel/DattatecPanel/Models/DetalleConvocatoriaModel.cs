@@ -1,11 +1,9 @@
 ﻿using DattatecPanel.Context;
 using DattatecPanel.Models.DTO;
 using DattatecPanel.Models.Entidades;
-using DattatecPanel.Models.Util;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
-using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -16,7 +14,8 @@ namespace DattatecPanel.Models
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private ClinicaDBContext db = new ClinicaDBContext();
 
-        public RespuestaJsonDTO RechazarPostulante(RechazarPostulanteDTO datos) {
+        public RespuestaJsonDTO RechazarPostulante(RechazarPostulanteDTO datos)
+        {
             try
             {
                 RespuestaJsonDTO mensaje = new RespuestaJsonDTO();
@@ -45,7 +44,7 @@ namespace DattatecPanel.Models
                             throw;
                         }
                     }
-                    
+
                 }
                 else
                 {
@@ -61,14 +60,16 @@ namespace DattatecPanel.Models
                 throw;
             }
         }
-        
-        public RespuestaJsonDTO ValidarPostulante(ValidarPostulanteDTO datos) {
+
+        public RespuestaJsonDTO ValidarPostulante(ValidarPostulanteDTO datos)
+        {
             try
             {
                 RespuestaJsonDTO mensaje = new RespuestaJsonDTO();
                 Proveedor proveedor = new Proveedor();
                 Postulante postulante = db.DB_Postulante.Find(datos.PostulanteId);
-                if(postulante!=null){
+                if (postulante != null)
+                {
                     Proveedor proveedorExistente = db.DB_Proveedor.Where(x => x.RUC == postulante.RUC).FirstOrDefault();
                     if (proveedorExistente == null)
                     {
@@ -86,12 +87,14 @@ namespace DattatecPanel.Models
                         mensaje.mensaje = "Aprobación satisfactoria";
                         mensaje.mensajeInfo = string.Empty;
                     }
-                    else{
+                    else
+                    {
                         mensaje.mensaje = string.Empty;
                         mensaje.mensajeInfo = "Ya se encuentra registrado un proveedor con el RUC N° " + postulante.RUC;
                     }
                 }
-                else{
+                else
+                {
                     mensaje.mensaje = string.Empty;
                     mensaje.mensajeInfo = "No se encontró el postulante con identificador " + datos.PostulanteId;
                 }
@@ -105,10 +108,11 @@ namespace DattatecPanel.Models
             }
         }
 
-        public List<PostulanteConvocatoriaDTO> ListarDetalleConvocatoriaPostulante(string numeroConvocatoria, string ruc, string razonSocial)
+        public ListarDTO ListarDetalleConvocatoriaPostulante(string numeroConvocatoria, string ruc, string razonSocial, int page, int pageSize)
         {
             try
             {
+                ListarDTO response = new ListarDTO();
                 List<PostulanteConvocatoriaDTO> listaPostulante = new List<PostulanteConvocatoriaDTO>();
                 StringBuilder query = new StringBuilder();
                 query.AppendLine("Select D.ConvocatoriaId, P.RUC, P.RazonSocial, R.Descripcion, C.Numero, P.PostulanteId, D.Fecha_Registro");
@@ -147,7 +151,9 @@ namespace DattatecPanel.Models
                    s.Fecha_Registro
                }).ToList();
                  */
-                return lista;
+                response.total = lista.Count();
+                response.lista = lista.Skip((page - 1) * pageSize).Take(pageSize);
+                return response;
             }
             catch (Exception ex)
             {
@@ -190,14 +196,20 @@ namespace DattatecPanel.Models
             try
             {
                 ValidarPostulanteDTO datos = new ValidarPostulanteDTO();
-                
+
                 //datos del postulante
-                var detalleConvocatoria = db.DB_DetalleConvocatoria.Where(x => x.ConvocatoriaId == convocatoriaId &&  x.PostulanteId == postulanteId).ToList().Select(s => new
+                var detalleConvocatoria = db.DB_DetalleConvocatoria.Where(x => x.ConvocatoriaId == convocatoriaId && x.PostulanteId == postulanteId).ToList().Select(s => new
                 {
-                    s.Postulante.RUC, s.Postulante.RazonSocial, s.Postulante.Correo, s.Convocatoria.Rubro.Descripcion, s.PostulanteId, s.Convocatoria.RubroID, s.Convocatoria.Numero
+                    s.Postulante.RUC,
+                    s.Postulante.RazonSocial,
+                    s.Postulante.Correo,
+                    s.Convocatoria.Rubro.Descripcion,
+                    s.PostulanteId,
+                    s.Convocatoria.RubroID,
+                    s.Convocatoria.Numero
                 }).FirstOrDefault();
 
-                if (detalleConvocatoria!=null)
+                if (detalleConvocatoria != null)
                 {
                     datos.RUC = detalleConvocatoria.RUC;
                     datos.RazonSocial = detalleConvocatoria.RazonSocial;
@@ -210,7 +222,9 @@ namespace DattatecPanel.Models
                 //archivos cargados
                 var archivosCargados = db.DB_DetallePostulante.Where(x => x.Postulante.PostulanteId == postulanteId).ToList().Select(s => new
                 {
-                    s.DetalleId, s.NombreArchivo, s.PostulanteId
+                    s.DetalleId,
+                    s.NombreArchivo,
+                    s.PostulanteId
                 }).ToList();
                 if (archivosCargados != null)
                 {

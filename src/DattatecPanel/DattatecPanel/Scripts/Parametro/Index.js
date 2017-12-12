@@ -99,7 +99,9 @@
                 data: {
                     ////numero: $("#nroParametro").val(),
                     fini: $("#FecIniIndex").val(),
-                    ffin: $("#FecFinIndex").val()
+                    ffin: $("#FecFinIndex").val(),
+                    page: pageNumber_,
+                    pageSize: pageSize_
                 },
                 success: function (data) {
                     gMostrarResultadoBusqueda(data.rows, "#dgParametros");
