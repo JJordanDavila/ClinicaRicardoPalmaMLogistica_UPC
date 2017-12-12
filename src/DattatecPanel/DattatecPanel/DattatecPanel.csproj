@@ -185,6 +185,7 @@
     <Compile Include="Controllers\ConvocatoriaController.cs" />
     <Compile Include="Controllers\CotizacionController.cs" />
     <Compile Include="Controllers\DetalleConvocatoriaController.cs" />
+    <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\EvaluarProveedorController.cs" />
     <Compile Include="Controllers\GS_ORDEN_MEDICAController.cs" />
     <Compile Include="Controllers\GS_SRSController.cs" />
@@ -705,6 +706,8 @@
     <Content Include="Views\Postulante\Index.cshtml" />
     <Content Include="Views\DetalleConvocatoria\Rechazar.cshtml" />
     <Content Include="Views\Parametro\Historial.cshtml" />
+    <Content Include="Views\Error\Error.cshtml" />
+    <Content Include="Views\Error\NotFound.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Browsers\" />
