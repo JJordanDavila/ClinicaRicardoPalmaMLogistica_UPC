@@ -14,5 +14,7 @@ namespace DattatecPanel.Models.DTO
         public int idProveedor { get; set; }
         public string Estado { get; set; }
         public string Observacion { get; set; }
+        public int page { get; set; }
+        public int pageSize { get; set; }
     }
 }

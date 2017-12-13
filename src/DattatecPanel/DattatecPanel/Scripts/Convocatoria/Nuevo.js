@@ -12,7 +12,7 @@
         NuevaConvocatoria.prototype.Guardar = function () {
             var fini = $("#FechaInicio").val();
             var ffin = $("#FechaFin").val();
-            var mensaje = ValidarFechaInicio_Fin(fini, ffin, 30);
+            var mensaje = gValidarFechaInicio_Fin(fini, ffin, 30);
             if (mensaje != "") { return gMensajeInformacion(mensaje); }
 
             gMensajeConfirmacion("¿Esta seguro de registrar?", function () {
@@ -63,8 +63,9 @@
                     async: false,
                     data: { entidad: convocatoria },
                     success: function (data) {
+                        debugger;
                         if (data.statusCode == 200) {
-                            if (data.mensajeInfo == "") {
+                            if (data.mensajeInfo == "" || data.mensajeInfo == null) {
                                 var callback = function () {
                                     $("#btnCancelar").click();
                                 };
@@ -73,7 +74,7 @@
                                 gMensajeInformacion(data.mensajeInfo);
                             }
                         } else {
-                            gMensajeInformacion('Ocurrio un error.');
+                            gMensajeErrorAjax();
                         }
                     },
                     error: function () {

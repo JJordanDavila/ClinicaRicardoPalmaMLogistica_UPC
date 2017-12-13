@@ -19,7 +19,7 @@ namespace DattatecPanel.Models.Entidades
         [Range(0, 30, ErrorMessage = "Debe tener un rango entre 0 y 30 ")]
         //[MaxLength(3, ErrorMessage = "La propiedad {0} no puede tener más de {1} elementos")]
         [Display(Name = "Intervalo")]
-         public int Intervalo { get; set; }
+        public int Intervalo { get; set; }
 
         [Display(Name = "Unidad Medida Intervalo")]
         public string UnidadMedidaIntervalo { get; set; }
@@ -43,9 +43,7 @@ namespace DattatecPanel.Models.Entidades
         [Display(Name = "Estado URL OSCE")]
         public string EstadoServicioOSCE { get; set; }
 
-
         [NotMapped]
         public string cbxMedidasIntervalos { get; set; }
     }
-
-    }
+}

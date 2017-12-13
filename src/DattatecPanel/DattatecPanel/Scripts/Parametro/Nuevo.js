@@ -63,7 +63,7 @@
 
             var fini = $("#FecIni").val();
             var ffin = $("#FecFin").val();
-            var mensaje = ValidarFechaInicio_Fin(fini, ffin, 30);
+            var mensaje = gValidarFechaInicio_Fin(fini, ffin, 30);
             if (mensaje != "") { return gMensajeInformacion(mensaje); }
 
             gMensajeConfirmacion("¿Esta seguro de registrar los cambios?", function () {

@@ -24,15 +24,15 @@ namespace DattatecPanel.Controllers
             return View();
         }
 
-        public ActionResult ListarDetalleConvocatoriaPostulante(string numeroConvocatoria, string ruc, string razonSocial)
+        public ActionResult ListarDetalleConvocatoriaPostulante(string numeroConvocatoria, string ruc, string razonSocial, int page, int pageSize)
         {
             try
             {
                 if (!string.IsNullOrWhiteSpace(numeroConvocatoria)) numeroConvocatoria = numeroConvocatoria.Trim();
                 if (!string.IsNullOrWhiteSpace(ruc)) ruc = ruc.Trim();
                 if (!string.IsNullOrWhiteSpace(razonSocial)) razonSocial = razonSocial.Trim();
-                var lista = new DetalleConvocatoriaModel().ListarDetalleConvocatoriaPostulante(numeroConvocatoria, ruc, razonSocial);
-                var jsonresult = Json(new { rows = lista }, JsonRequestBehavior.AllowGet);
+                var lista = new DetalleConvocatoriaModel().ListarDetalleConvocatoriaPostulante(numeroConvocatoria, ruc, razonSocial, page, pageSize);
+                var jsonresult = Json(new { rows = lista.lista, total = lista.total }, JsonRequestBehavior.AllowGet);
                 jsonresult.MaxJsonLength = int.MaxValue;
                 return jsonresult;
             }

@@ -46,17 +46,45 @@
                     }
                 ]],
                 width: '100%',
-                singleSelect: true
+                singleSelect: true,
+                rownumbers: true,
+                pagination: true
+            });
+
+            var pager = $('#dgListadoConvocatorias').datagrid('getPager');
+            $(pager).pagination({
+                pageSize: 10,
+                showPageList: true,
+                pageList: [10, 20, 30, 40, 50],
+                beforePageText: 'Página',
+                afterPageText: 'de {pages}',
+                displayMsg: 'Mostrando del {from} al {to} de los {total} resultados',
+                onSelectPage: function (pageNumber, pageSize) {
+                    Postulante.prototype.buscar();
+                }
             });
         };
 
         Postulante.prototype.buscar = function () {
+
+            var pageNumber_ = $('#dgListadoConvocatorias').datagrid('getPager').pagination('options').pageNumber;
+            var pageSize_ = $('#dgListadoConvocatorias').datagrid('getPager').pagination('options').pageSize;
+
             $.ajax({
                 url: globalRutaServidor + "Postulante/ListarConvocatorias",
                 type: 'GET',
-                data: null,
+                data: {
+                    page: pageNumber_,
+                    pageSize: pageSize_
+                },
                 success: function (data) {
                     gMostrarResultadoBusqueda(data.rows, "#dgListadoConvocatorias");
+
+                    $('#dgListadoConvocatorias').datagrid('getPager').pagination({
+                        total: data.total == 0 ? 1 : data.total,
+                        pageSize: pageSize_,
+                        pageNumber: pageNumber_
+                    });
                 },
                 error: function () {
                     gMensajeErrorAjax();

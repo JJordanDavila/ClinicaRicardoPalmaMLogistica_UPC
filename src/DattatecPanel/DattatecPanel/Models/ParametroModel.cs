@@ -5,17 +5,17 @@ using System;
 using System.Data.Entity;
 using System.Linq;
 
-
 namespace DattatecPanel.Models
 {
     public class ParametroModel
     {
         private ClinicaDBContext db = new ClinicaDBContext();
 
-        public dynamic ListarParametros()
+        public ListarDTO ListarParametros(int page, int pageSize)
         {
             try
             {
+                ListarDTO response = new ListarDTO();
                 //var dfini = string.IsNullOrEmpty(fini) ? DateTime.MinValue : Convert.ToDateTime(fini);
                 //var dffin = string.IsNullOrEmpty(ffin) ? DateTime.MaxValue : Convert.ToDateTime(ffin);
                 var lista = db.DB_Parametro.ToList().Select(s => new
@@ -32,9 +32,9 @@ namespace DattatecPanel.Models
                     s.EstadoServicioOSCE
                 }).ToList();
 
-                return lista;
-
-
+                response.total = lista.Count();
+                response.lista = lista.Skip((page - 1) * pageSize).Take(pageSize);
+                return response;
             }
             catch (Exception ex)
             {
@@ -93,14 +93,18 @@ namespace DattatecPanel.Models
 
         }
 
-        public dynamic ListarHistorial()
+        public ListarDTO ListarHistorial(int page, int pageSize)
         {
-            var lista =  db.DB_Evidencia.ToList().Select(x => new { 
+            ListarDTO response = new ListarDTO();
+            var lista = db.DB_Evidencia.ToList().Select(x => new
+            {
                 x.EvidenciaId,
                 x.Descripcion,
                 x.Fecha
             }).ToList();
-            return lista;
+            response.total = lista.Count();
+            response.lista = lista.Skip((page - 1) * pageSize).Take(pageSize);
+            return response;
         }
 
     }

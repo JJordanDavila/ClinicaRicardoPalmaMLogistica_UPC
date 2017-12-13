@@ -1,9 +1,7 @@
 ﻿using DattatecPanel.Context;
 using DattatecPanel.Models.DTO;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 
 namespace DattatecPanel.Models
 {
@@ -18,16 +16,17 @@ namespace DattatecPanel.Models
 
                 HistorialProveedorDTO historial = new HistorialProveedorDTO();
 
-                var proveedor = db.DB_Proveedor.Where(x => x.ProveedorID==proveedorId).FirstOrDefault();
+                var proveedor = db.DB_Proveedor.Where(x => x.ProveedorID == proveedorId).FirstOrDefault();
 
                 historial.Ruc = proveedor.RUC;
                 historial.RazonSocial = proveedor.RazonSocial;
-                switch (proveedor.Estado.ToUpper()) {
+                switch (proveedor.Estado.ToUpper())
+                {
                     case "AC": historial.Estado = "ACTIVO"; break;
                     case "SU": historial.Estado = "SUSPENDIDO"; break;
                 }
                 historial.ObservacionesSuspension = proveedor.ObservacionesSuspension;
-                
+
                 var listaLicitacion = db.DB_RegistroProveedorParticipante.Where(x => x.ProveedorID == proveedorId).ToList().Select(s => new
                 {
                     s.Licitacion.Numero,
@@ -36,11 +35,12 @@ namespace DattatecPanel.Models
                     s.monto,
                 }).ToList();
 
-                if (listaLicitacion != null && listaLicitacion.Count > 0) {
+                if (listaLicitacion != null && listaLicitacion.Count > 0)
+                {
                     foreach (var item in listaLicitacion)
                     {
                         historial.ListaParticipacionLicitacionDTO.Add(
-                            new ParticipacionLicitacionDTO() { Fecha = (DateTime)item.Fecha, Numero = item.Numero, FechaColocacionExpediente= item.fechaColExpediente, Moneda = "Soles", Monto = item.monto }
+                            new ParticipacionLicitacionDTO() { Fecha = (DateTime)item.Fecha, Numero = item.Numero, FechaColocacionExpediente = item.fechaColExpediente, Moneda = "Soles", Monto = item.monto }
                         );
                     }
                 }
@@ -58,7 +58,7 @@ namespace DattatecPanel.Models
                     foreach (var item in listaCotizacion)
                     {
                         historial.ListaParticipacionCotizacionDTO.Add(
-                            new ParticipacionCotizacionDTO() { Fecha = (DateTime)item.Fecha, Numero = item.Numero, FormaPago = item.Nombre, NroDiasPago = item.NroDiasPago  }
+                            new ParticipacionCotizacionDTO() { Fecha = (DateTime)item.Fecha, Numero = item.Numero, FormaPago = item.Nombre, NroDiasPago = item.NroDiasPago }
                         );
                     }
                 }
@@ -71,22 +71,24 @@ namespace DattatecPanel.Models
             }
         }
 
-
-        public dynamic ListarProveedor(string ruc, string razonSocial)
+        public ListarDTO ListarProveedor(string ruc, string razonSocial, int page, int pageSize)
         {
             try
             {
+                ListarDTO response = new ListarDTO();
                 var lista = db.DB_Proveedor.Where(x => x.RUC.Contains(ruc) && x.RazonSocial.Contains(razonSocial)).ToList().Select(s => new
-               {
-                   s.ProveedorID,
-                   s.RazonSocial,
-                   s.RUC,
-                   s.ObservacionesSuspension,
-                   s.Estado,
-                   s.CertificadoISO,
-                   s.ConstanciaRNP
-               }).ToList();
-                return lista;
+                {
+                    s.ProveedorID,
+                    s.RazonSocial,
+                    s.RUC,
+                    s.ObservacionesSuspension,
+                    s.Estado,
+                    s.CertificadoISO,
+                    s.ConstanciaRNP
+                }).ToList();
+                response.total = lista.Count();
+                response.lista = lista.Skip((page - 1) * pageSize).Take(pageSize);
+                return response;
             }
             catch (Exception ex)
             {

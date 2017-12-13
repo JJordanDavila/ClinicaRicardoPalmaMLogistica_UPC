@@ -10,7 +10,7 @@ namespace DattatecPanel.Models.Entidades
         [Key]
         public int Convocatoriaid { get; set; }
 
-        [Display(Name = "Número Convocatoria")]
+        [Display(Name = "N° Convocatoria")]
         public string Numero { get; set; }
 
         [Display(Name = "Fecha Inicio")]

@@ -2,10 +2,7 @@
 using DattatecPanel.Models;
 using DattatecPanel.Models.DTO;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
 
 namespace DattatecPanel.Controllers
@@ -26,12 +23,12 @@ namespace DattatecPanel.Controllers
             return View("DetalleHistorial", historial);
         }
 
-        public ActionResult ListarProveedor(string ruc, string razonSocial)
+        public ActionResult ListarProveedor(string ruc, string razonSocial, int page, int pageSize)
         {
             try
             {
-                var lista = new ProveedorModel().ListarProveedor(ruc, razonSocial);
-                var jsonresult = Json(new { rows = lista }, JsonRequestBehavior.AllowGet);
+                var lista = new ProveedorModel().ListarProveedor(ruc, razonSocial, page, pageSize);
+                var jsonresult = Json(new { rows = lista.lista, total = lista.total }, JsonRequestBehavior.AllowGet);
                 jsonresult.MaxJsonLength = int.MaxValue;
                 return jsonresult;
             }

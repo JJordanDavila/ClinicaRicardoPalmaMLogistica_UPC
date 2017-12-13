@@ -3,36 +3,47 @@
     var cadena = Context.IsDebuggingEnabled ? "/" : Url.Content("~/");
 }
 <html>
-
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
     <title>@ViewBag.Title - Clinica Ricardo Palma</title>
 
-    <!--Styles.Render("~/Content/css")
-    Scripts.Render("~/bundles/modernizr")-->
+    @*styles.render("~/content/css")
+        scripts.render("~/bundles/modernizr")*@
     <link href="~/Content/wickedpicker.css" rel="stylesheet" />
-    <link href="~/Content/jquery-ui.css" rel="stylesheet" />
-    <link rel="stylesheet" type="text/css" href="~/style_bootstrap/css/bootstrap.css" />
-    <link rel="stylesheet" type="text/css" href="~/style_bootstrap/css/bootstrap-theme.css" />
-    <link rel="stylesheet" type="text/css" href="~/style_bootstrap/css/Style.css" />
-    <link rel="stylesheet" type="text/css" href="~/style_bootstrap/css/animate.css" />
-    <link rel="stylesheet" type="text/css" href="~/style_bootstrap/css/suscribete.css" />
+    <link href="~/Content/jquery-ui.combobox.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    @*<link href="~/Content/jquery-ui.css" rel="stylesheet" />*@
+    @*<link rel="stylesheet" type="text/css" href="~/style_bootstrap/css/bootstrap.css" />
+        <link rel="stylesheet" type="text/css" href="~/style_bootstrap/css/bootstrap-theme.css" />
+        <link rel="stylesheet" type="text/css" href="~/style_bootstrap/css/Style.css" />
+        <link rel="stylesheet" type="text/css" href="~/style_bootstrap/css/animate.css" />
+        <link rel="stylesheet" type="text/css" href="~/style_bootstrap/css/suscribete.css" />*@
     <link href="~/Content/easyui.css" rel="stylesheet" />
     <link href="~/Content/fileinput.min.css" rel="stylesheet" />
+    <link href="~/Content/jquery-ui-1.12.0.css" rel="stylesheet" />
     <link href="~/Content/styleDatetimepicker.css" rel="stylesheet" />
-    @RenderSection("styles", required: false)
+    @*@RenderSection("styles", required: false)*@
 
     <!--<script src="~/style_bootstrap/js/jquery-1.12.0.min.js"></script>-->
-    <script src="~/Scripts/jquery-2.1.4.min.js"></script>
-    <script src="~/Scripts/jquery-ui-1.11.4.min.js"></script>
-    <script src="~/style_bootstrap/js/bootstrap.js"></script>
+    <script src="~/Scripts/modernizr-2.6.2.js"></script>
+    @*<script src="~/Scripts/jquery-2.1.4.min.js"></script>*@
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    @*<script src="~/Scripts/jquery-ui-1.11.4.min.js"></script>*@
+    @*<script src="~/style_bootstrap/js/bootstrap.js"></script>*@
+    <script src="~/Scripts/bootstrap.min.js"></script>
     <script src="~/Scripts/bootbox.min.js"></script>
     <script src="~/Scripts/jquery.easyui.min.js"></script>
+    <script src="~/Scripts/datagrid-detailview.js"></script>
+    <script src="~/Scripts/easyui-lang-en.js"></script>
     <script src="~/Scripts/fileinput.min.js"></script>
     <script src="~/Scripts/wickedpicker.js"></script>
+    <script src="~/Scripts/jquery-ui-1.12.0.js"></script>
     <script src="~/Scripts/jqueryuiDatetimepicker.js"></script>
-    <script src="~/Scripts/jquery.validate.js"></script>
+    <script src="~/Scripts/jquery-ui.combobox.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    @*<script src="~/Scripts/jquery.validate.js"></script>*@
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
     <script src="~/Scripts/General.js"></script>
     <script>
         var globalRutaServidor = '@cadena';
@@ -116,9 +127,21 @@
         <footer>
             <p>&copy; @DateTime.Now.Year - Clinica Ricardo Palma</p>
         </footer>
+
+        <div id="contenedorModal" class='modal fade' data-backdrop="static" data-keyboard="true" role="dialog">
+            <div class='seccionModal'></div>
+        </div>
+
+        <div id="contenedorModalModal" class='modal fade' data-backdrop="static" data-keyboard="true" role="dialog">
+            <div class='seccionModalModal'></div>
+        </div>
+
+        <div id="dialog-message" title="Mensaje de Sistema">
+            <p id="alertaMensajeModalJqueryUI"></p>
+        </div>
     </div>
 
-    @RenderSection("scripts", required: false)
+
     <script>
         $(document).ready(function () {
             $("body").append("<div class='scrollup'><i class='fa fa-angle-up fa-1x colorf'></i></div>");
@@ -132,6 +155,64 @@
             });
         });
     </script>
+
+    <script type="text/javascript">
+
+        //Script paara formateo de datepicker de bootstrap
+        $.validator.addMethod('date', function (value, element) {
+            if (this.optional(element)) {
+                return true;
+            }
+            var ok = true;
+            try {
+                $.datepicker.parseDate('dd/mm/yy', value);
+            }
+            catch (err) {
+                ok = false;
+            }
+            return ok;
+        });
+
+        //estilos y componentes datepicker ui
+        $('.date').each(function (index, element) {
+            var html = '<div class="input-group-addon"><span class="glyphicon glyphicon-calendar spanDate"></span></div>';
+            $(this).parent().append(html);
+        });
+
+        $('.spanDate').on('click', function () {
+            $(this).parent().siblings('input').focus();
+        });
+
+        //Agregando estilos (*) a los labeles
+        $('.obligatorio').each(function (index, element) {
+            $(this).css("height", "17px");
+            var html = '<p style="font-weight: bold; display: inline-block; margin-left: 5px;" class="text-danger">(<span class="glyphicon glyphicon-asterisk" style="width: 12px;"></span>)</p>';
+            $(this).append(html);
+        });
+
+    </script>
+
+    <script type="text/javascript">
+
+        $(function () {
+            jQuery(document).ajaxStart(function () {
+                ajaxindicatorstart('Cargando... por favor espere...');
+            }).ajaxStop(function () { ajaxindicatorstop(); });
+
+            function ajaxindicatorstop() {
+                jQuery('#resultLoading .bg').height('100%');
+                jQuery('#resultLoading').fadeOut(300);
+                jQuery('body').css('cursor', 'default');
+            };
+
+            function ajaxindicatorstart(i) {
+                "resultLoading" != jQuery("body").find("#resultLoading").attr("id") && jQuery("body").append('<div id="resultLoading" style="display:none"><div><img src="' + globalRutaServidor + 'Content/img/ajax-loader.gif"><div>' + i + '</div></div><div class="bg"></div></div>'), jQuery("#resultLoading").css({ width: "100%", height: "100%", position: "fixed", "z-index": "10000000", top: "0", left: "0", right: "0", bottom: "0", margin: "auto" }), jQuery("#resultLoading .bg").css({ background: "#000000", opacity: "0.7", width: "100%", height: "100%", position: "absolute", top: "0" }), jQuery("#resultLoading>div:first").css({ width: "250px", height: "75px", "text-align": "center", position: "fixed", top: "0", left: "0", right: "0", bottom: "0", margin: "auto", "font-size": "16px", "z-index": "10", color: "#ffffff" }), jQuery("#resultLoading .bg").height("100%"), jQuery("#resultLoading").fadeIn(300), jQuery("body").css("cursor", "wait")
+            }
+        });
+
+    </script>
+    @RenderSection("scripts", required: false)
+    @RenderSection("scriptsModal", required: false)
     <div class="scrollup" style="display: none;"></div>
 </body>
 

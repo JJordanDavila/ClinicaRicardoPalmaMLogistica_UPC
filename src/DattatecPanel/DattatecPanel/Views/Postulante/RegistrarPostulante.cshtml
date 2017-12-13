@@ -63,8 +63,8 @@
             <div class="col-md-8">
                 @using (Html.BeginForm("Cargar", "Postulante", FormMethod.Post, new { enctype = "multipart/form-data" }))
                 {
-                    <input type="hidden" id="hfConvocatoriaIDU" name="convocatoriaIDU" value="@Model.IdConvocatoria" />
-                    <input type="file" name="postedFile" class="file input-sm" />
+                <input type="hidden" id="hfConvocatoriaIDU" name="convocatoriaIDU" value="@Model.IdConvocatoria" />
+                <input type="file" name="postedFile" class="file input-sm" />
                 }
             </div>
 
@@ -78,17 +78,17 @@
                     </tr>
                     @foreach (var item in Model.ListaAdjuntos)
                     {
-                        <tr>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Id)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Nombre)
-                            </td>
-                            <td>
-                                <a href="javascript:;" onclick="DescargarArchivoSesion(@item.Id)">Descargar</a> | <a href="javascript:;" onclick="EliminarArchivoSesion(@item.Id)">Eliminar</a>
-                            </td>
-                        </tr>
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Id)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Nombre)
+                        </td>
+                        <td>
+                            <a href="javascript:;" onclick="DescargarArchivoSesion(@item.Id)">Descargar</a> | <a href="javascript:;" onclick="EliminarArchivoSesion(@item.Id)">Eliminar</a>
+                        </td>
+                    </tr>
                     }
                 </table>
             </div>
@@ -102,68 +102,89 @@
     <div class="col-md-12" style="padding-top:10px; padding-bottom:10px">
         <div class="panel panel-success">
             <div class="panel-heading">DATOS</div>
-            <div class="panel-body" style="padding-top:10px; padding-bottom:10px">
-                <div class="col-md-12">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            @Html.LabelFor(model => model.RUC, new { @class = "control-label col-md-3" })
-                            <div class="col-md-6">
-                                @Html.EditorFor(model => model.RUC, new { htmlAttributes = new { @class = "form-control input-sm", @placeholder = "RUC" } })
-                                @Html.ValidationMessageFor(model => model.RUC, "", new { @class = "text-danger" })
+            <div class="panel-body" style="padding: 15px">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="col-md-6" style="padding: 0px 0px 5px 0px">
+                            <div class="col-md-12">
+                                <div class="col-md-4">
+                                    @Html.LabelFor(model => model.RUC, new { @class = "control-label" })
+                                </div>
+                                <div class="col-md-8">
+                                    @Html.EditorFor(model => model.RUC, new { htmlAttributes = new { @class = "form-control input-sm", @placeholder = "RUC" } })
+                                    @Html.ValidationMessageFor(model => model.RUC, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6" style="padding:0px 0px 5px 0px">
+                            <div class="col-md-12">
+                                <div class="col-md-4">
+                                    @Html.LabelFor(model => model.RazonSocial, new { @class = "control-label" })
+                                </div>
+                                <div class="col-md-8">
+                                    @Html.EditorFor(model => model.RazonSocial, new { htmlAttributes = new { @class = "form-control input-sm", @placeholder = "Razón Social" } })
+                                    @Html.ValidationMessageFor(model => model.RazonSocial, "", new { @class = "text-danger" })
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-12" style="padding-top:10px; padding-bottom:10px">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            @Html.LabelFor(model => model.RazonSocial, new { @class = "control-label col-md-3" })
-                            <div class="col-md-6">
-                                @Html.EditorFor(model => model.RazonSocial, new { htmlAttributes = new { @class = "form-control input-sm", @placeholder = "Razón Social" } })
-                                @Html.ValidationMessageFor(model => model.RazonSocial, "", new { @class = "text-danger" })
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="col-md-6" style="padding:0px 0px 5px 0px">
+                            <div class="col-md-12">
+                                <div class="col-md-4">
+                                    @Html.LabelFor(model => model.Correo, new { @class = "control-label" })
+                                </div>
+                                <div class="col-md-8">
+                                    @Html.EditorFor(model => model.Correo, new { htmlAttributes = new { @class = "form-control input-sm", @placeholder = "E-mail" } })
+                                    @Html.ValidationMessageFor(model => model.Correo, "", new { @class = "text-danger" })
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            @Html.LabelFor(model => model.Correo, new { @class = "control-label col-md-3" })
-                            <div class="col-md-6">
-                                @Html.EditorFor(model => model.Correo, new { htmlAttributes = new { @class = "form-control input-sm", @placeholder = "E-mail" } })
-                                @Html.ValidationMessageFor(model => model.Correo, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-12">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            @Html.LabelFor(model => model.flagConstanciaRNP, new { @class = "control-label col-md-3" })
-                            <div class="col-md-6">
-                                @Html.CheckBoxFor(model => model.flagConstanciaRNP, new { htmlAttributes = new { @class = "form-control input-sm" } })
-                                @Html.ValidationMessageFor(model => model.flagConstanciaRNP, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            @Html.LabelFor(model => model.Direccion, new { @class = "control-label col-md-3" })
-                            <div class="col-md-6">
-                                @Html.EditorFor(model => model.Direccion, new { htmlAttributes = new { @class = "form-control input-sm", @placeholder = "Dirección" } })
-                                @Html.ValidationMessageFor(model => model.Direccion, "", new { @class = "text-danger" })
+                        <div class="col-md-6" style="padding:0px 0px 5px 0px">
+                            <div class="col-md-12">
+                                <div class="col-md-4">
+                                    @Html.LabelFor(model => model.flagConstanciaRNP, new { @class = "control-label" })
+                                </div>
+                                <div class="col-md-8">
+                                    @Html.CheckBoxFor(model => model.flagConstanciaRNP, new { htmlAttributes = new { @class = "form-control input-sm" } })
+                                    @Html.ValidationMessageFor(model => model.flagConstanciaRNP, "", new { @class = "text-danger" })
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="col-md-6" style="padding:0px 0px 5px 0px">
+                            <div class="col-md-12">
+                                <div class="col-md-4">
+                                    @Html.LabelFor(model => model.Direccion, new { @class = "control-label" })
+                                </div>
+                                <div class="col-md-8">
+                                    @Html.EditorFor(model => model.Direccion, new { htmlAttributes = new { @class = "form-control input-sm", @placeholder = "Dirección" } })
+                                    @Html.ValidationMessageFor(model => model.Direccion, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @*<div class="row">
+                    <div class="col-md-12">
+                        <div class="col-md-12">
+                            <table id="dgArchivosPostulante"></table>
+                        </div>
+                    </div>
+                </div>*@
                 <br />
-                <div class="col-md-12" style="padding-top:10px; padding-bottom:10px">
-                    <article>
-                        <table id="dgArchivosPostulante"></table>
-                    </article>
-                </div>
-                <br />
-                <div class="col-md-12">
-                    <a href="@Url.Action("Index", "Postulante")" class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-ok-sign" id="btnCancelar"></span> Cancelar</a>
-                    <button type="button" class="btn btn-primary btn-sm" id="btnGuardar">Guardar</button>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="col-md-6">
+                            <a href="@Url.Action("Index", "Postulante")" class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-ok-sign" id="btnCancelar"></span> Cancelar</a>
+                            <button type="button" class="btn btn-primary btn-sm" id="btnGuardar">Guardar</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
