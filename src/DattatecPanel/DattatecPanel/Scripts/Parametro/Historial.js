@@ -56,7 +56,7 @@
                     gMostrarResultadoBusqueda(data.rows, "#dgHistorial");
 
                     $('#dgHistorial').datagrid('getPager').pagination({
-                        total: data.total == 0 ? 1 : data.length,
+                        total: data.total == 0 ? 1 : data.total,
                         pageSize: pageSize_,
                         pageNumber: pageNumber_
                     });
