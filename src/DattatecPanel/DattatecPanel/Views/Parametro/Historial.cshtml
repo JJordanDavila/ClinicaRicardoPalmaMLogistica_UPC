@@ -8,6 +8,41 @@
 <form id="frmHistorial">
     <div class="row">
         <div class="col-sm-12">
+            <div class="col-sm-4" style="padding: 0px 0px 5px 0px">
+                <div class="col-sm-12">
+                    <div class="col-sm-4" style="padding:0px">
+                        <label class="control-label">Fecha Inicio</label>
+                    </div>
+                    <div class="col-sm-8">
+                        <div class="input-group">
+                            <input type="text" class="form-control date" id="fechaInicio" readonly="readonly" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4" style="padding: 0px 0px 5px 0px">
+                <div class="col-sm-12">
+                    <div class="col-sm-4" style="padding:0px">
+                        <label class="control-label">Fecha Fin</label>
+                    </div>
+                    <div class="col-sm-8">
+                        <div class="input-group">
+                            <input type="text" class="form-control date" id="fechaFin" readonly="readonly" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4" style="padding: 0px 0px 5px 0px">
+                <div class="col-sm-12">
+                    <div class="col-sm-4" style="padding:0px">
+                        <button class="btn btn-primary btn-sm" id="btnConsultarHistorial" type="button">Consultar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
             <table id="dgHistorial"></table>
         </div>
     </div>

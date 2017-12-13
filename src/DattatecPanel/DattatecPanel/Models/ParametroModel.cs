@@ -93,8 +93,10 @@ namespace DattatecPanel.Models
 
         }
 
-        public ListarDTO ListarHistorial(int page, int pageSize)
+        public ListarDTO ListarHistorial(string fini, string ffin, int page, int pageSize)
         {
+            var fechaInicio = string.IsNullOrEmpty(fini) ? DateTime.MinValue : Convert.ToDateTime(fini);
+            var fechaFin = string.IsNullOrEmpty(ffin) ? DateTime.MaxValue : Convert.ToDateTime(ffin);
             ListarDTO response = new ListarDTO();
             var lista = db.DB_Evidencia.ToList().Select(x => new
             {
@@ -102,6 +104,9 @@ namespace DattatecPanel.Models
                 x.Descripcion,
                 x.Fecha
             }).ToList();
+
+            lista = lista.Where(x => Convert.ToDateTime(x.Fecha.ToShortDateString()) >= fechaInicio
+                && Convert.ToDateTime(x.Fecha.ToShortDateString()) <= fechaFin).ToList();
             response.total = lista.Count();
             response.lista = lista.Skip((page - 1) * pageSize).Take(pageSize);
             return response;

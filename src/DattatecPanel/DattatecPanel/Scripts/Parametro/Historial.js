@@ -3,8 +3,10 @@
         function Historial() { };
 
         Historial.prototype.loadPage = function () {
+            gInputsFormatoFecha("fechaInicio,fechaFin");
             Historial.prototype.dataGrid();
             Historial.prototype.buscar();
+            Historial.prototype.agregarEventos();
         };
 
         Historial.prototype.dataGrid = function () {
@@ -49,6 +51,8 @@
                 url: globalRutaServidor + "Parametro/ListarHistorial",
                 type: 'GET',
                 data: {
+                    fini: $("#fechaInicio").val(),
+                    ffin: $("#fechaFin").val(),
                     page: pageNumber_,  
                     pageSize: pageSize_
                 },
@@ -64,6 +68,12 @@
                 error: function () {
                     gMensajeErrorAjax();
                 }
+            });
+        };
+
+        Historial.prototype.agregarEventos = function () {
+            $("#btnConsultarHistorial").on('click', function () {
+                Historial.prototype.buscar();
             });
         };
 

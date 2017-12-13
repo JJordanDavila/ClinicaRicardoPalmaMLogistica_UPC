@@ -219,11 +219,11 @@ namespace DattatecPanel.Controllers
             return View("Historial");
         }
 
-        public ActionResult ListarHistorial(int page, int pageSize)
+        public ActionResult ListarHistorial(string fini, string ffin, int page, int pageSize)
         {
             try
             {
-                var lista = new ParametroModel().ListarHistorial(page, pageSize);
+                var lista = new ParametroModel().ListarHistorial(fini, ffin, page, pageSize);
                 return Json(new { statusCode = HttpStatusCode.OK, rows = lista.lista, total = lista.total }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
