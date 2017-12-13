@@ -68,7 +68,7 @@
                         }
                     }
                 ]],
-                width: '100%',
+                width: '120%',
                 singleSelect: true
             });
         };
