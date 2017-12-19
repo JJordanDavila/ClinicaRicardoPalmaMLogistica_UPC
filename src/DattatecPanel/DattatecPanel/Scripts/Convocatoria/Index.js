@@ -73,16 +73,20 @@
         }
 
         Convocatoria.prototype.buscar = function () {
-
-            var pageNumber_ = $('#dgConvocatoriaProveedores').datagrid('getPager').pagination('options').pageNumber;
-            var pageSize_ = $('#dgConvocatoriaProveedores').datagrid('getPager').pagination('options').pageSize;
+            var valFechas = gValidarFechaInicioFin($("#fechaInicioIndex").val(), $("#FechaFinIndex").val());
+            if (valFechas != "") {
+                return gMensajeInformacion(valFechas);
+            };
 
             var nroConvocatoria = $("#nroConvocatoria").val();
             if (nroConvocatoria != undefined && nroConvocatoria.trim() != "") {
                 if (isNaN(nroConvocatoria.trim())) {
                     return gMensajeInformacion("Solo se admiten numeros en el campo número de convocatoria.");
                 }
-            }
+            };
+
+            var pageNumber_ = $('#dgConvocatoriaProveedores').datagrid('getPager').pagination('options').pageNumber;
+            var pageSize_ = $('#dgConvocatoriaProveedores').datagrid('getPager').pagination('options').pageSize;
 
             $.ajax({
                 url: globalRutaServidor + "Convocatoria/ListarConvocatoriaProveedores",
@@ -95,14 +99,21 @@
                     pageSize: pageSize_
                 },
                 success: function (data) {
-                    gMostrarResultadoBusqueda(data.rows, "#dgConvocatoriaProveedores");
+                    if (data.statusCode == 200) {
+                        gMostrarResultadoBusqueda(data.rows, "#dgConvocatoriaProveedores");
 
-                    $('#dgConvocatoriaProveedores').datagrid('getPager').pagination({
-                        total: data.total == 0 ? 1 : data.total,
-                        pageSize: pageSize_,
-                        pageNumber: pageNumber_
-                    });
-
+                        $('#dgConvocatoriaProveedores').datagrid('getPager').pagination({
+                            total: data.total == 0 ? 1 : data.total,
+                            pageSize: pageSize_,
+                            pageNumber: pageNumber_
+                        });
+                    } else {
+                        if (data.statusCode == 400) {
+                            gMensajeInformacion(data.mensaje);
+                        } else {
+                            gMensajeErrorAjax();
+                        }
+                    }
                 },
                 error: function () {
                     gMensajeErrorAjax();

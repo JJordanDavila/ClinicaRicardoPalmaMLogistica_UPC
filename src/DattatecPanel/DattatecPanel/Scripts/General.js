@@ -38,6 +38,7 @@ function gMostrarResultadoBusqueda(lista, idDatagrid) {
         $(idDatagrid).datagrid('unselectAll');
         //$(idDatagrid).datagrid({ data: [] });
         $(idDatagrid).datagrid('loadData', { "total": 0, "rows": [] });
+        gMensajeInformacion('No se encontraron resultados en base a los criterios ingresados');
     }
 };
 
@@ -265,3 +266,38 @@ function EncriptarTexto(query) {
 
     return encodedData;
 }
+
+function gFormatearFechaADateTime(datetime) {
+    if (datetime != "" && datetime != null && datetime != undefined) {
+        var value = new Date(parseInt(datetime.replace("/Date(", "").replace(")/", ""), 10));
+        var date = new Date(value);
+        var hours = date.getHours();
+        var minutes = date.getMinutes();
+        var seconds = date.getSeconds();
+        var ampm = hours >= 12 ? 'pm' : 'am';
+        hours = hours % 12;
+        hours = hours ? hours : 12;
+        hours = hours < 10 ? '0' + hours : hours;
+        minutes = minutes < 10 ? '0' + minutes : minutes;
+        seconds = seconds < 10 ? '0' + seconds : seconds;
+        var strTime = hours + ':' + minutes + ':' + seconds + ' ' + ampm;
+        return date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear() + "  " + strTime;
+    }
+};
+
+function gValidarFechaInicioFin(fini, ffin) {
+    var mensaje = "";
+    if (fini != "" && ffin != "") {
+        var fechaini = new Date(formatdate(fini));
+        var fechafin = new Date(formatdate(ffin));
+        if (fechaini > fechafin) {
+            mensaje = "La fecha de inicio no puede ser mayor a la fecha fin.";
+        }
+        else {
+            if (fechafin < fechaini) {
+                mensaje = "La fecha fin no puede ser menor a la fecha de inicio.";
+            }
+        }
+    }
+    return mensaje;
+};

@@ -24,8 +24,10 @@ namespace DattatecPanel.Models
                 var dfini = string.IsNullOrEmpty(fini) ? DateTime.MinValue : Convert.ToDateTime(fini);
                 var dffin = string.IsNullOrEmpty(ffin) ? DateTime.MaxValue : Convert.ToDateTime(ffin);
                 var lista = db.DB_Convocatoria.Where(x => x.Numero.Contains(numero)
-               && x.FechaInicio >= dfini
-               && x.FechaFin <= dffin
+               //&& Convert.ToDateTime(x.FechaInicio.ToShortDateString()) >= dfini
+               //&& Convert.ToDateTime(x.FechaFin.ToShortDateString()) <= dffin
+               && (x.FechaInicio >= dfini
+               && x.FechaFin <= dffin)
                && x.Estado == "E").ToList().Select(s => new
                {
                    s.Convocatoriaid,
@@ -75,7 +77,7 @@ namespace DattatecPanel.Models
                 {
                     if (entidad.RequisitoFile != null)
                     {
-                        if (!entidad.RequisitoFile.FileName.EndsWith("pdf"))
+                        if (!entidad.RequisitoFile.FileName.ToLower().EndsWith("pdf"))
                         {
                             response.mensajeInfo = "Solo adjuntar archivo en formato PDF.";
                             return response;
@@ -103,20 +105,22 @@ namespace DattatecPanel.Models
                     }
                 }
 
-                entidad.Estado = "E";
-                Convocatoria convocatoria = new Convocatoria
-                {
-                    Convocatoriaid = entidad.Convocatoriaid,
-                    Numero = entidad.Numero,
-                    FechaInicio = entidad.FechaInicio,
-                    FechaFin = entidad.FechaFin,
-                    Estado = entidad.Estado,
-                    RubroID = entidad.RubroID,
-                    EmpleadoID = entidad.EmpleadoID,
-                    Requisito = data == null ? entidad.Requisito : data
-                };
+                //entidad.Estado = "E";
+                
                 if (entidad.Convocatoriaid <= 0)
                 {
+                    Convocatoria convocatoria = new Convocatoria
+                    {
+                        Convocatoriaid = entidad.Convocatoriaid,
+                        Numero = GenerarNumeroCorrelativo(),//entidad.Numero,
+                        FechaInicio = entidad.FechaInicio,
+                        FechaFin = entidad.FechaFin,
+                        Estado = "E",
+                        RubroID = entidad.RubroID,
+                        EmpleadoID = entidad.EmpleadoID,
+                        Requisito = data == null ? entidad.Requisito : data
+                    };
+
                     var empleado = db.DB_Empleado.Where(x => x.EmpleadoID == convocatoria.EmpleadoID).FirstOrDefault();
                     var cuerpoCorreo = "Se registro la convocatoria con el numero : " + convocatoria.Numero.ToString();
                     db.DB_Convocatoria.Add(convocatoria);
@@ -126,6 +130,18 @@ namespace DattatecPanel.Models
                 }
                 else
                 {
+                    Convocatoria convocatoria = new Convocatoria
+                    {
+                        Convocatoriaid = entidad.Convocatoriaid,
+                        Numero = entidad.Numero,
+                        FechaInicio = entidad.FechaInicio,
+                        FechaFin = entidad.FechaFin,
+                        Estado = "E",
+                        RubroID = entidad.RubroID,
+                        EmpleadoID = entidad.EmpleadoID,
+                        Requisito = data == null ? entidad.Requisito : data
+                    };
+
                     var empleado = db.DB_Empleado.Where(x => x.EmpleadoID == convocatoria.EmpleadoID).FirstOrDefault();
                     var cuerpoCorreo = "Se actualizo la convocatoria con el numero : " + convocatoria.Numero.ToString();
                     db.Entry(convocatoria).State = EntityState.Modified;
@@ -179,6 +195,32 @@ namespace DattatecPanel.Models
         public dynamic ObtenerEmpleadoPorID(int id)
         {
             return db.DB_Empleado.Where(x => x.EmpleadoID == id).FirstOrDefault();
+        }
+
+        public string ValidarFiltros(string numero, string fini, string ffin)
+        {
+            string mensaje = string.Empty;
+            long result;
+            try
+            {
+                if (!string.IsNullOrEmpty(numero) && !Int64.TryParse(numero, out result))
+                {
+                    mensaje = "Solo se admiten numeros en el campo número de convocatoria.";
+                }
+
+                if (!string.IsNullOrEmpty(fini) && !string.IsNullOrEmpty(ffin) && string.IsNullOrEmpty(mensaje))
+                {
+                    if (Convert.ToDateTime(fini) > Convert.ToDateTime(ffin))
+                    {
+                        mensaje = "La fecha de inicio no puede ser mayor a la fecha fin.";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                mensaje = ex.Message;
+            }
+            return mensaje;
         }
     }
 }

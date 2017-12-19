@@ -23,15 +23,21 @@ namespace DattatecPanel.Controllers
         {
             try
             {
+                var validacion = new ConvocatoriaModel().ValidarFiltros(numero, fini, ffin);
+                if (!string.IsNullOrEmpty(validacion))
+                {
+                    return Json(new { mensaje = validacion, statusCode = HttpStatusCode.BadRequest }, JsonRequestBehavior.AllowGet);
+                }
                 var lista = new ConvocatoriaModel().ListarConvocatoriaProveedores(numero, fini, ffin, page, pageSize);
-                var jsonresult = Json(new { rows = lista.lista, total = lista.total }, JsonRequestBehavior.AllowGet);
-                jsonresult.MaxJsonLength = int.MaxValue;
-                return jsonresult;
+                //var jsonresult = Json(new { rows = lista.lista, total = lista.total }, JsonRequestBehavior.AllowGet);
+                //jsonresult.MaxJsonLength = int.MaxValue;
+                //return jsonresult;
+                return Json(new { rows = lista.lista, total = lista.total, statusCode = HttpStatusCode.OK }, JsonRequestBehavior.AllowGet);
             }
             catch(Exception ex)
             {
                 log.Error(ex.Message);
-                return Json(new { statusCode = HttpStatusCode.BadRequest }, JsonRequestBehavior.AllowGet);
+                return Json(new { mensaje = ex.Message, statusCode = HttpStatusCode.BadRequest }, JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -47,6 +53,11 @@ namespace DattatecPanel.Controllers
         {
             try
             {
+                var validacion = new ConvocatoriaModel().ValidarFiltros(entidad.Numero, entidad.FechaInicio.ToString(), entidad.FechaFin.ToString());
+                if (!string.IsNullOrEmpty(validacion))
+                {
+                    return Json(new { mensajeInfo = validacion, statusCode = HttpStatusCode.OK }, JsonRequestBehavior.AllowGet);
+                }
                 var response = new ConvocatoriaModel().GuardarConvocatoria(entidad);
                 return Json(new { statusCode = HttpStatusCode.OK, mensaje = response.mensaje, mensajeInfo = response.mensajeInfo }, 
                     JsonRequestBehavior.AllowGet);
